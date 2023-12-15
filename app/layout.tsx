@@ -17,9 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={work_sans.className}>
-        <Layout>{children}</Layout>
-      </body>
+      <body className={work_sans.className}>{children}</body>
     </html>
   );
 }
