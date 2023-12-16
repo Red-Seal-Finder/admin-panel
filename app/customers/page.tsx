@@ -1,7 +1,12 @@
-export default function Customers() {
+import Customers from "@/features/customers";
+import Layout from "@/features/layout/layout";
+
+export default function CustomersPage() {
     return (
         <>
-            <h1>Customers</h1>
+            <Layout>
+                <Customers />
+            </Layout>
         </>
     )
 }

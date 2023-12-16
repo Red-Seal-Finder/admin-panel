@@ -1,7 +1,12 @@
-export default function Jobs() {
+import Layout from "@/features/layout/layout";
+import Jobs from "@/features/jobs";
+
+export default function JobsPage() {
     return (
-        <>
-            <h1>Jobs</h1>
+        <>                 
+        <Layout>
+            <Jobs />
+        </Layout>
         </>
     )
 }

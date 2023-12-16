@@ -6,7 +6,7 @@ import CustomersTable from "./components/table";
 import PageHeading from "../shared/page-body/page-heading";
 import DownloadButton from "../shared/page-body/download-button";
 
-const Customers = () => {
+const Contractors = () => {
   return (
     <>
       <Header>
@@ -15,8 +15,8 @@ const Customers = () => {
       {/* Page Body - Use for side padding on the top and sides */}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
-          <PageHeading page_title="Customers" />
-          <DownloadButton text="Download Customer’S LIST" />
+          <PageHeading page_title="Contractors" />
+          <DownloadButton text="Download Contractor’S LIST" />
         </div>
         <CustomersTable />
       </PageBody>
@@ -24,4 +24,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Contractors;

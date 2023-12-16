@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const TableCard: React.FC<IProps> = ({ children }) => {
-  return <div className="bg-white p-6 rounded w-full">{children}</div>;
+  return <div className="bg-white p-6 mb-10 rounded w-full">{children}</div>;
 };
 
 export default TableCard;

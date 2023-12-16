@@ -1,7 +1,12 @@
-export default function Contractors() {
+import Contractors from "@/features/contractors";
+import Layout from "@/features/layout/layout";
+
+export default function ContractorsPage() {
     return (
         <>
-            <h1>Contractors</h1>
+            <Layout>
+                <Contractors />
+            </Layout>
         </>
     )
 }
