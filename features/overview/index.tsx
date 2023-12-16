@@ -5,7 +5,8 @@ import PageBody from "../shared/page-body/page-body";
 import OverviewTable from "./components/table";
 import PageHeading from "../shared/page-body/page-heading";
 import Calender from "./components/calender";
-import CustomCalendar from "./components/calender-icon";
+import Metrics from "./components/metrics";
+import JobStatus from "./components/job-status";
 
 const Overview = () => {
   return (
@@ -18,6 +19,11 @@ const Overview = () => {
         <div className="flex justify-between mb-6 items-center">
           <PageHeading page_title="Overview" />
           <Calender />
+        </div>
+        {/* Charts */}
+        <div className="flex gap-6 justify-between w-full mb-6 overflow-x-auto">
+          <Metrics />
+          <JobStatus />
         </div>
         <OverviewTable />
       </PageBody>

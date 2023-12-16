@@ -27,7 +27,7 @@ const Calender = () => {
   // State for seting date
   const [dateRange, setdateRange] = useState<string>(defaultDateRange);
   return (
-    <div className="flex bg-white p-3 items-center gap-2">
+    <div className="flex bg-white p-3 items-center gap-2 rounded-md">
       <CalendarIcon />
       <p className="text-[rgb(119,119,119)] text-[13px] mt-[2px]">
         {dateRange}
