@@ -73,6 +73,7 @@ const Sidebar = () => {
             className={`flex gap-2 text-sm items-center  pl-14 py-3 transition-all duration-500 
           border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 
           hover:bg-[#F1F1F1]/60`}
+            onClick={() => router.push("/login")}
           >
             <span>
               <Logout />

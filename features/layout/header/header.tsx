@@ -11,7 +11,7 @@ const Header: React.FC<IProps> = ({ children }) => {
   return (
     <div
       className="flex px-[3vw] pt-8 pb-6 justify-between border-b-[#ddd] border-b 
-    items-center sticky top-[5px] gap-x-[200px] overflow-x-auto bg-[#F0F0F0] z-20"
+    items-center sticky top-[0px] gap-x-[200px] overflow-x-auto bg-[#F0F0F0] z-20"
     >
       {/* Name */}
       <p className="text-xl font-[500] whitespace-nowrap">

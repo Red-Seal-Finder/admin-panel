@@ -71,7 +71,7 @@ const Metrics = () => {
   ];
 
   return (
-    <div className="w-[60%] bg-white px-8 pt-6 pb-3 rounded-md min-w-[700px]">
+    <div className="w-[60%] bg-white px-8 pt-6 pb-3 rounded-md min-w-[750px]">
       <p className="font-[600] pb-4">Performance Metrics</p>
       <div className="flex items-center gap-10 pb-8">
         <div className="flex items-center gap-2">

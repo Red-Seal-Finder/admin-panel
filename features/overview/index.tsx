@@ -7,6 +7,13 @@ import PageHeading from "../shared/page-body/page-heading";
 import Calender from "./components/calender";
 import Metrics from "./components/metrics";
 import JobStatus from "./components/job-status";
+import AnalyticCard from "./components/analytic-card";
+import {
+  TotalContractors,
+  TotalCustomers,
+  TotalJobs,
+  TotalRevenue,
+} from "@/public/svg";
 
 const Overview = () => {
   return (
@@ -20,6 +27,41 @@ const Overview = () => {
           <PageHeading page_title="Overview" />
           <Calender />
         </div>
+        {/* Analytic Cards */}
+        {/* Negative value on percent props will be red */}
+        <div className="overflow-x-auto mb-6">
+          <div className="flex gap-8 min-w-[1200px]">
+            <AnalyticCard
+              svg={<TotalCustomers />}
+              svgColor="bg-[#C398C7]"
+              name="Total Customers"
+              numbers="2000"
+              percent={3.6}
+            />
+            <AnalyticCard
+              svg={<TotalContractors />}
+              svgColor="bg-[#AAB2D4]"
+              name="Total Contractors"
+              numbers="2000"
+              percent={3.6}
+            />
+            <AnalyticCard
+              svg={<TotalRevenue />}
+              svgColor="bg-[#E3C87C]"
+              name="Total Revenue"
+              numbers="2000"
+              percent={3.6}
+            />
+            <AnalyticCard
+              svg={<TotalJobs />}
+              svgColor="bg-[#BBBBBB]"
+              name="Total Jobs"
+              numbers="2000"
+              percent={-3.6}
+            />
+          </div>
+        </div>
+
         {/* Charts */}
         <div className="flex gap-6 justify-between w-full mb-6 overflow-x-auto">
           <Metrics />

@@ -9,6 +9,7 @@ import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
+import { ComplaintsState, CompletedState, PendingState } from "@/public/svg";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -90,9 +91,25 @@ const JobsTable = () => {
                 {Object.keys(data).map((item, idx) => (
                   <Td key={idx}>
                     {/* Typescript assertion of key from object dot keys method */}
-                    {data[item as keyof typeof data]}
+                    {item === "status" ? (
+                      <div className="flex gap-[6px] items-center">
+                        <span>
+                          {data[item] === "Completed" ? (
+                            <CompletedState />
+                          ) : data[item] === "Complaints" ? (
+                            <ComplaintsState />
+                          ) : (
+                            <PendingState />
+                          )}
+                        </span>
+                        {data[item as keyof typeof data]}
+                      </div>
+                    ) : (
+                      <>{data[item as keyof typeof data]}</>
+                    )}
                   </Td>
                 ))}
+
                 <Td>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
