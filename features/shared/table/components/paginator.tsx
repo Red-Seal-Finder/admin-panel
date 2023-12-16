@@ -2,7 +2,7 @@ import React from "react";
 
 const Paginator = () => {
   return (
-    <div className="flex w-full justify-end mt-7">
+    <div className="flex w-full justify-end mt-7 cursor-pointer">
       <div className="flex items-center gap-6 whitespace-nowrap">
         <svg
           xmlns="http://www.w3.org/2000/svg"
