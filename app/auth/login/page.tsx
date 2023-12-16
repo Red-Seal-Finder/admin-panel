@@ -95,7 +95,7 @@ export default function Login() {
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            You don't remember your password?{" "}
+            You don&apos;t remember your password?
             <a
               href="/auth/forget-password"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
