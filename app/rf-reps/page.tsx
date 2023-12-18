@@ -1,11 +1,11 @@
 import Layout from "@/features/layout/layout"
-import Transactions from "@/features/transactions"
+import Representatives from "@/features/reps"
 
-export default function TransactionsPage() {
+export default function RepresentativesPage() {
     return (
         <>
             <Layout>
-                <Transactions />
+                <Representatives />
             </Layout>
         </>
     )
