@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
@@ -10,6 +12,7 @@ import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
 import { ComplaintsState, CompletedState, PendingState } from "@/public/svg";
+import { useRouter } from "next/navigation";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -65,6 +68,7 @@ const table_data = [
 ];
 
 const JobsTable = () => {
+  const router = useRouter();
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -87,7 +91,11 @@ const JobsTable = () => {
 
           <tbody>
             {table_data?.map((data, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => router.push("/jobs/invoice")}
+                className="cursor-pointer"
+              >
                 {Object.keys(data).map((item, idx) => (
                   <Td key={idx}>
                     {/* Typescript assertion of key from object dot keys method */}

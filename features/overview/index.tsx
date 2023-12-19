@@ -37,6 +37,7 @@ const Overview = () => {
               name="Total Customers"
               numbers="2000"
               percent={3.6}
+              route="/customers"
             />
             <AnalyticCard
               svg={<TotalContractors />}
@@ -44,6 +45,7 @@ const Overview = () => {
               name="Total Contractors"
               numbers="2000"
               percent={3.6}
+              route="/contractors"
             />
             <AnalyticCard
               svg={<TotalRevenue />}
@@ -51,6 +53,7 @@ const Overview = () => {
               name="Total Revenue"
               numbers="2000"
               percent={3.6}
+              route="/transactions"
             />
             <AnalyticCard
               svg={<TotalJobs />}
@@ -58,6 +61,7 @@ const Overview = () => {
               name="Total Jobs"
               numbers="2000"
               percent={-3.6}
+              route="/jobs"
             />
           </div>
         </div>
