@@ -1,11 +1,12 @@
-import Customers from "@/features/customers";
+"use client"
+import Customise from "@/features/customise";
 import Layout from "@/features/layout/layout";
 
 export default function CustomizePage() {
     return (
         <>
             <Layout>
-                <h1>Customize</h1>
+                <Customise />
             </Layout>
         </>
     )
