@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
@@ -15,6 +16,7 @@ import {
   PendingState,
   YellowStar,
 } from "@/public/svg";
+import { usePathname, useRouter } from "next/navigation";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -49,12 +51,12 @@ const table_data = [
     // rating: 5,
   },
   {
-      rf_name: "John Doe",
-      rf_id: 12345,
-      date_joined: "23-08-2022",
-      email_address: "example@gmail.com",
-      payment: 8000,
-      position: "Customer support",
+    rf_name: "John Doe",
+    rf_id: 12345,
+    date_joined: "23-08-2022",
+    email_address: "example@gmail.com",
+    payment: 8000,
+    position: "Customer support",
     // rating: 5,
   },
   {
@@ -102,18 +104,21 @@ const table_data = [
     position: "Technical support",
     // rating: 5,
   },
-    {
-      rf_name: "John Doe",
-      rf_id: 12345,
-      date_joined: "23-08-2022",
-      email_address: "example@gmail.com",
-      payment: 8000,
-      position: "Customer support",
+  {
+    rf_name: "John Doe",
+    rf_id: 12345,
+    date_joined: "23-08-2022",
+    email_address: "example@gmail.com",
+    payment: 8000,
+    position: "Customer support",
     // rating: 5,
   },
 ];
 
-const CustomersTable = () => {
+const RepsTable = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -136,11 +141,13 @@ const CustomersTable = () => {
 
           <tbody>
             {table_data?.map((data, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => router.push(`${pathname}/${index}`)}
+                className="cursor-pointer"
+              >
                 {Object.keys(data).map((item, idx) => (
-                  <Td key={idx}>
-                    {data[item as keyof typeof data]}
-                  </Td>
+                  <Td key={idx}>{data[item as keyof typeof data]}</Td>
                 ))}
                 <Td>
                   <svg
@@ -167,4 +174,4 @@ const CustomersTable = () => {
   );
 };
 
-export default CustomersTable;
+export default RepsTable;

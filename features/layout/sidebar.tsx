@@ -31,16 +31,15 @@ const Sidebar = () => {
     { name: "Customers", svg: <Customers />, route: "/customers" },
     { name: "Contractors", svg: <Contractors />, route: "/contractors" },
     { name: "Transactions", svg: <Transactions />, route: "/transactions" },
-    { name: "RF Reps", svg: <RFReps />, route: "rf-reps" },
+    { name: "RF Reps", svg: <RFReps />, route: "/rf-reps" },
     { name: "Customise", svg: <Customise />, route: "/customise" },
     {
       name: "Account Settings",
       svg: <AccountSettings />,
-      route: "account-settings",
+      route: "/account-settings",
     },
   ];
 
-  console.log(pathname);
   return (
     <div
       className="max-w-[280px] w-[21%] min-w-[250px] bg-white border-r-[#ddd] border-r sticky top-0 
