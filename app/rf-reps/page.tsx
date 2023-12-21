@@ -1,8 +1,7 @@
 import Layout from "@/features/layout/layout";
 import Representatives from "@/features/reps";
-import React from "react";
 
-const RepresentativePage = () => {
+export default function RepresentativesPage() {
   return (
     <>
       <Layout>
@@ -10,6 +9,4 @@ const RepresentativePage = () => {
       </Layout>
     </>
   );
-};
-
-export default RepresentativePage;
+}
