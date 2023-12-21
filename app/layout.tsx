@@ -6,7 +6,7 @@ import Layout from "@/features/layout/layout";
 const work_sans = Work_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Red Seal Finder",
+  title: "Repair Find",
   description: "Red Seal Finder",
 };
 

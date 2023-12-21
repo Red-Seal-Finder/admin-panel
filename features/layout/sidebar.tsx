@@ -48,7 +48,7 @@ const Sidebar = () => {
         {/* Logo Container */}
         <div className="flex flex-col items-center py-10">
           <Image src={logo} alt="Logo" width={32} height={32} />
-          <p className="text-sm">Repairfind</p>
+          <p className="text-sm">Repair Find</p>
         </div>
 
         {/* Navigation */}
