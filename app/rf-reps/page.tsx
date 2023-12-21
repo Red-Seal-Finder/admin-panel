@@ -1,12 +1,15 @@
-import Layout from "@/features/layout/layout"
-import Representatives from "@/features/reps"
+import Layout from "@/features/layout/layout";
+import Representatives from "@/features/reps";
+import React from "react";
 
-export default function RepresentativesPage() {
-    return (
-        <>
-            <Layout>
-                <Representatives />
-            </Layout>
-        </>
-    )
-}
+const RepresentativePage = () => {
+  return (
+    <>
+      <Layout>
+        <Representatives />
+      </Layout>
+    </>
+  );
+};
+
+export default RepresentativePage;

@@ -107,7 +107,7 @@ const CustomersTable = () => {
             {table_data?.map((data, index) => (
               <tr
                 key={index}
-                onClick={() => router.push("/customers/view-customer")}
+                onClick={() => router.push("/customers/" + index)}
                 className="cursor-pointer"
               >
                 {Object.keys(data).map((item, idx) => (
