@@ -39,6 +39,8 @@ const Sidebar = () => {
       route: "account-settings",
     },
   ];
+
+  console.log(pathname);
   return (
     <div
       className="max-w-[280px] w-[21%] min-w-[250px] bg-white border-r-[#ddd] border-r sticky top-0 

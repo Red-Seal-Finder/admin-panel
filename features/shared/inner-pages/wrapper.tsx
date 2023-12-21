@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const Wrapper: React.FC<IProps> = ({ children }) => {
-  return <div className="px-[5vw] max-w-[1200px] mx-auto">{children}</div>;
+  return <div className="px-[5vw] max-w-[1280px] mx-auto">{children}</div>;
 };
 
 export default Wrapper;

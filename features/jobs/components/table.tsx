@@ -93,7 +93,7 @@ const JobsTable = () => {
             {table_data?.map((data, index) => (
               <tr
                 key={index}
-                onClick={() => router.push("/jobs/invoice")}
+                onClick={() => router.push("/jobs/" + index)}
                 className="cursor-pointer"
               >
                 {Object.keys(data).map((item, idx) => (

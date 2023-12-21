@@ -13,9 +13,9 @@ const StatusColumn: React.FC<IProps> = ({ name, status }) => {
       <td className="font-[500] text-[15px] py-4">
         <div className="flex gap-[6px] items-center">
           <span>
-            {status === "Completed" ? (
+            {status === "Completed" || "Paid" ? (
               <CompletedState />
-            ) : status === "Complaints" ? (
+            ) : status === "Complaints" || "Failed" ? (
               <ComplaintsState />
             ) : (
               <PendingState />
@@ -23,9 +23,9 @@ const StatusColumn: React.FC<IProps> = ({ name, status }) => {
           </span>
           <p
             className={`${
-              status === "Completed"
+              status === "Completed" || "Paid"
                 ? "text-success"
-                : status === "Complaints"
+                : status === "Complaints" || "Failed"
                 ? "text-danger"
                 : "text-inProcess"
             }`}
