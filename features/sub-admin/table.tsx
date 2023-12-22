@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
@@ -10,13 +10,10 @@ import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
-import {
-  ComplaintsState,
-  CompletedState,
-  PendingState,
-  YellowStar,
-} from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
+import { getSubAdmins } from "@/lib/api/api";
+import { ISubAdmins } from "@/lib/types";
+import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -29,6 +26,14 @@ const table_headings = [
 ];
 
 const SubAdminTable = () => {
+  const [subAdmins, setSubAdmins] = useState<ISubAdmins>();
+  useEffect(() => {
+    getSubAdmins().then((response) => {
+      console.log(response);
+      setSubAdmins(response);
+    });
+  }, []);
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -50,19 +55,14 @@ const SubAdminTable = () => {
           </Thead>
 
           <tbody>
-            {/* {customers?.customers?.map((item, index) => (
-              <tr
-                key={index}
-                onClick={() => handleViewACustomer(item)}
-                className="cursor-pointer"
-              >
-                <Td>{item.fullName}</Td>
+            {subAdmins?.admins.map((item, index) => (
+              <tr key={index} className="cursor-pointer">
+                <Td>{item.firstName + " " + item.lastName}</Td>
                 <Td>{formatDateToDDMMYY(item.createdAt)}</Td>
                 <Td>{item.email}</Td>
 
-               
                 {/* Actions */}
-            {/* <Td>
+                <Td>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -77,8 +77,8 @@ const SubAdminTable = () => {
                     />
                   </svg>
                 </Td>
-              </tr> 
-            ))} */}
+              </tr>
+            ))}
           </tbody>
         </Table>
       </TableOverflow>

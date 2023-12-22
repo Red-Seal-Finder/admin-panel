@@ -36,8 +36,25 @@ export interface ICustomerData {
   [key: string]: unknown;
 }
 
+export interface ISubAdmin {
+  _id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  superAdmin: boolean;
+  validation: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  [key: string]: unknown;
+}
+
 export interface ICustomers {
   customers: ICustomerData[];
+}
+
+export interface ISubAdmins {
+  admins: ISubAdmin[];
 }
 
 export interface IContractorPostData {

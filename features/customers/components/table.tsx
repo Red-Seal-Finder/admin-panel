@@ -44,7 +44,6 @@ const CustomersTable = () => {
     router.push(`${pathname}/${item._id}`);
   };
 
-  console.log(customers);
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">

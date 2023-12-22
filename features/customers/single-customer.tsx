@@ -11,23 +11,28 @@ import JobsHistory from "./components/job-history";
 import DownloadButton from "../shared/page-body/download-button";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
+import { extractInitials } from "@/lib/utils/extract-initials";
 
 const SingleCustomer = () => {
-  const customerDetail = useAppSelector(
+  const { value: customerDetails } = useAppSelector(
     (state: RootState) => state.singleCustomerDetail
   );
-  console.log(customerDetail);
+
   return (
     <>
       <Header>
         <Wrapper>
           <div className="flex gap-x-6 items-center">
             <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
-              <p className="text-[30px] font-[600] text-white">RO</p>
+              <p className="text-[30px] font-[600] text-white">
+                {extractInitials(customerDetails.fullName)}
+              </p>
             </div>
 
             <div className="-mt-2">
-              <p className="text-[28px] font-[600]">Raphael Okoye</p>
+              <p className="text-[28px] font-[600]">
+                {customerDetails.fullName}
+              </p>
               <div className="flex gap-x-1">
                 {filledArrayFromNumber(5).map((item, index) => (
                   <RatingStar key={index} />
@@ -46,18 +51,15 @@ const SingleCustomer = () => {
           <BorderRectangle>
             <table className="w-full">
               <tbody>
-                <SingleLineColumn name="Email" value="raphaelokoye@gmail.com" />
-                <SingleLineColumn name="Contact" value="+49 17687934521" />
-                <SingleLineColumn name="Amount Spent" value="$4,000" />
-                <SingleLineColumn name="NO. of jobs" value="90" />
+                <SingleLineColumn name="Email" value={customerDetails.email} />
                 <SingleLineColumn
-                  name="Payment account"
-                  value="1256437890876"
+                  name="Contact"
+                  value={customerDetails.phoneNumber}
                 />
-                <SingleLineColumn
-                  name="Address"
-                  value="2464 Royal Ln. Mesa, New Jersey 45463"
-                />
+                <SingleLineColumn name="Amount Spent" value="" />
+                <SingleLineColumn name="NO. of jobs" value="" />
+                <SingleLineColumn name="Payment account" value="" />
+                <SingleLineColumn name="Address" value="" />
               </tbody>
             </table>
           </BorderRectangle>
