@@ -1,5 +1,7 @@
 import { Providers } from "@/lib/redux/providers";
 import "./globals.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({
   children,
@@ -9,7 +11,10 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body>{children}</body>
+        <body className="text-[#333]">
+          <ToastContainer />
+          {children}
+        </body>
       </html>
     </Providers>
   );

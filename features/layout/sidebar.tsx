@@ -14,6 +14,7 @@ import {
   Transactions,
 } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
+import SubAdmins from "../sub-admin";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const Sidebar = () => {
     { name: "Jobs", svg: <Jobs />, route: "/jobs" },
     { name: "Customers", svg: <Customers />, route: "/customers" },
     { name: "Contractors", svg: <Contractors />, route: "/contractors" },
+    { name: "Sub Admins", svg: <Customers />, route: "/sub-admins" },
     { name: "Transactions", svg: <Transactions />, route: "/transactions" },
     { name: "RF Reps", svg: <RFReps />, route: "/rf-reps" },
     { name: "Customise", svg: <Customise />, route: "/customise" },

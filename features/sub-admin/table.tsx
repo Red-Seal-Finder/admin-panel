@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
@@ -10,45 +10,29 @@ import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
-import { RatingStar } from "@/public/svg";
+import {
+  ComplaintsState,
+  CompletedState,
+  PendingState,
+  YellowStar,
+} from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
-import { ICustomerData, ICustomers } from "@/lib/types";
-import { formatDateToDDMMYY } from "@/lib/utils/format-date";
-import { getCustomerDetail } from "@/lib/api/api";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { setSingleCustomersDetail } from "@/lib/redux/slices/single-customer";
+
+// Since the table data is dynamic a table component will replace by this template
+// This Template defines how you can implement any table on your page
 
 const table_headings = [
-  "Customer’s Name",
+  "Sub Admin Name",
   "Date Joined",
   "Email Address",
-  "Ratings",
   "Action",
 ];
 
-const CustomersTable = () => {
-  const [customers, setCustomers] = useState<ICustomers>();
-  useEffect(() => {
-    getCustomerDetail().then((response) => {
-      setCustomers(response);
-    });
-  }, []);
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const dispatch = useAppDispatch();
-
-  const handleViewACustomer = (item: ICustomerData) => {
-    dispatch(setSingleCustomersDetail(item));
-    router.push(`${pathname}/${item._id}`);
-  };
-
-  console.log(customers);
+const SubAdminTable = () => {
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
-        <Heading name="Customers’ list" />
+        <Heading name="Sub Admins list" />
         <div className="flex gap-8">
           <Searchbar />
           <Filter />
@@ -66,7 +50,7 @@ const CustomersTable = () => {
           </Thead>
 
           <tbody>
-            {customers?.customers?.map((item, index) => (
+            {/* {customers?.customers?.map((item, index) => (
               <tr
                 key={index}
                 onClick={() => handleViewACustomer(item)}
@@ -76,18 +60,9 @@ const CustomersTable = () => {
                 <Td>{formatDateToDDMMYY(item.createdAt)}</Td>
                 <Td>{item.email}</Td>
 
-                {/* Rating */}
-                <Td>
-                  <div className="flex gap-1">
-                    <RatingStar />
-                    <RatingStar />
-                    <RatingStar />
-                    <RatingStar />
-                    <RatingStar />
-                  </div>
-                </Td>
+               
                 {/* Actions */}
-                <Td>
+            {/* <Td>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -102,8 +77,8 @@ const CustomersTable = () => {
                     />
                   </svg>
                 </Td>
-              </tr>
-            ))}
+              </tr> 
+            ))} */}
           </tbody>
         </Table>
       </TableOverflow>
@@ -112,4 +87,4 @@ const CustomersTable = () => {
   );
 };
 
-export default CustomersTable;
+export default SubAdminTable;

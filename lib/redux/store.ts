@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import hamburgerSlice from "./slices/toggle-hamburger";
+import singleCustomer from "./slices/single-customer";
 
 export const store = configureStore({
   reducer: {
-    toggle_hamburger: hamburgerSlice,
+    singleCustomerDetail: singleCustomer,
   },
 });
 

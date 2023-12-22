@@ -20,7 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 // This Template defines how you can implement any table on your page
 
 const table_headings = [
-  "Customer’s Name",
+  "Contractor’s Name",
   "Invoice ID",
   "#RF ID",
   "Skill",
@@ -32,7 +32,7 @@ const table_headings = [
 
 const table_data = [
   {
-    customers_name: "Customer’s Name",
+    customers_name: "Abiola Thomas",
     id: "334",
     rf_id: "123RF45",
     skill: "Plumber",
@@ -41,7 +41,7 @@ const table_data = [
     status: "Completed",
   },
   {
-    customers_name: "Customer’s Name",
+    customers_name: "Chukwuemaka Orji",
     id: "490",
     rf_id: "263RF45",
     skill: "Carpenter",
@@ -50,7 +50,7 @@ const table_data = [
     status: "Complaints",
   },
   {
-    customers_name: "Customer’s Name",
+    customers_name: "Chisom Adeleke",
     id: "123",
     rf_id: "153RF45",
     skill: "Tiler",
@@ -59,7 +59,7 @@ const table_data = [
     status: "Pending",
   },
   {
-    customers_name: "Customer’s Name",
+    customers_name: "Rapheal Tomson",
     id: "465",
     rf_id: "123RF45",
     skill: "Plumber",

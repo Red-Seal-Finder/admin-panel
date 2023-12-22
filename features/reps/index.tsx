@@ -9,9 +9,7 @@ import RepsTable from "./components/table";
 const Representatives = () => {
   return (
     <>
-      <Header>
-        <Searchbar />
-      </Header>
+      <Header />
       {/* Page Body - Use for side padding on the top and sides */}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">

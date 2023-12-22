@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Header from "../shared/inner-pages/header";
 import Wrapper from "../shared/inner-pages/wrapper";
@@ -8,8 +9,14 @@ import BorderRectangle from "../shared/inner-pages/bordered-rect";
 import SingleLineColumn from "../shared/inner-pages/single-line-column";
 import JobsHistory from "./components/job-history";
 import DownloadButton from "../shared/page-body/download-button";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
 
 const SingleCustomer = () => {
+  const customerDetail = useAppSelector(
+    (state: RootState) => state.singleCustomerDetail
+  );
+  console.log(customerDetail);
   return (
     <>
       <Header>
