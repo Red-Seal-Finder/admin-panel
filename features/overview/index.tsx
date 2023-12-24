@@ -18,9 +18,7 @@ import {
 const Overview = () => {
   return (
     <>
-      <Header>
-        <Searchbar />
-      </Header>
+      <Header />
       {/* Page Body - Use for side padding on the top and sides */}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
@@ -37,6 +35,7 @@ const Overview = () => {
               name="Total Customers"
               numbers="2000"
               percent={3.6}
+              route="/customers"
             />
             <AnalyticCard
               svg={<TotalContractors />}
@@ -44,6 +43,7 @@ const Overview = () => {
               name="Total Contractors"
               numbers="2000"
               percent={3.6}
+              route="/contractors"
             />
             <AnalyticCard
               svg={<TotalRevenue />}
@@ -51,6 +51,7 @@ const Overview = () => {
               name="Total Revenue"
               numbers="2000"
               percent={3.6}
+              route="/transactions"
             />
             <AnalyticCard
               svg={<TotalJobs />}
@@ -58,6 +59,7 @@ const Overview = () => {
               name="Total Jobs"
               numbers="2000"
               percent={-3.6}
+              route="/jobs"
             />
           </div>
         </div>

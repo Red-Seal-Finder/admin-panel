@@ -1,14 +1,7 @@
-import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
+import { Providers } from "@/lib/redux/providers";
 import "./globals.css";
-import Layout from "@/features/layout/layout";
-
-const work_sans = Work_Sans({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Red Seal Finder",
-  description: "Red Seal Finder",
-};
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({
   children,
@@ -16,8 +9,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={work_sans.className}>{children}</body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body className="text-[#333]">
+          <ToastContainer />
+          {children}
+        </body>
+      </html>
+    </Providers>
   );
 }

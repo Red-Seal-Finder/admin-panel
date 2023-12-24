@@ -68,7 +68,7 @@ const Tabs: React.FC = () => {
                   name="skill"
                   id="skill"
                   autoComplete="skill"
-                  className="w-[100%] border-0 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="w-[100%] border-0 py-1.5 px-3 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Plumber"
                 />
               </div>

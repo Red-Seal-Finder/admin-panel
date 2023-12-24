@@ -9,14 +9,11 @@ import Tabs from "./components/tabs";
 const Customise = () => {
   return (
     <>
-      <Header>
-        <Searchbar />
-      </Header>
+      <Header />
       {/* Page Body - Use for side padding on the top and sides */}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
-          <PageHeading page_title="Customers" />
-          <DownloadButton text="Download Customer’S LIST" />
+          <PageHeading page_title="Customise" />
         </div>
         <Tabs />
       </PageBody>

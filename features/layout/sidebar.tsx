@@ -14,6 +14,7 @@ import {
   Transactions,
 } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
+import SubAdmins from "../sub-admin";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -30,15 +31,17 @@ const Sidebar = () => {
     { name: "Jobs", svg: <Jobs />, route: "/jobs" },
     { name: "Customers", svg: <Customers />, route: "/customers" },
     { name: "Contractors", svg: <Contractors />, route: "/contractors" },
+    { name: "Sub Admins", svg: <Customers />, route: "/sub-admins" },
     { name: "Transactions", svg: <Transactions />, route: "/transactions" },
-    { name: "RF Reps", svg: <RFReps />, route: "rf-reps" },
+    { name: "RF Reps", svg: <RFReps />, route: "/rf-reps" },
     { name: "Customise", svg: <Customise />, route: "/customise" },
     {
       name: "Account Settings",
       svg: <AccountSettings />,
-      route: "account-settings",
+      route: "/account-settings",
     },
   ];
+
   return (
     <div
       className="max-w-[280px] w-[21%] min-w-[250px] bg-white border-r-[#ddd] border-r sticky top-0 
@@ -48,14 +51,14 @@ const Sidebar = () => {
         {/* Logo Container */}
         <div className="flex flex-col items-center py-10">
           <Image src={logo} alt="Logo" width={32} height={32} />
-          <p className="text-sm">Repairfind</p>
+          <p className="text-sm">Repair Find</p>
         </div>
 
         {/* Navigation */}
         {navLinks.map((link, index) => (
           <button
             key={index}
-            className={`flex gap-2 text-sm items-center  pl-14 py-3 transition-all duration-500 
+            className={`flex gap-2 text-sm items-center pl-14 py-3 transition-all duration-500 
           border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 
           hover:bg-[#F1F1F1]/60 ${
             pathname === link.route &&
@@ -68,10 +71,10 @@ const Sidebar = () => {
           </button>
         ))}
 
-        <div className="my-24 ">
+        <div className="my-24">
           <button
-            className={`flex gap-2 text-sm items-center  pl-14 py-3 transition-all duration-500 
-          border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 
+            className={`flex gap-2 text-sm items-center pl-14 py-3 transition-all duration-500 
+          border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 w-full
           hover:bg-[#F1F1F1]/60`}
             onClick={() => router.push("/auth/login")}
           >

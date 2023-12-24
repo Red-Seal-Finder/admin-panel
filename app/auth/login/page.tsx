@@ -1,33 +1,29 @@
+"use client";
+import { login } from "@/lib/api/api";
+import { ILoginData } from "@/lib/types";
 import logo from "@/public/logo.svg";
 import Image from "next/image";
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 export default function Login() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+    login(formField).then((response) => {
+      console.log(response);
+    });
+  };
+
+  const [formField, setFormField] = useState<ILoginData>({
+    email: "",
+    password: "",
+  });
+
   return (
     <>
-      {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="flex flex-col items-center py-10">
+          <div className="flex flex-col items-center py-8">
             <Image
               src={logo}
               alt="Logo"
@@ -37,13 +33,13 @@ export default function Login() {
             />
           </div>
 
-          <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-1 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -57,8 +53,12 @@ export default function Login() {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  value={formField.email}
+                  onChange={(e) =>
+                    setFormField({ ...formField, email: e.target.value })
+                  }
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo/10 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -71,6 +71,14 @@ export default function Login() {
                 >
                   Password
                 </label>
+                <div className="text-sm">
+                  <a
+                    href="/auth/forget-password"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -78,8 +86,12 @@ export default function Login() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
+                  value={formField.password}
+                  onChange={(e) =>
+                    setFormField({ ...formField, password: e.target.value })
+                  }
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-600 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo/10 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -87,7 +99,7 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-[#262626] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#444] outline-none "
               >
                 Sign in
               </button>
@@ -95,12 +107,12 @@ export default function Login() {
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            You don&apos;t remember your password?
+            Don&apos;t have an account?{" "}
             <a
-              href="/auth/forget-password"
+              href="/auth/signup"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Forget Password
+              Create an account
             </a>
           </p>
         </div>

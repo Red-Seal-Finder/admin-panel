@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface IProps {
@@ -6,6 +8,7 @@ interface IProps {
   name: string;
   numbers: string;
   percent: number;
+  route: string;
 }
 
 const AnalyticCard: React.FC<IProps> = ({
@@ -14,9 +17,14 @@ const AnalyticCard: React.FC<IProps> = ({
   name,
   numbers,
   percent,
+  route,
 }) => {
+  const router = useRouter();
   return (
-    <div className="bg-white p-3 flex flex-col w-[260px] min-h-[120px] rounded-md">
+    <div
+      className="bg-white p-3 flex flex-col w-[260px] min-h-[120px] rounded-md cursor-pointer hover:opacity-80 transition-all"
+      onClick={() => router.push(route)}
+    >
       <div
         className={`rounded-md ${svgColor} w-[30px] h-[30px] flex items-center justify-center`}
       >

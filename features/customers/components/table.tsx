@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
@@ -10,9 +11,12 @@ import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
 import { RatingStar } from "@/public/svg";
-
-// Since the table data is dynamic a table component will replace by this template
-// This Template defines how you can implement any table on your page
+import { usePathname, useRouter } from "next/navigation";
+import { ICustomerData, ICustomers } from "@/lib/types";
+import { formatDateToDDMMYY } from "@/lib/utils/format-date";
+import { getCustomerDetail } from "@/lib/api/api";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setSingleCustomersDetail } from "@/lib/redux/slices/single-customer";
 
 const table_headings = [
   "Customer’s Name",
@@ -22,64 +26,24 @@ const table_headings = [
   "Action",
 ];
 
-const table_data = [
-  {
-    customers_name: "Raphael Okoye",
-    date_joined: "27/01/22",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Iysah Yusuf",
-    date_joined: "12/05/20",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Dara Oluwara",
-    date_joined: "01/11/23",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Raphael Okoye",
-    date_joined: "27/01/22",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Iysah Yusuf",
-    date_joined: "12/05/20",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Dara Oluwara",
-    date_joined: "01/11/23",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Raphael Okoye",
-    date_joined: "27/01/22",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Iysah Yusuf",
-    date_joined: "12/05/20",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-  {
-    customers_name: "Dara Oluwara",
-    date_joined: "01/11/23",
-    email_address: "example@gmail.com",
-    // rating: 5,
-  },
-];
-
 const CustomersTable = () => {
+  const [customers, setCustomers] = useState<ICustomers>();
+  useEffect(() => {
+    getCustomerDetail().then((response) => {
+      setCustomers(response);
+    });
+  }, []);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const dispatch = useAppDispatch();
+
+  const handleViewACustomer = (item: ICustomerData) => {
+    dispatch(setSingleCustomersDetail(item));
+    router.push(`${pathname}/${item._id}`);
+  };
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -101,14 +65,17 @@ const CustomersTable = () => {
           </Thead>
 
           <tbody>
-            {table_data?.map((data, index) => (
-              <tr key={index}>
-                {Object.keys(data).map((item, idx) => (
-                  <Td key={idx}>
-                    {/* Typescript assertion of key from object dot keys method */}
-                    {data[item as keyof typeof data]}
-                  </Td>
-                ))}
+            {customers?.customers?.map((item, index) => (
+              <tr
+                key={index}
+                onClick={() => handleViewACustomer(item)}
+                className="cursor-pointer"
+              >
+                <Td>{item.fullName}</Td>
+                <Td>{formatDateToDDMMYY(item.createdAt)}</Td>
+                <Td>{item.email}</Td>
+
+                {/* Rating */}
                 <Td>
                   <div className="flex gap-1">
                     <RatingStar />
@@ -118,6 +85,7 @@ const CustomersTable = () => {
                     <RatingStar />
                   </div>
                 </Td>
+                {/* Actions */}
                 <Td>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
