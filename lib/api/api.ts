@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { setCookie } from "cookies-next";
 import {
   IContractorPostData,
   ICustomers,
@@ -52,7 +53,7 @@ export const login = async (data: ILoginData) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return message;
+    return { success: true, message }; // Return both success status and message
   } catch (error) {
     // Handle error response
     if (axios.isAxiosError(error)) {
@@ -62,18 +63,18 @@ export const login = async (data: ILoginData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
         });
-        return "error";
+        return { success: false, message }; // Return both failure status and message
       } else if (error.request) {
         // Handle network-related error (no response received)
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
         });
-        return "network_error";
+        return { success: false, message: "network_error" }; // Return network error
       }
     } else {
       // Handle other types of errors
       console.error("Non-Axios error:", error);
-      return "error";
+      return { success: false, message: "error" }; // Return other error
     }
   }
 };
@@ -83,10 +84,10 @@ export const signup = async (data: ISignupData) => {
     const response: AxiosResponse = await api.post("/admin_signup", data);
     // Handle successful response
     const responseData = response.data;
-    toast.success(responseData.message, {
+    toast.success(responseData.message + ", OTP has been sent", {
       position: toast.POSITION.TOP_LEFT,
     });
-    return responseData.admin;
+    return { success: true, message: responseData.message };
   } catch (error) {
     // Handle error response
     if (axios.isAxiosError(error)) {
@@ -96,20 +97,20 @@ export const signup = async (data: ISignupData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false, message: message };
       } else if (error.request) {
         // Handle network-related error (no response received)
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false };
       }
     } else {
       // Handle other types of errors
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
       });
-      return null;
+      return { success: false };
     }
   }
 };
@@ -125,7 +126,7 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return responseData;
+    return { success: true };
   } catch (error) {
     // Handle error response
     if (axios.isAxiosError(error)) {
@@ -135,13 +136,13 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false };
       } else if (error.request) {
         // Handle network-related error (no response received)
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false };
       }
     } else {
       // Handle other types of errors
@@ -149,7 +150,7 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
       });
-      return null;
+      return { success: false };
     }
   }
 };
@@ -165,7 +166,7 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return responseData;
+    return { success: true, message: responseData.message };
   } catch (error) {
     // Handle error response
     if (axios.isAxiosError(error)) {
@@ -175,13 +176,13 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false, message };
       } else if (error.request) {
         // Handle network-related error (no response received)
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false };
       }
     } else {
       // Handle other types of errors
@@ -189,7 +190,7 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
       });
-      return null;
+      return { success: false };
     }
   }
 };
@@ -205,7 +206,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return responseData;
+    return { success: true, message: responseData.message };
   } catch (error) {
     // Handle error response
     if (axios.isAxiosError(error)) {
@@ -215,13 +216,13 @@ export const resetPassword = async (data: IResetPasswordData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false, message: message };
       } else if (error.request) {
         // Handle network-related error (no response received)
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
         });
-        return null;
+        return { success: false };
       }
     } else {
       // Handle other types of errors
@@ -229,7 +230,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
       });
-      return null;
+      return { success: false };
     }
   }
 };
@@ -316,6 +317,46 @@ export const getSubAdmins = async () => {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
       });
+    }
+  }
+};
+
+export const validateSubAdmin = async (data: { subAdminId: string }) => {
+  try {
+    const response: AxiosResponse = await api.post(
+      "/super_admin_validate_other_admin",
+      data
+    );
+    // Handle successful response
+    const responseData = response.data;
+    toast.success(responseData.message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true };
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      }
+    } else {
+      // Handle other types of errors
+      console.error("Non-Axios error:", error);
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return { success: false };
     }
   }
 };

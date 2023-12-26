@@ -1,14 +1,18 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Header from "../layout/header/header";
-import Searchbar from "../layout/header/components/searchbar";
 import PageBody from "../shared/page-body/page-body";
-import CustomersTable from "./table";
+import SubAdminsTable from "./table";
 import PageHeading from "../shared/page-body/page-heading";
 import DownloadButton from "../shared/page-body/download-button";
+import LoadingTemplate from "../layout/loading";
 
 const SubAdmins = () => {
+  const [loading, setLoading] = useState(true);
+
   return (
     <>
+      {loading && <LoadingTemplate />}
       <Header>
         <></>
       </Header>
@@ -18,10 +22,9 @@ const SubAdmins = () => {
           <PageHeading page_title="Sub Admins" />
           <DownloadButton text="Download Sub Admins LIST" />
         </div>
-        <CustomersTable />
+        <SubAdminsTable setLoading={setLoading} />
       </PageBody>
     </>
   );
 };
-
 export default SubAdmins;
