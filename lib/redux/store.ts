@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import singleCustomer from "./slices/single-customer";
 import auth from "./slices/auth";
+import singleContractor from "./slices/single-contractor";
 
 export const store = configureStore({
   reducer: {
-    singleCustomerDetail: singleCustomer,
     auth: auth,
+    singleCustomerDetail: singleCustomer,
+    singleContractorDetail: singleContractor,
   },
 });
 
