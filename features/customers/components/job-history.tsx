@@ -32,41 +32,41 @@ const table_headings = [
 
 const table_data = [
   {
-    customers_name: "Abiola Thomas",
-    id: "334",
-    rf_id: "123RF45",
-    skill: "Plumber",
-    date: "Date",
-    quote: "Quote",
-    status: "Completed",
+    customers_name: "",
+    id: "",
+    rf_id: "",
+    skill: "",
+    date: "",
+    quote: "",
+    status: "",
   },
-  {
-    customers_name: "Chukwuemaka Orji",
-    id: "490",
-    rf_id: "263RF45",
-    skill: "Carpenter",
-    date: "Date",
-    quote: "Quote",
-    status: "Complaints",
-  },
-  {
-    customers_name: "Chisom Adeleke",
-    id: "123",
-    rf_id: "153RF45",
-    skill: "Tiler",
-    date: "Date",
-    quote: "Quote",
-    status: "Pending",
-  },
-  {
-    customers_name: "Rapheal Tomson",
-    id: "465",
-    rf_id: "123RF45",
-    skill: "Plumber",
-    date: "Date",
-    quote: "Quote",
-    status: "Pending",
-  },
+  // {
+  //   customers_name: "Chukwuemaka Orji",
+  //   id: "490",
+  //   rf_id: "263RF45",
+  //   skill: "Carpenter",
+  //   date: "Date",
+  //   quote: "Quote",
+  //   status: "Complaints",
+  // },
+  // {
+  //   customers_name: "Chisom Adeleke",
+  //   id: "123",
+  //   rf_id: "153RF45",
+  //   skill: "Tiler",
+  //   date: "Date",
+  //   quote: "Quote",
+  //   status: "Pending",
+  // },
+  // {
+  //   customers_name: "Rapheal Tomson",
+  //   id: "465",
+  //   rf_id: "123RF45",
+  //   skill: "Plumber",
+  //   date: "Date",
+  //   quote: "Quote",
+  //   status: "Pending",
+  // },
 ];
 
 export const JobsHistory = () => {
@@ -105,13 +105,13 @@ export const JobsHistory = () => {
                     {item === "status" ? (
                       <div className="flex gap-[6px] items-center">
                         <span>
-                          {data[item] === "Completed" ? (
+                          {/* {data[item] === "Completed" ? (
                             <CompletedState />
                           ) : data[item] === "Complaints" ? (
                             <ComplaintsState />
                           ) : (
                             <PendingState />
-                          )}
+                          )} */}
                         </span>
                         {data[item as keyof typeof data]}
                       </div>
@@ -122,7 +122,8 @@ export const JobsHistory = () => {
                 ))}
 
                 <Td>
-                  <svg
+                  <></>
+                  {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
                     height="24"
@@ -133,7 +134,7 @@ export const JobsHistory = () => {
                       d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
                       fill="#555555"
                     />
-                  </svg>
+                  </svg> */}
                 </Td>
               </tr>
             ))}

@@ -5,7 +5,9 @@ interface IProps {
 }
 
 const TableOverflow: React.FC<IProps> = ({ children }) => {
-  return <div className="w-full overflow-x-auto">{children}</div>;
+  return (
+    <div className="w-full overflow-x-auto overflow-y-visible">{children}</div>
+  );
 };
 
 export default TableOverflow;

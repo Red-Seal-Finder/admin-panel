@@ -14,7 +14,7 @@ import {
   Transactions,
 } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
-import SubAdmins from "../sub-admin";
+import Link from "next/link";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -26,6 +26,11 @@ const Sidebar = () => {
     route: string;
   }
 
+  const logOut = () => {
+    localStorage.removeItem("token");
+    router.push("/auth/login");
+  };
+
   const navLinks: INavLinks[] = [
     { name: "Overview", svg: <Overview />, route: "/" },
     { name: "Jobs", svg: <Jobs />, route: "/jobs" },
@@ -33,7 +38,7 @@ const Sidebar = () => {
     { name: "Contractors", svg: <Contractors />, route: "/contractors" },
     { name: "Sub Admins", svg: <Customers />, route: "/sub-admins" },
     { name: "Transactions", svg: <Transactions />, route: "/transactions" },
-    { name: "RF Reps", svg: <RFReps />, route: "/rf-reps" },
+    // { name: "RF Reps", svg: <RFReps />, route: "/rf-reps" },
     { name: "Customise", svg: <Customise />, route: "/customise" },
     {
       name: "Account Settings",
@@ -56,7 +61,7 @@ const Sidebar = () => {
 
         {/* Navigation */}
         {navLinks.map((link, index) => (
-          <button
+          <Link
             key={index}
             className={`flex gap-2 text-sm items-center pl-14 py-3 transition-all duration-500 
           border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 
@@ -64,11 +69,11 @@ const Sidebar = () => {
             pathname === link.route &&
             "border-l-[6px] border-l-[#333] bg-[#F1F1F1]"
           }`}
-            onClick={() => router.push(link.route)}
+            href={link.route}
           >
             <span>{link.svg}</span>
             {link.name}
-          </button>
+          </Link>
         ))}
 
         <div className="my-24">
@@ -76,7 +81,7 @@ const Sidebar = () => {
             className={`flex gap-2 text-sm items-center pl-14 py-3 transition-all duration-500 
           border-transparent outline-none hover:border-l-[4px] hover:border-l-[#333]/50 w-full
           hover:bg-[#F1F1F1]/60`}
-            onClick={() => router.push("/auth/login")}
+            onClick={logOut}
           >
             <span>
               <Logout />

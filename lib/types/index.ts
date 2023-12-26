@@ -61,3 +61,29 @@ export interface IContractorPostData {
   page: number;
   limit: number;
 }
+
+export interface IContractorsDetails {
+  availability: string;
+  contractorProfile: {
+    _id: string;
+    email: string;
+    firstName: string;
+    dateOfBirth: string;
+    lastName: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    location: string;
+    profileImage: string;
+    documentVerification: boolean;
+    [key: string]: unknown;
+  };
+  document: {
+    skill: string;
+    [key: string]: unknown;
+  };
+}
+
+export interface IContractors {
+  artisans: IContractorsDetails[];
+}

@@ -5,7 +5,7 @@ interface IProps {
 }
 
 const Td: React.FC<IProps> = ({ children }) => {
-  return <td className="px-5 py-4 text-sm">{children}</td>;
+  return <td className="px-5 py-4 text-sm capitalise">{children}</td>;
 };
 
 export default Td;

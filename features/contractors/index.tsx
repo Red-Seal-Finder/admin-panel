@@ -1,14 +1,18 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Header from "../layout/header/header";
-import Searchbar from "../layout/header/components/searchbar";
 import PageBody from "../shared/page-body/page-body";
-import CustomersTable from "./components/table";
 import PageHeading from "../shared/page-body/page-heading";
 import DownloadButton from "../shared/page-body/download-button";
+import LoadingTemplate from "../layout/loading";
+import ContractorsTable from "./components/table";
 
 const Contractors = () => {
+  const [loading, setLoading] = useState(true);
+
   return (
     <>
+      {loading && <LoadingTemplate />}
       <Header />
       {/* Page Body - Use for side padding on the top and sides */}
       <PageBody>
@@ -16,7 +20,7 @@ const Contractors = () => {
           <PageHeading page_title="Contractors" />
           <DownloadButton text="Download Contractor’S LIST" />
         </div>
-        <CustomersTable />
+        <ContractorsTable setLoading={setLoading} />
       </PageBody>
     </>
   );
