@@ -1,5 +1,6 @@
 export function extractInitials(fullName: string) {
   // Split the full name into individual words
+  console.log(fullName);
   const words = fullName.split(" ");
 
   // Extract the first character of each word
@@ -9,4 +10,9 @@ export function extractInitials(fullName: string) {
     .join("");
 
   return initials.toUpperCase();
+}
+
+export function extractFirstLetter(name: string) {
+  const firstLetter = name.slice(0, 1);
+  return firstLetter.toUpperCase();
 }
