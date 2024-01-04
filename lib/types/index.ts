@@ -87,3 +87,17 @@ export interface IContractorsDetails {
 export interface IContractors {
   artisans: IContractorsDetails[];
 }
+
+export interface ISkill {
+  name: string;
+  _id: string;
+  [key: string]: unknown;
+}
+
+export interface ISkills {
+  skills: ISkill[]
+}
+
+// export interface INewSkill {
+//   name: string;
+// }
