@@ -17,7 +17,7 @@ const NotificationBox: React.FC<IProps> = ({
 }) => {
   return (
     <div className='py-3 px-6 flex flex-col w-[100%] min-h-[70px] rounded-md 
-    cursor-pointer hover:opacity-80 transition-all border-l-[3px] bg-[#fff] shadow-lg mb-6'>
+    cursor-pointer hover:opacity-80 transition-all border-l-[3px] bg-[#fff] shadow-md mb-6'>
         <div className='flex justify-between items-center mb-6'>
             <div className='flex justify-start items-center gap-4'>
                 {imgSrc && <Image src={imgSrc} alt='image' width={30} height={30} />}

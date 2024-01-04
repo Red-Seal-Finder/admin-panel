@@ -64,6 +64,12 @@ function Notification() {
                     date='28th July, 2023'
                     info='There is a dispute between a contractor and customer. please send an RF representative.'
                 />
+                <NotificationBox 
+                    imgSrc={verified} 
+                    title='Well done!'
+                    date='28th July, 2023'
+                    info='You just successfully published a skill.'
+                />
             </div>
         </PageBody>
     </div>
