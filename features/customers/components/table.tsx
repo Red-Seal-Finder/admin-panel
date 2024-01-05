@@ -12,7 +12,7 @@ import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
 import { RatingStar } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
-import { ICustomerData, ICustomers, IYearAndMonth } from "@/lib/types";
+import { ICustomerData, ICustomers } from "@/lib/types";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import { getCustomerDetail } from "@/lib/api/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
