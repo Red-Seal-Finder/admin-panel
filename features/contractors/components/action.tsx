@@ -2,7 +2,7 @@
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import Options from "@/features/shared/actions/option";
-import { validateContractorDocument } from "@/lib/api/api";
+import { validateAContractorDocument } from "@/lib/api/api";
 
 interface IProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +16,7 @@ const Action: React.FC<IProps> = ({ setLoading, id }) => {
     e.stopPropagation();
     setLoading(true);
     console.log(id);
-    validateContractorDocument({ contractorDocsId: id }).then((response) => {
+    validateAContractorDocument({ contractorDocsId: id }).then((response) => {
       if (response) {
         setLoading(false);
       }

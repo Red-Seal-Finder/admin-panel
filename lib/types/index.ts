@@ -88,7 +88,12 @@ export interface IContractors {
   artisans: IContractorsDetails[];
 }
 
-export interface IYearAndMonth {
-  year: number;
-  month: number;
+export interface ISkill {
+  name: string;
+  _id: string;
+  [key: string]: unknown;
+}
+
+export interface ISkills {
+  skills: ISkill[];
 }
