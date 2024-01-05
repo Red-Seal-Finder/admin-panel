@@ -24,6 +24,12 @@ import { filledArrayFromNumber } from "@/lib/utils/array-from-number";
 import { trimString } from "@/lib/utils/trim-string";
 import { setsingleContractorsDetail } from "../../../lib/redux/slices/single-contractor";
 import { useAppDispatch } from "@/lib/redux/hooks";
+import {
+  findContractorsLargestYear,
+  findContractorsSmallestYear,
+} from "@/lib/utils/get-min-or-max-date";
+import { generateRange } from "@/lib/utils/generate-range";
+import FilterBox from "./filter-box";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -47,6 +53,10 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
   const pathname = usePathname();
 
   const [contractors, setContractors] = useState<IContractors>();
+  const [currentContractors, setCurrentContractors] = useState<IContractors>();
+  const [queryedContractors, setQueryedContractors] = useState<IContractors>();
+  const [isQuerying, setIsQuerying] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -55,17 +65,138 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
     };
 
     getContactorDetail(data).then((response: IContractors) => {
-      console.log(response);
       setLoading(false);
       setContractors(response);
     });
   }, []);
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (!isQuerying) {
+      setCurrentContractors(contractors);
+    } else {
+      setCurrentContractors(queryedContractors);
+    }
+  }, [isQuerying, contractors, queryedContractors]);
 
+  const dispatch = useAppDispatch();
   const handleViewAContractors = (item: IContractorsDetails) => {
     dispatch(setsingleContractorsDetail(item));
     router.push(`${pathname}/${item.contractorProfile._id}`);
+  };
+
+  const handleQuery = (value: string) => {
+    value === "" ? setIsQuerying(false) : setIsQuerying(true);
+
+    if (contractors) {
+      const filterArray = contractors.artisans.filter(
+        (item) =>
+          item.contractorProfile.email
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.contractorProfile.firstName
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.contractorProfile.lastName
+            .toLowerCase()
+            .includes(value.toLowerCase())
+      );
+
+      setQueryedContractors({ artisans: filterArray });
+
+      filterArray.length === 0 ? setNotFound(true) : setNotFound(false);
+    }
+  };
+
+  const [showFilters, setShowFilters] = useState(false);
+  const [availableYears, setAvailableYears] = useState<number[]>([0]);
+
+  useEffect(() => {
+    if (contractors) {
+      const smallestDate = findContractorsSmallestYear(contractors.artisans);
+      const largestDate = findContractorsLargestYear(contractors.artisans);
+      setAvailableYears(generateRange(smallestDate, largestDate));
+    }
+  }, [currentContractors]);
+
+  const handleRatingFiltering = (value: number) => {
+    console.log(value);
+  };
+
+  const handleStatusFiltering = (value: number) => {
+    console.log(value);
+  };
+
+  const [filterYear, setFilterYear] = useState(0);
+  const [filterMonth, setFilterMonth] = useState(0);
+
+  const handleYearFiltering = (value: number) => {
+    console.log(value);
+    setFilterYear(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterMonth !== 0) {
+      if (contractors) {
+        const contractorsMatchingYear = contractors.artisans.filter(
+          (customer) => {
+            const createdAtDate = new Date(
+              customer.contractorProfile.createdAt
+            );
+            const createdAtYear = createdAtDate.getFullYear();
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            return createdAtYear === value && createdAtMonth === filterMonth;
+          }
+        );
+        setQueryedContractors({ artisans: contractorsMatchingYear });
+      }
+    } else {
+      if (contractors) {
+        const contractorsMatchingYear = contractors.artisans.filter(
+          (customer) => {
+            const createdAtDate = new Date(
+              customer.contractorProfile.createdAt
+            );
+            const createdAtYear = createdAtDate.getFullYear();
+            return createdAtYear === value;
+          }
+        );
+        setQueryedContractors({ artisans: contractorsMatchingYear });
+      }
+    }
+  };
+
+  const handleMonthFiltering = (value: number) => {
+    console.log(value);
+    setFilterMonth(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterYear !== 0) {
+      if (contractors) {
+        const contractorsMatchingMonth = contractors.artisans.filter(
+          (customer) => {
+            const createdAtDate = new Date(
+              customer.contractorProfile.createdAt
+            );
+            const createdAtYear = createdAtDate.getFullYear();
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            console.log(createdAtMonth);
+            return createdAtMonth === value && createdAtYear === filterYear;
+          }
+        );
+        setQueryedContractors({ artisans: contractorsMatchingMonth });
+      }
+    } else {
+      if (contractors) {
+        const contractorsMatchingMonth = contractors.artisans.filter(
+          (customer) => {
+            const createdAtDate = new Date(
+              customer.contractorProfile.createdAt
+            );
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            console.log(createdAtMonth);
+            return createdAtMonth === value;
+          }
+        );
+        setQueryedContractors({ artisans: contractorsMatchingMonth });
+      }
+    }
   };
 
   return (
@@ -73,8 +204,21 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
       <div className="flex items-center justify-between w-full">
         <Heading name="Contractors’ list" />
         <div className="flex gap-8">
-          <Searchbar />
-          <Filter />
+          <Searchbar
+            placeholder="Search by name or email"
+            handleQuery={handleQuery}
+            notFound={notFound}
+          />
+          <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
+            <FilterBox
+              handleRatingFiltering={handleRatingFiltering}
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
+              handleStatusFiltering={handleStatusFiltering}
+              availableYears={availableYears}
+              setShowFilters={setShowFilters}
+            />
+          </Filter>
         </div>
       </div>
 
@@ -89,7 +233,7 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
           </Thead>
 
           <tbody>
-            {contractors?.artisans.map((item, index) => (
+            {currentContractors?.artisans.map((item, index) => (
               <tr
                 key={index}
                 className="cursor-pointer"
@@ -145,19 +289,10 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
 
                 {/* Actions */}
                 <Td>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
-                      fill="#555555"
-                    />
-                  </svg>
+                  <Action
+                    setLoading={setLoading}
+                    id={item.contractorProfile._id}
+                  />
                 </Td>
               </tr>
             ))}

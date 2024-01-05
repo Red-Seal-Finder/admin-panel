@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import { redirect } from "next/navigation";
 import LoadingTemplate from "./loading";
+import { getCustomerDetail } from "@/lib/api/api";
 
 interface IProps {
   children: React.ReactNode;
@@ -11,10 +12,18 @@ interface IProps {
 const Layout: React.FC<IProps> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null && token !== undefined) {
-      setAuthenticated(true);
+      getCustomerDetail().then((response) => {
+        if (!response) {
+          setAuthenticated(true);
+        } else {
+          setAuthenticated(true);
+        }
+      });
     } else {
       redirect("/auth/login");
     }

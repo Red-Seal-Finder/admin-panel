@@ -87,3 +87,8 @@ export interface IContractorsDetails {
 export interface IContractors {
   artisans: IContractorsDetails[];
 }
+
+export interface IYearAndMonth {
+  year: number;
+  month: number;
+}

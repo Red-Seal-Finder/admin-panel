@@ -133,7 +133,11 @@ const CustomersTable = () => {
       <div className="flex items-center justify-between w-full">
         <Heading name="Contractors’ list" />
         <div className="flex gap-8">
-          <Searchbar />
+          <Searchbar
+            placeholder="Search"
+            notFound={true}
+            handleQuery={(value) => console.log("Functionality In Progress")}
+          />
           <Filter />
         </div>
       </div>

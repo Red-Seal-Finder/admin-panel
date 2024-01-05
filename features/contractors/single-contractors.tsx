@@ -16,13 +16,18 @@ import {
   extractFirstLetter,
   extractInitials,
 } from "@/lib/utils/extract-initials";
+import ActionColumn from "../shared/inner-pages/action-column";
+import ActionButton from "../shared/inner-pages/action-button";
 
 const SingleContractor = () => {
   const { value: contractorDetails } = useAppSelector(
     (state: RootState) => state.singleContractorDetail
   );
 
-  console.log(contractorDetails.contractorProfile.profileImage);
+  const handleDelete = () => {
+    console.log("ben");
+  };
+
   return (
     <>
       <Header>
@@ -103,6 +108,9 @@ const SingleContractor = () => {
                   name="Location"
                   value={contractorDetails.contractorProfile.location}
                 />
+                <ActionColumn>
+                  <ActionButton actionName="Verify" onClick={handleDelete} />
+                </ActionColumn>
               </tbody>
             </table>
           </BorderRectangle>

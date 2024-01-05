@@ -238,6 +238,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
 export const getCustomerDetail = async () => {
   try {
     const response: AxiosResponse = await api.get("/admin_get_customer_detail");
+
     return response.data;
   } catch (error) {
     // Handle error response
@@ -325,6 +326,47 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
   try {
     const response: AxiosResponse = await api.post(
       "/super_admin_validate_other_admin",
+      data
+    );
+    // Handle successful response
+    const responseData = response.data;
+    toast.success(responseData.message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true };
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      }
+    } else {
+      // Handle other types of errors
+      console.error("Non-Axios error:", error);
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return { success: false };
+    }
+  }
+};
+export const validateContractorDocument = async (data: {
+  contractorDocsId: string;
+}) => {
+  try {
+    const response: AxiosResponse = await api.post(
+      "/admin_validate_contractor_document",
       data
     );
     // Handle successful response

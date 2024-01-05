@@ -32,7 +32,7 @@ const table_headings = [
 
 const table_data = [
   {
-    customers_name: "",
+    contractors_name: "",
     id: "",
     rf_id: "",
     skill: "",

@@ -12,11 +12,17 @@ import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
 import { RatingStar } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
-import { ICustomerData, ICustomers } from "@/lib/types";
+import { ICustomerData, ICustomers, IYearAndMonth } from "@/lib/types";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import { getCustomerDetail } from "@/lib/api/api";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSingleCustomersDetail } from "@/lib/redux/slices/single-customer";
+import FilterBox from "./filter-box";
+import {
+  findLargestYear,
+  findSmallestYear,
+} from "@/lib/utils/get-min-or-max-date";
+import { generateRange } from "@/lib/utils/generate-range";
 
 const table_headings = [
   "Customer’s Name",
@@ -26,16 +32,34 @@ const table_headings = [
   "Action",
 ];
 
-const CustomersTable = () => {
+interface IProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
   const [customers, setCustomers] = useState<ICustomers>();
+  const [currentCustomers, setCurrentCustomers] = useState<ICustomers>();
+  const [queryedCustomers, setQueryedCustomers] = useState<ICustomers>();
+  const [isQuerying, setIsQuerying] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     getCustomerDetail().then((response) => {
+      setLoading(false);
       setCustomers(response);
     });
   }, []);
 
-  const router = useRouter();
-  const pathname = usePathname();
+  useEffect(() => {
+    if (!isQuerying) {
+      setCurrentCustomers(customers);
+    } else {
+      setCurrentCustomers(queryedCustomers);
+    }
+  }, [isQuerying, customers, queryedCustomers]);
 
   const dispatch = useAppDispatch();
 
@@ -44,13 +68,117 @@ const CustomersTable = () => {
     router.push(`${pathname}/${item._id}`);
   };
 
+  const handleQuery = (value: string) => {
+    value === "" ? setIsQuerying(false) : setIsQuerying(true);
+    console.log("");
+    if (customers) {
+      const filterArray = customers.customers.filter(
+        (item) =>
+          item.email.toLowerCase().includes(value.toLowerCase()) ||
+          item.fullName.toLowerCase().includes(value.toLowerCase())
+      );
+
+      setQueryedCustomers({ customers: filterArray });
+
+      filterArray.length === 0 ? setNotFound(true) : setNotFound(false);
+    }
+  };
+
+  const [showFilters, setShowFilters] = useState(false);
+  const [availableYears, setAvailableYears] = useState<number[]>([0]);
+
+  useEffect(() => {
+    if (customers) {
+      const smallestDate = findSmallestYear(customers.customers);
+      const largestDate = findLargestYear(customers.customers);
+      setAvailableYears(generateRange(smallestDate, largestDate));
+    }
+  }, [currentCustomers]);
+
+  const handleRatingFiltering = (value: number) => {
+    console.log(value);
+  };
+
+  const [filterYear, setFilterYear] = useState(0);
+  const [filterMonth, setFilterMonth] = useState(0);
+
+  const handleYearFiltering = (value: number) => {
+    console.log(value);
+    setFilterYear(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterMonth !== 0) {
+      if (customers) {
+        const customersMatchingYear = customers.customers.filter((customer) => {
+          const createdAtDate = new Date(customer.createdAt);
+          const createdAtYear = createdAtDate.getFullYear();
+          const createdAtMonth = createdAtDate.getMonth() + 1;
+          return createdAtYear === value && createdAtMonth === filterMonth;
+        });
+        setQueryedCustomers({ customers: customersMatchingYear });
+      }
+    } else {
+      if (customers) {
+        const customersMatchingYear = customers.customers.filter((customer) => {
+          const createdAtDate = new Date(customer.createdAt);
+          const createdAtYear = createdAtDate.getFullYear();
+          return createdAtYear === value;
+        });
+        setQueryedCustomers({ customers: customersMatchingYear });
+      }
+    }
+  };
+
+  const handleMonthFiltering = (value: number) => {
+    console.log(value);
+    setFilterMonth(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterYear !== 0) {
+      if (customers) {
+        const customersMatchingMonth = customers.customers.filter(
+          (customer) => {
+            const createdAtDate = new Date(customer.createdAt);
+            const createdAtYear = createdAtDate.getFullYear();
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            console.log(createdAtMonth);
+            return createdAtMonth === value && createdAtYear === filterYear;
+          }
+        );
+        setQueryedCustomers({ customers: customersMatchingMonth });
+      }
+    } else {
+      if (customers) {
+        const customersMatchingMonth = customers.customers.filter(
+          (customer) => {
+            const createdAtDate = new Date(customer.createdAt);
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            console.log(createdAtMonth);
+            return createdAtMonth === value;
+          }
+        );
+        setQueryedCustomers({ customers: customersMatchingMonth });
+      }
+    }
+  };
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
         <Heading name="Customers’ list" />
         <div className="flex gap-8">
-          <Searchbar />
-          <Filter />
+          <Searchbar
+            placeholder="Search by name or email"
+            handleQuery={handleQuery}
+            notFound={notFound}
+          />
+          <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
+            <FilterBox
+              handleRatingFiltering={handleRatingFiltering}
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
+              availableYears={availableYears}
+              setShowFilters={setShowFilters}
+            />
+          </Filter>
         </div>
       </div>
 
@@ -65,7 +193,7 @@ const CustomersTable = () => {
           </Thead>
 
           <tbody>
-            {customers?.customers?.map((item, index) => (
+            {currentCustomers?.customers?.map((item, index) => (
               <tr
                 key={index}
                 onClick={() => handleViewACustomer(item)}
