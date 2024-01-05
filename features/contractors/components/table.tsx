@@ -126,79 +126,6 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
     console.log(value);
   };
 
-  const [filterYear, setFilterYear] = useState(0);
-  const [filterMonth, setFilterMonth] = useState(0);
-
-  const handleYearFiltering = (value: number) => {
-    console.log(value);
-    setFilterYear(value);
-    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
-    if (filterMonth !== 0) {
-      if (contractors) {
-        const contractorsMatchingYear = contractors.artisans.filter(
-          (customer) => {
-            const createdAtDate = new Date(
-              customer.contractorProfile.createdAt
-            );
-            const createdAtYear = createdAtDate.getFullYear();
-            const createdAtMonth = createdAtDate.getMonth() + 1;
-            return createdAtYear === value && createdAtMonth === filterMonth;
-          }
-        );
-        setQueryedContractors({ artisans: contractorsMatchingYear });
-      }
-    } else {
-      if (contractors) {
-        const contractorsMatchingYear = contractors.artisans.filter(
-          (customer) => {
-            const createdAtDate = new Date(
-              customer.contractorProfile.createdAt
-            );
-            const createdAtYear = createdAtDate.getFullYear();
-            return createdAtYear === value;
-          }
-        );
-        setQueryedContractors({ artisans: contractorsMatchingYear });
-      }
-    }
-  };
-
-  const handleMonthFiltering = (value: number) => {
-    console.log(value);
-    setFilterMonth(value);
-    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
-    if (filterYear !== 0) {
-      if (contractors) {
-        const contractorsMatchingMonth = contractors.artisans.filter(
-          (customer) => {
-            const createdAtDate = new Date(
-              customer.contractorProfile.createdAt
-            );
-            const createdAtYear = createdAtDate.getFullYear();
-            const createdAtMonth = createdAtDate.getMonth() + 1;
-            console.log(createdAtMonth);
-            return createdAtMonth === value && createdAtYear === filterYear;
-          }
-        );
-        setQueryedContractors({ artisans: contractorsMatchingMonth });
-      }
-    } else {
-      if (contractors) {
-        const contractorsMatchingMonth = contractors.artisans.filter(
-          (customer) => {
-            const createdAtDate = new Date(
-              customer.contractorProfile.createdAt
-            );
-            const createdAtMonth = createdAtDate.getMonth() + 1;
-            console.log(createdAtMonth);
-            return createdAtMonth === value;
-          }
-        );
-        setQueryedContractors({ artisans: contractorsMatchingMonth });
-      }
-    }
-  };
-
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -212,8 +139,6 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
           <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
             <FilterBox
               handleRatingFiltering={handleRatingFiltering}
-              handleMonthFiltering={handleMonthFiltering}
-              handleYearFiltering={handleYearFiltering}
               handleStatusFiltering={handleStatusFiltering}
               availableYears={availableYears}
               setShowFilters={setShowFilters}

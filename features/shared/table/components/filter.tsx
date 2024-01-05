@@ -24,7 +24,7 @@ const Filter: React.FC<IProps> = ({
     <div className="relative">
       <div
         className="flex gap-9 bg-[#F1F1F1] p-2 cursor-pointer"
-        // onClick={() => setShowFilters(!showFilters)}
+        onClick={() => setShowFilters && setShowFilters(!showFilters)}
       >
         <p className="whitespace-nowrap">Filter by</p>
         <FilterIcon />
@@ -33,7 +33,7 @@ const Filter: React.FC<IProps> = ({
         <AnimatePresence>
           {showFilters && (
             <motion.div
-              // ref={ref}
+              ref={ref}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
