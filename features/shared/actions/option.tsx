@@ -5,7 +5,7 @@ import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 
 interface IProps {
   options?: string[];
-  handleClick: (option: string) => void;
+  handleClick: (option: string, e: React.MouseEvent) => void;
   setShowOptions: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -34,7 +34,7 @@ const Options: React.FC<IProps> = ({
     >
       {options?.map((option, index) => (
         <button
-          onClick={() => handleClick(option)}
+          onClick={(e) => handleClick(option, e)}
           key={index}
           className="bg-transparent border-b border-b-[#e9e9e9da] 
           py-[6px] text-xs min-w-[150px] text-left text-[#8F8F8F] font-[500]"

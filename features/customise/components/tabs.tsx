@@ -3,21 +3,31 @@ import React from "react";
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
 // components/Tabs.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { redirect, useRouter } from "next/navigation";
 import Skills from "./skills";
 import Quiz from "./quiz";
+import { addNewSkill } from "@/lib/api/api";
 
 const Tabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
+  const [newSkill, setNewSkill] = useState<string>("")
+
 
   const handleTabChange = (tabNumber: number) => {
     setActiveTab(tabNumber);
   };
 
+  const submitNewSkill = () => {
+    addNewSkill({ name: newSkill}).then((res) => {
+      console.log(res)
+    })
+  }
+
   return (
     <div className="flex flex-col">
       <div className="flex justify-start gap-5">
-        {/* ====== add a new skill ===========  */}
+        {/* ====== add a new quiz ===========  */}
         <button
           className={`px-4 py-2 rounded ${
             activeTab === 1 ? 'bg-white border border-[#262626] text-[#262626]' : 'bg-white'
@@ -69,10 +79,12 @@ const Tabs: React.FC = () => {
                   id="skill"
                   autoComplete="skill"
                   className="w-[100%] border-0 py-1.5 px-3 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Plumber"
+                  placeholder="add new skill"
+                  value={newSkill}
+                  onChange={(e) => setNewSkill(e.target.value)}
                 />
               </div>
-              <button className="border-0 bg-[#262626] text-[#fff] px-5 py-2 rounded mt-10" >Publish</button>
+              <button className="border-0 bg-[#262626] text-[#fff] px-5 py-2 rounded mt-10" onClick={submitNewSkill}>Publish</button>
             </div>
           </>
         }

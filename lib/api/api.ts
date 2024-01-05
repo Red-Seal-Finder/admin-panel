@@ -238,6 +238,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
 export const getCustomerDetail = async () => {
   try {
     const response: AxiosResponse = await api.get("/admin_get_customer_detail");
+
     return response.data;
   } catch (error) {
     // Handle error response
@@ -357,6 +358,109 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
         position: toast.POSITION.TOP_LEFT,
       });
       return { success: false };
+    }
+  }
+};
+export const validateAContractorDocument = async (data: {
+  contractorDocsId: string;
+}) => {
+  try {
+    const response: AxiosResponse = await api.post(
+      "admin_validate_contractor_document",
+      data
+    );
+    // Handle successful response
+    const responseData = response.data;
+    toast.success(responseData.message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true };
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      }
+    } else {
+      // Handle other types of errors
+      console.error("Non-Axios error:", error);
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return { success: false };
+    }
+  }
+};
+
+export const getSkills = async () => {
+  try {
+    const response: AxiosResponse = await api.get("/admin_get_skill");
+    return response.data;
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      // Handle other types of errors
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
+
+export const addNewSkill = async (data: { name: string }) => {
+  try {
+    const response: AxiosResponse = await api.post("/admin_add_skill", data);
+    // Handle successful response
+    localStorage.setItem("token", response?.data.Token);
+    const message = response.data.message;
+    toast.success(message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true, message }; // Return both success status and message
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false, message }; // Return both failure status and message
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false, message: "network_error" }; // Return network error
+      }
+    } else {
+      // Handle other types of errors
+      console.error("Non-Axios error:", error);
+      return { success: false, message: "error" }; // Return other error
     }
   }
 };

@@ -2,6 +2,7 @@ import { NotificationBell } from "@/public/svg";
 import Image from "next/image";
 import React from "react";
 import pic from "@/public/admin-pic.png";
+import Link from "next/link";
 
 interface IProps {
   children?: React.ReactNode;
@@ -21,9 +22,9 @@ const Header: React.FC<IProps> = ({ children }) => {
       <div className="flex gap-7">
         {children}
         {/* Notification Bell */}
-        <div className="bg-white flex justify-center items-center w-14 rounded">
+        <Link href={'/notifications'} className="bg-white flex justify-center items-center w-14 rounded">
           <NotificationBell />
-        </div>
+        </Link>
         {/* Admin Profile */}
         <div className="flex gap-3">
           <Image
