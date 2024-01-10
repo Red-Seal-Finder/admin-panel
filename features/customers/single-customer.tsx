@@ -56,8 +56,8 @@ const SingleCustomer = () => {
                   name="Contact"
                   value={customerDetails.phoneNumber}
                 />
-                <SingleLineColumn name="Amount Spent" value="" />
-                <SingleLineColumn name="NO. of jobs" value="" />
+                <SingleLineColumn name="Amount Spent" value="$" />
+                <SingleLineColumn name="NO. of jobs" value="No jobs yet" />
                 <SingleLineColumn name="Payment account" value="" />
                 <SingleLineColumn name="Address" value="" />
               </tbody>

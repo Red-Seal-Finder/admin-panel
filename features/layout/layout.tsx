@@ -4,6 +4,7 @@ import Sidebar from "./sidebar";
 import { redirect } from "next/navigation";
 import LoadingTemplate from "./loading";
 import { getCustomerDetail } from "@/lib/api/api";
+import { toast } from "react-toastify";
 
 interface IProps {
   children: React.ReactNode;
@@ -19,7 +20,11 @@ const Layout: React.FC<IProps> = ({ children }) => {
     if (token !== null && token !== undefined) {
       getCustomerDetail().then((response) => {
         if (!response) {
-          setAuthenticated(true);
+          setAuthenticated(false);
+          toast.warning("Credential Expired. <br/> You have Login once more", {
+            position: toast.POSITION.TOP_LEFT,
+          });
+          localStorage.removeItem("token");
         } else {
           setAuthenticated(true);
         }

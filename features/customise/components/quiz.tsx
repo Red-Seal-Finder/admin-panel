@@ -1,7 +1,7 @@
 // pages/index.js
-import { useState } from 'react';
-import QuestionForm from './questionForm';
-import QuestionPreview from './questionPreview';
+import { useState } from "react";
+import QuestionForm from "./questionForm";
+import QuestionPreview from "./questionPreview";
 
 interface PreviewData {
   question: string;
@@ -19,12 +19,17 @@ const Quiz: React.FC = () => {
     <div className="container mx-auto mt-8">
       <div className="grid grid-cols-2 gap-8">
         <div>
-          <h1 className="text-4xl font-bold mb-4">Create Questions</h1>
+          <h1 className="text-3xl font-[600] mb-4 text-[#333]">
+            Create Questions
+          </h1>
           <QuestionForm onSubmit={handleFormSubmit} />
         </div>
         <div>
           {preview && (
-            <QuestionPreview question={preview.question} options={preview.options} />
+            <QuestionPreview
+              question={preview.question}
+              options={preview.options}
+            />
           )}
         </div>
       </div>

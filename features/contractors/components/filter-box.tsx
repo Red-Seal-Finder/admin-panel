@@ -95,11 +95,10 @@ const FilterBox: React.FC<IProps> = ({
                   className="bg-transparent pr-2 outline-none w-full"
                 >
                   <option value="none">All Status</option>
-                  <option value="in-view">In View</option>
+                  <option value="in-view">In Review</option>
                   <option value="active">Active</option>
-                  {/* <option value='pending'></option>
-                  <option value=''></option>
-                  <option value=''></option> */}
+                  <option value="suspended">Suspended</option>
+                  <option value="closed">Closed</option>
                 </select>
               </div>
             </div>

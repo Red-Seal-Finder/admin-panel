@@ -101,15 +101,41 @@ const SingleContractor = () => {
                   value={contractorDetails.contractorProfile.email}
                 />
                 <SingleLineColumn name="Contact" value="" />
-                <SingleLineColumn name="Amount Spent" value="" />
-                <SingleLineColumn name="NO. of jobs" value="" />
+                <SingleLineColumn name="Amount Spent" value="$" />
+                <SingleLineColumn name="NO. of jobs" value="No jobs yet" />
                 <SingleLineColumn name="Payment account" value="" />
                 <SingleLineColumn
                   name="Location"
                   value={contractorDetails.contractorProfile.location}
                 />
                 <ActionColumn>
-                  <ActionButton actionName="Verify" onClick={handleDelete} />
+                  <div className="flex gap-x-4">
+                    <ActionButton
+                      actionName="Verify"
+                      onClick={handleDelete}
+                      color="border-green-600 text-green-600"
+                    />
+                    <ActionButton
+                      actionName="Activate"
+                      onClick={handleDelete}
+                      color="border-green-600 text-green-600"
+                    />
+                    <ActionButton
+                      actionName="Review"
+                      onClick={handleDelete}
+                      color="border-yellow-500 text-yellow-500"
+                    />
+                    <ActionButton
+                      actionName="Close"
+                      onClick={handleDelete}
+                      color="border-red-600 text-red-600"
+                    />
+                    <ActionButton
+                      actionName="Suspend"
+                      onClick={handleDelete}
+                      color="border-red-600 text-red-600"
+                    />
+                  </div>
                 </ActionColumn>
               </tbody>
             </table>

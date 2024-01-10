@@ -1,13 +1,12 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
+import { Fragment, useEffect, useState } from "react";
+import { Listbox, Transition } from "@headlessui/react";
 import { FiChevronDown } from "react-icons/fi";
 import { FaCheck } from "react-icons/fa";
-import { getSkills } from '@/lib/api/api';
-import { ISkills } from '@/lib/types';
-
+import { getSkills } from "@/lib/api/api";
+import { ISkills } from "@/lib/types";
 
 export default function Skills() {
-  const [skills, setSkills] = useState<ISkills>()
+  const [skills, setSkills] = useState<ISkills>();
   useEffect(() => {
     getSkills().then((response) => {
       setSkills(response);
@@ -17,11 +16,16 @@ export default function Skills() {
 
   return (
     <>
-      <select className='w-[50%] p-2'>
-        {skills?.skills.map((item, index) => (
-          <option key={index} className='capitalize'>{item.name}</option>
-        ))}
-      </select>
+      <div className="bg-white pr-6 w-fit">
+        <select className="py-[10px] px-4 capitalize w-full outline-none bg-transparent">
+          <option>Available Skills</option>
+          {skills?.skills.map((item, index) => (
+            <option key={index} className="capitalize">
+              {item.name}
+            </option>
+          ))}
+        </select>
+      </div>
     </>
   );
 }
