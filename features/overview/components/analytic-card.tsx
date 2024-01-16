@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
+import CountUp from "react-countup";
 
 interface IProps {
   svgColor: string;
@@ -32,7 +33,9 @@ const AnalyticCard: React.FC<IProps> = ({
       </div>
       <p className="py-4 text-sm">{name}</p>
       <div className="flex justify-between">
-        <p className="font-[600]">{numbers}</p>
+        <div className="font-[600]">
+          <CountUp start={0} end={+numbers} duration={5} />
+        </div>
 
         <div className="flex gap-2">
           {percent > 0 ? (

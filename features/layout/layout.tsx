@@ -3,8 +3,13 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import { redirect } from "next/navigation";
 import LoadingTemplate from "./loading";
-import { getCustomerDetail } from "@/lib/api/api";
+import { getContactorDetail, getCustomerDetail } from "@/lib/api/api";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import {
+  setTotalContractors,
+  setTotalCustomers,
+} from "@/lib/redux/slices/overview-data";
 
 interface IProps {
   children: React.ReactNode;
@@ -13,7 +18,7 @@ interface IProps {
 const Layout: React.FC<IProps> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
 
-  useEffect(() => {}, []);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,11 +26,10 @@ const Layout: React.FC<IProps> = ({ children }) => {
       getCustomerDetail().then((response) => {
         if (!response) {
           setAuthenticated(false);
-          toast.warning("Credential Expired. <br/> You have Login once more", {
-            position: toast.POSITION.TOP_LEFT,
-          });
           localStorage.removeItem("token");
         } else {
+          dispatch(setTotalCustomers(response.customers.length));
+          getTotalContractors();
           setAuthenticated(true);
         }
       });
@@ -33,6 +37,12 @@ const Layout: React.FC<IProps> = ({ children }) => {
       redirect("/auth/login");
     }
   }, []);
+
+  const getTotalContractors = () => {
+    getContactorDetail({ page: 1, limit: 50 }).then((response) => {
+      dispatch(setTotalContractors(response.artisans.length));
+    });
+  };
 
   if (!authenticated) {
     return <LoadingTemplate />;

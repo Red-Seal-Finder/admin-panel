@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Header from "../layout/header/header";
 import Searchbar from "../layout/header/components/searchbar";
@@ -14,8 +15,13 @@ import {
   TotalJobs,
   TotalRevenue,
 } from "@/public/svg";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
 
 const Overview = () => {
+  const overviewTotal = useAppSelector(
+    (state: RootState) => state.overviewTotal
+  );
   return (
     <>
       <Header />
@@ -33,7 +39,7 @@ const Overview = () => {
               svg={<TotalCustomers />}
               svgColor="bg-[#C398C7]"
               name="Total Customers"
-              numbers="2000"
+              numbers={overviewTotal.totalCustomers}
               percent={3.6}
               route="/customers"
             />
@@ -41,7 +47,7 @@ const Overview = () => {
               svg={<TotalContractors />}
               svgColor="bg-[#AAB2D4]"
               name="Total Contractors"
-              numbers="2000"
+              numbers={overviewTotal.totalContractors}
               percent={3.6}
               route="/contractors"
             />
@@ -49,7 +55,7 @@ const Overview = () => {
               svg={<TotalRevenue />}
               svgColor="bg-[#E3C87C]"
               name="Total Revenue"
-              numbers="2000"
+              numbers="20"
               percent={3.6}
               route="/transactions"
             />
@@ -57,7 +63,7 @@ const Overview = () => {
               svg={<TotalJobs />}
               svgColor="bg-[#BBBBBB]"
               name="Total Jobs"
-              numbers="2000"
+              numbers="20"
               percent={-3.6}
               route="/jobs"
             />
