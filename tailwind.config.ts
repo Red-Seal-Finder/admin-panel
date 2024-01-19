@@ -18,6 +18,9 @@ const config: Config = {
         danger: "#9A0101",
         inProcess: "#00235B",
       },
+      screens: {
+        lg: "1280px",
+      },
     },
   },
   plugins: [],
