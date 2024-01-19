@@ -4,6 +4,7 @@ import React from "react";
 import logo from "@/public/logo.svg";
 import {
   AccountSettings,
+  Analytics,
   Contractors,
   Customers,
   Customise,
@@ -34,6 +35,7 @@ const Sidebar = () => {
   const navLinks: INavLinks[] = [
     { name: "Overview", svg: <Overview />, route: "/" },
     { name: "Jobs", svg: <Jobs />, route: "/jobs" },
+    { name: "Analytics", svg: <Analytics />, route: "/analytics" },
     { name: "Customers", svg: <Customers />, route: "/customers" },
     { name: "Contractors", svg: <Contractors />, route: "/contractors" },
     { name: "Sub Admins", svg: <Customers />, route: "/sub-admins" },
