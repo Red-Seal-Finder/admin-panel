@@ -25,7 +25,7 @@ const Tabs: React.FC = () => {
       <div className="flex justify-start gap-5">
         {/* ====== add a new quiz ===========  */}
         <button
-          className={`px-6 py-2 rounded ${
+          className={`px-6 py-2 text-sm rounded transition-all duration-300 ${
             activeTab === 1
               ? "bg-white border border-[#262626] text-[#262626]"
               : "bg-white"
@@ -37,7 +37,7 @@ const Tabs: React.FC = () => {
 
         {/* ================= edit quiz =================  */}
         <button
-          className={`px-6 py-2 rounded ${
+          className={`px-6 py-2 text-sm rounded transition-all duration-300 ${
             activeTab === 2
               ? "bg-white border border-[#262626] text-[#262626]"
               : "bg-white"
@@ -49,7 +49,7 @@ const Tabs: React.FC = () => {
 
         {/* ================ add new skill ==================  */}
         <button
-          className={`px-6 py-2 rounded ${
+          className={`px-6 py-2 text-sm rounded transition-all duration-300 ${
             activeTab === 3
               ? "bg-white border border-[#262626] text-[#262626]"
               : "bg-white"
@@ -59,7 +59,7 @@ const Tabs: React.FC = () => {
           Add new skill
         </button>
       </div>
-      <div className="mt-4">
+      <div className="mt-2">
         {activeTab === 1 && (
           <>
             <Quiz />
@@ -73,7 +73,7 @@ const Tabs: React.FC = () => {
               <div className="mt-4">
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block font-medium leading-6 text-gray-900 mb-4"
                 >
                   New skill
                 </label>

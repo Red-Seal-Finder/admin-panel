@@ -17,7 +17,7 @@ export default function Skills() {
   return (
     <>
       <div className="bg-white pr-6 w-fit">
-        <select className="py-[10px] px-4 capitalize w-full outline-none bg-transparent">
+        <select className="py-[10px] px-4 capitalize w-full outline-none bg-transparent min-w-[200px] max-w-[200px]">
           <option>Available Skills</option>
           {skills?.skills.map((item, index) => (
             <option key={index} className="capitalize">

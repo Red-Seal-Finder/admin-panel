@@ -5,6 +5,7 @@ import {
   ICustomers,
   IForgotPasswordData,
   ILoginData,
+  INewQuestion,
   IResetPasswordData,
   ISignupData,
   IVerifyEmailData,
@@ -429,12 +430,69 @@ export const getSkills = async () => {
     }
   }
 };
+export const getAllQuestions = async () => {
+  try {
+    const response: AxiosResponse = await api.get("/admin_get_all_question");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      // Handle other types of errors
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
 
 export const addNewSkill = async (data: { name: string }) => {
   try {
     const response: AxiosResponse = await api.post("/admin_add_skill", data);
-    // Handle successful response
-    localStorage.setItem("token", response?.data.Token);
+    const message = response.data.message;
+    toast.success(message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true, message }; // Return both success status and message
+  } catch (error) {
+    // Handle error response
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false, message }; // Return both failure status and message
+      } else if (error.request) {
+        // Handle network-related error (no response received)
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false, message: "network_error" }; // Return network error
+      }
+    } else {
+      // Handle other types of errors
+      console.error("Non-Axios error:", error);
+      return { success: false, message: "error" }; // Return other error
+    }
+  }
+};
+export const addQuestions = async (data: INewQuestion) => {
+  try {
+    const response: AxiosResponse = await api.post("/admin_add_question", data);
     const message = response.data.message;
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,

@@ -1,14 +1,25 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  SetStateAction,
+  Dispatch,
+} from "react";
 
 interface QuestionFormProps {
   onSubmit: (data: { question: string; options: string[] }) => void;
+  setIsUpdating: Dispatch<SetStateAction<boolean>>;
 }
 
-const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit }) => {
+const QuestionForm: React.FC<QuestionFormProps> = ({
+  onSubmit,
+  setIsUpdating,
+}) => {
   const [question, setQuestion] = useState<string>("");
-  const [options, setOptions] = useState<string[]>(["", "", "", ""]);
+  const [options, setOptions] = useState<string[]>(["", "", ""]);
 
   const handleOptionChange = (index: number, value: string) => {
+    setIsUpdating(true);
     setOptions((prevOptions) => {
       const newOptions = [...prevOptions];
       newOptions[index] = value;
@@ -18,27 +29,24 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit }) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsUpdating(false);
     onSubmit({ question, options });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md ml-6">
-      <label className="block text-sm font-medium text-gray-700">
-        Question:
-      </label>
-      <input
-        type="text"
+    <form onSubmit={handleSubmit} className="max-w-md min-w-md">
+      <label className="block font-medium text-gray-700">Question:</label>
+      <textarea
         value={question}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
           setQuestion(e.target.value)
         }
-        className="mt-2 py-2 px-4 border rounded-md w-full outline-none focus:border-[#333] focus:border transition-all duration-300"
+        className="mt-2 py-2 px-4 border rounded-md w-full outline-none max-h-[100px] resize-y
+        focus:border-[#333]/30 focus:border transition-all duration-300 bg-white/90"
         required
       />
 
-      <label className="block text-sm font-medium text-gray-700 mt-4">
-        Options:
-      </label>
+      <label className="block font-medium text-gray-700 mt-2">Options:</label>
       {options.map((option, index) => (
         <input
           key={index}
@@ -47,16 +55,18 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ onSubmit }) => {
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleOptionChange(index, e.target.value)
           }
-          className="mt-2 py-2 px-4 border rounded-md w-full outline-none focus:border-[#333] focus:border transition-all duration-300"
+          className="mt-2 py-2 px-4 border rounded-md w-full outline-none 
+          focus:border-[#333]/30 focus:border transition-all duration-300 bg-white/90"
           required
         />
       ))}
 
       <button
         type="submit"
-        className="mt-4 bg-blue-500 text-white px-6 text-sm py-2 rounded-md hover:opacity-90 hover:scale-[0.99] transition-all"
+        className="border-0 bg-[#262626] text-[#fff] px-6 py-2 rounded mt-5
+        text-sm hover:opacity-90 hover:scale-[0.99] transition-all"
       >
-        Submit
+        See Preview
       </button>
     </form>
   );
