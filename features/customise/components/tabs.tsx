@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Skills from "./skills";
 import Quiz from "./quiz";
 import { addNewSkill } from "@/lib/api/api";
+import EditQuizTab from "./edit-quiz/index";
 
 const Tabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
@@ -65,7 +66,7 @@ const Tabs: React.FC = () => {
             <Quiz />
           </>
         )}
-        {activeTab === 2 && <div>Content for Tab 2</div>}
+        {activeTab === 2 && <EditQuizTab />}
         {activeTab === 3 && (
           <>
             <div className="w-[50%] pt-10">

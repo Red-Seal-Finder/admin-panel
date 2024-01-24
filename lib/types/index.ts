@@ -98,10 +98,11 @@ export interface ISkills {
   skills: ISkill[];
 }
 
-export interface INewQuestion {
+export interface IQuestion {
   question: string;
   optionA: string;
   optionB: string;
   optionC: string;
   answer: string[];
+  _id?: string;
 }
