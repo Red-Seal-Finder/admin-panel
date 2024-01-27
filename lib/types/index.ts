@@ -25,15 +25,35 @@ export interface IResetPasswordData {
   otp: string;
 }
 
+export interface IJobHistory {
+  job:{
+    _id:string;
+    status: string;
+    createdAt: string;
+    address:string;
+    inspection:{
+    confirmPayment: boolean;
+    status: boolean;
+    }
+    [key: string]: unknown;},
+  
+    contractor:{
+    firstName: string;
+    lastName: string;
+    [key: string]: unknown;
+  }
+}
+
 export interface ICustomerData {
-  _id: string;
+  customer:{_id: string;
   email: string;
   fullName: string;
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
-  [key: string]: unknown;
+  [key: string]: unknown;},
+  jobHistory:IJobHistory[]
 }
 
 export interface ISubAdmin {

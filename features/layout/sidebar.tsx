@@ -52,7 +52,7 @@ const Sidebar = () => {
   return (
     <div
       className="max-w-[280px] w-[21%] min-w-[250px] bg-white border-r-[#ddd] border-r sticky top-0 
-            overflow-y-auto scrollbar-thin"
+            overflow-y-auto scrollbar-thin z-30"
     >
       <div className="flex flex-col gap-4">
         {/* Logo Container */}
