@@ -48,6 +48,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
 
   useEffect(() => {
     getCustomerDetail().then((response) => {
+      console.log(response);
       setLoading(false);
       setCustomers(response);
     });
@@ -65,16 +66,16 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
 
   const handleViewACustomer = (item: ICustomerData) => {
     dispatch(setSingleCustomersDetail(item));
-    router.push(`${pathname}/${item._id}`);
+    router.push(`${pathname}/${item.customer._id}`);
   };
 
   const handleQuery = (value: string) => {
-    value === "" ? setIsQuerying(false) : setIsQuerying(true);    
+    value === "" ? setIsQuerying(false) : setIsQuerying(true);
     if (customers) {
       const filterArray = customers.customers.filter(
         (item) =>
-          item.email.toLowerCase().includes(value.toLowerCase()) ||
-          item.fullName.toLowerCase().includes(value.toLowerCase())
+          item.customer.email.toLowerCase().includes(value.toLowerCase()) ||
+          item.customer.fullName.toLowerCase().includes(value.toLowerCase())
       );
 
       setQueryedCustomers({ customers: filterArray });
@@ -94,19 +95,18 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
     }
   }, [currentCustomers]);
 
-  const handleRatingFiltering = (value: number) => {    
-  };
+  const handleRatingFiltering = (value: number) => {};
 
   const [filterYear, setFilterYear] = useState(0);
   const [filterMonth, setFilterMonth] = useState(0);
 
-  const handleYearFiltering = (value: number) => {    
+  const handleYearFiltering = (value: number) => {
     setFilterYear(value);
     value === 0 ? setIsQuerying(false) : setIsQuerying(true);
     if (filterMonth !== 0) {
       if (customers) {
         const customersMatchingYear = customers.customers.filter((customer) => {
-          const createdAtDate = new Date(customer.createdAt);
+          const createdAtDate = new Date(customer.customer.createdAt);
           const createdAtYear = createdAtDate.getFullYear();
           const createdAtMonth = createdAtDate.getMonth() + 1;
           return createdAtYear === value && createdAtMonth === filterMonth;
@@ -116,7 +116,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
     } else {
       if (customers) {
         const customersMatchingYear = customers.customers.filter((customer) => {
-          const createdAtDate = new Date(customer.createdAt);
+          const createdAtDate = new Date(customer.customer.createdAt);
           const createdAtYear = createdAtDate.getFullYear();
           return createdAtYear === value;
         });
@@ -126,16 +126,15 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
   };
 
   const handleMonthFiltering = (value: number) => {
-    
     setFilterMonth(value);
     value === 0 ? setIsQuerying(false) : setIsQuerying(true);
     if (filterYear !== 0) {
       if (customers) {
         const customersMatchingMonth = customers.customers.filter(
           (customer) => {
-            const createdAtDate = new Date(customer.createdAt);
+            const createdAtDate = new Date(customer.customer.createdAt);
             const createdAtYear = createdAtDate.getFullYear();
-            const createdAtMonth = createdAtDate.getMonth() + 1;            
+            const createdAtMonth = createdAtDate.getMonth() + 1;
             return createdAtMonth === value && createdAtYear === filterYear;
           }
         );
@@ -145,8 +144,9 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
       if (customers) {
         const customersMatchingMonth = customers.customers.filter(
           (customer) => {
-            const createdAtDate = new Date(customer.createdAt);
-            const createdAtMonth = createdAtDate.getMonth() + 1;            
+            const createdAtDate = new Date(customer.customer.createdAt);
+            const createdAtMonth = createdAtDate.getMonth() + 1;
+            console.log(createdAtMonth);
             return createdAtMonth === value;
           }
         );
@@ -194,9 +194,9 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
                 onClick={() => handleViewACustomer(item)}
                 className="cursor-pointer"
               >
-                <Td>{item.fullName}</Td>
-                <Td>{formatDateToDDMMYY(item.createdAt)}</Td>
-                <Td>{item.email}</Td>
+                <Td>{item.customer.fullName}</Td>
+                <Td>{formatDateToDDMMYY(item.customer.createdAt)}</Td>
+                <Td>{item.customer.email}</Td>
 
                 {/* Rating */}
                 <Td>

@@ -1,5 +1,8 @@
-export function extractInitials(fullName: string) {
+export function extractInitials(fullName: string | undefined) {
   // Split the full name into individual words
+  if(fullName === undefined){
+    return
+  }
   console.log(fullName);
   const words = fullName.split(" ");
 
