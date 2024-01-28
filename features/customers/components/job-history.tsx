@@ -27,19 +27,18 @@ const table_headings = [
   "Job ID",
   "Date",
   "Job Address",
-  'Inspection',
+  "Inspection",
   "Status",
-
 ];
 
-interface IProps{
-  jobHisory: IJobHistory[]
+interface IProps {
+  jobHisory: IJobHistory[];
 }
 
-export const JobsHistory:React.FC<IProps> = ({jobHisory}) => {
+export const JobsHistory: React.FC<IProps> = ({ jobHisory }) => {
   const router = useRouter();
   const pathname = usePathname();
-  
+
   return (
     <BorderedTableCard>
       <div className="flex items-center justify-between w-full">
@@ -62,14 +61,14 @@ export const JobsHistory:React.FC<IProps> = ({jobHisory}) => {
 
           <tbody>
             {jobHisory?.map((item, index) => (
-              <tr
-                key={index}                
-              >
-                <Td>{item.contractor.firstName} {' '}{item.contractor.lastName}</Td>
+              <tr key={index}>
+                <Td>
+                  {item.contractor.firstName} {item.contractor.lastName}
+                </Td>
                 <Td>{trimString(item.job._id, 8)}</Td>
                 <Td>{formatDateToDDMMYY(item.job.createdAt)}</Td>
-                <Td>{trimString(item.job.address, 10)}</Td>
-                <Td>{item.job.inspection.status ? 'True': 'False'}</Td>
+                <Td>{trimString(item.job.address, 25)}</Td>
+                <Td>{item.job.inspection.status ? "True" : "False"}</Td>
                 <Td>{item.job.status}</Td>
               </tr>
             ))}

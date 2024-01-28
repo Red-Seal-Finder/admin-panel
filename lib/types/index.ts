@@ -26,34 +26,39 @@ export interface IResetPasswordData {
 }
 
 export interface IJobHistory {
-  job:{
-    _id:string;
+  job: {
+    _id: string;
     status: string;
     createdAt: string;
-    address:string;
-    inspection:{
-    confirmPayment: boolean;
-    status: boolean;
-    }
-    [key: string]: unknown;},
-  
-    contractor:{
+    address: string;
+    inspection: {
+      confirmPayment: boolean;
+      status: boolean;
+    };
+    [key: string]: unknown;
+  };
+
+  contractor: {
     firstName: string;
     lastName: string;
     [key: string]: unknown;
-  }
+  };
 }
 
-export interface ICustomerData {
-  customer:{_id: string;
+export interface ICustomer {
+  _id: string;
   email: string;
   fullName: string;
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
-  [key: string]: unknown;},
-  jobHistory:IJobHistory[]
+  [key: string]: unknown;
+}
+
+export interface ICustomerData {
+  customer: ICustomer;
+  jobHistory: IJobHistory[];
 }
 
 export interface ISubAdmin {
@@ -130,4 +135,39 @@ export interface IEditQuestion {
   options: string[];
   answer: string[];
   questionId?: string;
+}
+
+export interface IGetJobsData {
+  page: number;
+  limit: number;
+}
+
+export interface IJob {
+  inspection: {
+    status: boolean;
+    confirmPayment: boolean;
+  };
+  _id: string;
+  address: string;
+  status: string;
+  createdAt: string;
+  [key: string]: unknown;
+}
+export interface IJobs {
+  job: IJob;
+  contractor: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    [key: string]: unknown;
+  };
+  customer: {
+    fullName: string;
+    phoneNumber: string;
+    [key: string]: unknown;
+  };
+}
+
+export interface IJobsList {
+  jobs: IJobs[];
 }

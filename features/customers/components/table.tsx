@@ -19,8 +19,8 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setSingleCustomersDetail } from "@/lib/redux/slices/single-customer";
 import FilterBox from "./filter-box";
 import {
-  findLargestYear,
-  findSmallestYear,
+  findCustomersLargestYear,
+  findCustomersSmallestYear,
 } from "@/lib/utils/get-min-or-max-date";
 import { generateRange } from "@/lib/utils/generate-range";
 
@@ -28,8 +28,8 @@ const table_headings = [
   "Customer’s Name",
   "Date Joined",
   "Email Address",
+  "Phone Number",
   "Ratings",
-  "Action",
 ];
 
 interface IProps {
@@ -89,8 +89,8 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
 
   useEffect(() => {
     if (customers) {
-      const smallestDate = findSmallestYear(customers.customers);
-      const largestDate = findLargestYear(customers.customers);
+      const smallestDate = findCustomersSmallestYear(customers.customers);
+      const largestDate = findCustomersLargestYear(customers.customers);
       setAvailableYears(generateRange(smallestDate, largestDate));
     }
   }, [currentCustomers]);
@@ -197,6 +197,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
                 <Td>{item.customer.fullName}</Td>
                 <Td>{formatDateToDDMMYY(item.customer.createdAt)}</Td>
                 <Td>{item.customer.email}</Td>
+                <Td>{item.customer.phoneNumber}</Td>
 
                 {/* Rating */}
                 <Td>
@@ -207,22 +208,6 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
                     <RatingStar />
                     <RatingStar />
                   </div>
-                </Td>
-                {/* Actions */}
-                <Td>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
-                      fill="#555555"
-                    />
-                  </svg>
                 </Td>
               </tr>
             ))}

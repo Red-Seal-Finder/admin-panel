@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../layout/header/header";
 import Searchbar from "../layout/header/components/searchbar";
 import PageBody from "../shared/page-body/page-body";
@@ -15,21 +15,37 @@ import {
   TotalJobs,
   TotalRevenue,
 } from "@/public/svg";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
+import { getTotalJobs } from "@/lib/api/api";
+import { setTotalJobs } from "@/lib/redux/slices/overview-data";
+import LoadingTemplate from "../layout/loading";
 
 const Overview = () => {
+  const [loading, setLoading] = useState(true);
   const overviewTotal = useAppSelector(
     (state: RootState) => state.overviewTotal
   );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    getTotalJobs().then((res) => {
+      if (res) {
+        dispatch(setTotalJobs(res?.response?.totalJob));
+      }
+    });
+  }, []);
+
   return (
     <>
       <Header />
       {/* Page Body - Use for side padding on the top and sides */}
+      {loading && <LoadingTemplate />}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
           <PageHeading page_title="Overview" />
-          <Calender />
+          {/* <Calender /> */}
         </div>
         {/* Analytic Cards */}
         {/* Negative value on percent props will be red */}
@@ -63,7 +79,7 @@ const Overview = () => {
               svg={<TotalJobs />}
               svgColor="bg-[#BBBBBB]"
               name="Total Jobs"
-              numbers="20"
+              numbers={overviewTotal.totalJobs}
               percent={-3.6}
               route="/jobs"
             />
@@ -75,7 +91,7 @@ const Overview = () => {
           <Metrics />
           <JobStatus />
         </div>
-        <OverviewTable />
+        <OverviewTable setLoading={setLoading} />
       </PageBody>
     </>
   );

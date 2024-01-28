@@ -1,8 +1,12 @@
-import { IContractorsDetails, ICustomerData, ISubAdmin } from "../types";
+import {
+  IContractorsDetails,
+  ICustomerData,
+  IJobs,
+  IJobsList,
+  ISubAdmin,
+} from "../types";
 
-export function findSmallestYear(
-  arrayOfObjects: ICustomerData[] | ISubAdmin[]
-) {
+export function findSmallestYear(arrayOfObjects: ISubAdmin[]) {
   if (arrayOfObjects.length === 0) {
     return null; // Return null if the array is empty
   }
@@ -21,7 +25,7 @@ export function findSmallestYear(
   return smallestYear;
 }
 
-export function findLargestYear(arrayOfObjects: ICustomerData[] | ISubAdmin[]) {
+export function findLargestYear(arrayOfObjects: ISubAdmin[]) {
   if (arrayOfObjects.length === 0) {
     return null; // Return null if the array is empty
   }
@@ -73,6 +77,82 @@ export function findContractorsLargestYear(
 
   for (let i = 1; i < arrayOfObjects.length; i++) {
     const currentDate = new Date(arrayOfObjects[i].contractorProfile.createdAt);
+    if (currentDate > largestDate) {
+      largestDate = currentDate;
+      largestYear = currentDate.getFullYear();
+    }
+  }
+
+  return largestYear;
+}
+
+export function findCustomersSmallestYear(arrayOfObjects: ICustomerData[]) {
+  if (arrayOfObjects.length === 0) {
+    return null; // Return null if the array is empty
+  }
+
+  let smallestDate = new Date(arrayOfObjects[0].customer.createdAt);
+  let smallestYear = smallestDate.getFullYear();
+
+  for (let i = 1; i < arrayOfObjects.length; i++) {
+    const currentDate = new Date(arrayOfObjects[i].customer.createdAt);
+    if (currentDate < smallestDate) {
+      smallestDate = currentDate;
+      smallestYear = currentDate.getFullYear();
+    }
+  }
+
+  return smallestYear;
+}
+
+export function findCustomersLargestYear(arrayOfObjects: ICustomerData[]) {
+  if (arrayOfObjects.length === 0) {
+    return null; // Return null if the array is empty
+  }
+
+  let largestDate = new Date(arrayOfObjects[0].customer.createdAt);
+  let largestYear = largestDate.getFullYear();
+
+  for (let i = 1; i < arrayOfObjects.length; i++) {
+    const currentDate = new Date(arrayOfObjects[i].customer.createdAt);
+    if (currentDate > largestDate) {
+      largestDate = currentDate;
+      largestYear = currentDate.getFullYear();
+    }
+  }
+
+  return largestYear;
+}
+
+export function findJobListSmallestYear(arrayOfObjects: IJobs[]) {
+  if (arrayOfObjects.length === 0) {
+    return null; // Return null if the array is empty
+  }
+
+  let smallestDate = new Date(arrayOfObjects[0].job.createdAt);
+  let smallestYear = smallestDate.getFullYear();
+
+  for (let i = 1; i < arrayOfObjects.length; i++) {
+    const currentDate = new Date(arrayOfObjects[i].job.createdAt);
+    if (currentDate < smallestDate) {
+      smallestDate = currentDate;
+      smallestYear = currentDate.getFullYear();
+    }
+  }
+
+  return smallestYear;
+}
+
+export function findJoblistLargestYear(arrayOfObjects: IJobs[]) {
+  if (arrayOfObjects.length === 0) {
+    return null; // Return null if the array is empty
+  }
+
+  let largestDate = new Date(arrayOfObjects[0].job.createdAt);
+  let largestYear = largestDate.getFullYear();
+
+  for (let i = 1; i < arrayOfObjects.length; i++) {
+    const currentDate = new Date(arrayOfObjects[i].job.createdAt);
     if (currentDate > largestDate) {
       largestDate = currentDate;
       largestYear = currentDate.getFullYear();

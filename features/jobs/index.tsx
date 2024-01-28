@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Header from "../layout/header/header";
 import Searchbar from "../layout/header/components/searchbar";
 import PageBody from "../shared/page-body/page-body";
@@ -9,16 +10,18 @@ import Calender from "../overview/components/calender";
 import AnalyticCard from "./components/analytic-card";
 import { CancelIconBlue, CancelIconRed, JobIcon } from "@/public/svg";
 import userPic from "@/public/admin-pic.png";
+import LoadingTemplate from "../layout/loading";
 const Jobs = () => {
+  const [loading, setLoading] = useState(true);
   return (
     <>
       <Header />
-
       {/* Page Body - Use for side padding on the top and sides */}
+      {loading && <LoadingTemplate />}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
           <PageHeading page_title="Jobs" />
-          <Calender />
+          {/* <Calender /> */}
         </div>
         {/* Analytic Cards */}
         <div className="overflow-x-auto mb-6">
@@ -58,7 +61,7 @@ const Jobs = () => {
             <DownloadButton text="Download JOB LIST" />
           </div>
 
-          <JobsTable />
+          <JobsTable setLoading={setLoading} />
         </div>
       </PageBody>
     </>

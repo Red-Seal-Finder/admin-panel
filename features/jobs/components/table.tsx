@@ -1,85 +1,170 @@
 "use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
 import Filter from "@/features/shared/table/components/filter";
-import Paginator from "@/features/shared/table/components/paginator";
 import TableOverflow from "@/features/shared/table/components/table-overflow";
 import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
-import { ComplaintsState, CompletedState, PendingState } from "@/public/svg";
 import { useRouter } from "next/navigation";
+import { getJobs } from "@/lib/api/api";
+import { IJobsList } from "@/lib/types";
+import { trimString } from "@/lib/utils/trim-string";
+import { formatDateToDDMMYY } from "@/lib/utils/format-date";
+import {
+  findJobListSmallestYear,
+  findJoblistLargestYear,
+} from "@/lib/utils/get-min-or-max-date";
+import { generateRange } from "@/lib/utils/generate-range";
+import FilterBox from "@/features/customers/components/filter-box";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
 
 const table_headings = [
   "Customer’s Name",
-  "Invoice ID",
+  "Job ID",
   "Contractors’s Name",
   "Job Address",
   "Date",
-  "Quote",
+  "Inspection",
   "Status",
-  "Action",
 ];
 
-const table_data = [
-  {
-    customers_name: "Customer’s Name",
-    id: "Invoice ID",
-    contractors_name: "Contractors’s Name",
-    job_address: "Job Address",
-    date: "Date",
-    quote: "Quote",
-    status: "Completed",
-  },
-  {
-    customers_name: "Customer’s Name",
-    id: "Invoice ID",
-    contractors_name: "Contractors’s Name",
-    job_address: "Job Address",
-    date: "Date",
-    quote: "Quote",
-    status: "Complaints",
-  },
-  {
-    customers_name: "Customer’s Name",
-    id: "Invoice ID",
-    contractors_name: "Contractors’s Name",
-    job_address: "Job Address",
-    date: "Date",
-    quote: "Quote",
-    status: "Pending",
-  },
-  {
-    customers_name: "Customer’s Name",
-    id: "Invoice ID",
-    contractors_name: "Contractors’s Name",
-    job_address: "Job Address",
-    date: "Date",
-    quote: "Quote",
-    status: "Pending",
-  },
-];
+interface IProps {
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const JobsTable = () => {
-  const router = useRouter();
+const JobsTable: React.FC<IProps> = ({ setLoading }) => {
+  // const router = useRouter();
+  const [jobsList, SetJobsList] = useState<IJobsList>();
+  const [currentJobsList, setCurrentJobsList] = useState<IJobsList>();
+  const [queryedJobsList, setQueryedJobsList] = useState<IJobsList>();
+  const [isQuerying, setIsQuerying] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    getJobs({ page: 1, limit: 50 }).then((response) => {
+      SetJobsList(response?.response);
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isQuerying) {
+      setCurrentJobsList(jobsList);
+    } else {
+      setCurrentJobsList(queryedJobsList);
+    }
+  }, [isQuerying, jobsList, queryedJobsList]);
+
+  const handleQuery = (value: string) => {
+    value === "" ? setIsQuerying(false) : setIsQuerying(true);
+    if (jobsList) {
+      const filterArray = jobsList.jobs.filter(
+        (item) =>
+          item.customer.fullName.toLowerCase().includes(value.toLowerCase()) ||
+          item.contractor.firstName
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.contractor.lastName.toLowerCase().includes(value.toLowerCase())
+      );
+
+      setQueryedJobsList({ jobs: filterArray });
+
+      filterArray.length === 0 ? setNotFound(true) : setNotFound(false);
+    }
+  };
+
+  const [showFilters, setShowFilters] = useState(false);
+  const [availableYears, setAvailableYears] = useState<number[]>([0]);
+
+  useEffect(() => {
+    if (jobsList) {
+      const smallestDate = findJobListSmallestYear(jobsList.jobs);
+      const largestDate = findJoblistLargestYear(jobsList.jobs);
+      setAvailableYears(generateRange(smallestDate, largestDate));
+    }
+  }, [currentJobsList]);
+
+  const handleRatingFiltering = (value: number) => {};
+
+  const [filterYear, setFilterYear] = useState(0);
+  const [filterMonth, setFilterMonth] = useState(0);
+
+  const handleYearFiltering = (value: number) => {
+    setFilterYear(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterMonth !== 0) {
+      if (jobsList) {
+        const jobsListMatchingYear = jobsList.jobs.filter((job) => {
+          const createdAtDate = new Date(job.job.createdAt);
+          const createdAtYear = createdAtDate.getFullYear();
+          const createdAtMonth = createdAtDate.getMonth() + 1;
+          return createdAtYear === value && createdAtMonth === filterMonth;
+        });
+        setQueryedJobsList({ jobs: jobsListMatchingYear });
+      }
+    } else {
+      if (jobsList) {
+        const jobsListMatchingYear = jobsList.jobs.filter((job) => {
+          const createdAtDate = new Date(job.job.createdAt);
+          const createdAtYear = createdAtDate.getFullYear();
+          return createdAtYear === value;
+        });
+        setQueryedJobsList({ jobs: jobsListMatchingYear });
+      }
+    }
+  };
+
+  const handleMonthFiltering = (value: number) => {
+    setFilterMonth(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (filterYear !== 0) {
+      if (jobsList) {
+        const jobsListMatchingMonth = jobsList.jobs.filter((job) => {
+          const createdAtDate = new Date(job.job.createdAt);
+          const createdAtYear = createdAtDate.getFullYear();
+          const createdAtMonth = createdAtDate.getMonth() + 1;
+          return createdAtMonth === value && createdAtYear === filterYear;
+        });
+        setQueryedJobsList({ jobs: jobsListMatchingMonth });
+      }
+    } else {
+      if (jobsList) {
+        const jobsListMatchingMonth = jobsList.jobs.filter((job) => {
+          const createdAtDate = new Date(job.job.createdAt);
+          const createdAtMonth = createdAtDate.getMonth() + 1;
+          console.log(createdAtMonth);
+          return createdAtMonth === value;
+        });
+        setQueryedJobsList({ jobs: jobsListMatchingMonth });
+      }
+    }
+  };
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
         <Heading name="Job List" />
         <div className="flex gap-8">
           <Searchbar
-            placeholder="Search"
-            notFound={true}
-            handleQuery={(value) => console.log("Functionality In Progress")}
+            placeholder="Search by name or email"
+            handleQuery={handleQuery}
+            notFound={notFound}
           />
-          <Filter />
+          <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
+            <FilterBox
+              handleRatingFiltering={handleRatingFiltering}
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
+              availableYears={availableYears}
+              setShowFilters={setShowFilters}
+            />
+          </Filter>
         </div>
       </div>
 
@@ -94,54 +179,22 @@ const JobsTable = () => {
           </Thead>
 
           <tbody>
-            {table_data?.map((data, index) => (
-              <tr
-                key={index}
-                onClick={() => router.push("/jobs/" + index)}
-                className="cursor-pointer"
-              >
-                {Object.keys(data).map((item, idx) => (
-                  <Td key={idx}>
-                    {/* Typescript assertion of key from object dot keys method */}
-                    {item === "status" ? (
-                      <div className="flex gap-[6px] items-center">
-                        <span>
-                          {data[item] === "Completed" ? (
-                            <CompletedState />
-                          ) : data[item] === "Complaints" ? (
-                            <ComplaintsState />
-                          ) : (
-                            <PendingState />
-                          )}
-                        </span>
-                        {data[item as keyof typeof data]}
-                      </div>
-                    ) : (
-                      <>{data[item as keyof typeof data]}</>
-                    )}
-                  </Td>
-                ))}
-
+            {currentJobsList?.jobs.map((item, index) => (
+              <tr key={index}>
+                <Td>{item?.customer.fullName}</Td>
+                <Td>{trimString(item?.job._id, 8)}</Td>
                 <Td>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
-                      fill="#555555"
-                    />
-                  </svg>
+                  {item.contractor.firstName} {item.contractor.lastName}
                 </Td>
+                <Td>{trimString(item.job.address, 25)}</Td>
+                <Td>{formatDateToDDMMYY(item.job.createdAt)}</Td>
+                <Td>{item.job.inspection.status ? "True" : "False"}</Td>
+                <Td>{item.job.status}</Td>
               </tr>
             ))}
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
     </TableCard>
   );
 };

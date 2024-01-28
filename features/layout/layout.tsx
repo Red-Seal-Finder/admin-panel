@@ -5,11 +5,12 @@ import { redirect } from "next/navigation";
 import LoadingTemplate from "./loading";
 import { getContactorDetail, getCustomerDetail } from "@/lib/api/api";
 import { toast } from "react-toastify";
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   setTotalContractors,
   setTotalCustomers,
 } from "@/lib/redux/slices/overview-data";
+import { RootState } from "@/lib/redux/store";
 
 interface IProps {
   children: React.ReactNode;
@@ -17,6 +18,9 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
+  const totalCustomers = useAppSelector(
+    (state: RootState) => state.overviewTotal.totalCustomers
+  );
 
   const dispatch = useAppDispatch();
 
@@ -44,10 +48,16 @@ const Layout: React.FC<IProps> = ({ children }) => {
     });
   };
 
-  if (!authenticated) {
+  if (!authenticated && totalCustomers === "") {
     return <LoadingTemplate />;
   }
 
+  return <LayoutElement>{children}</LayoutElement>;
+};
+
+export default Layout;
+
+export const LayoutElement: React.FC<IProps> = ({ children }) => {
   return (
     <div className="flex min-h-screen relative">
       <Sidebar />
@@ -57,5 +67,3 @@ const Layout: React.FC<IProps> = ({ children }) => {
     </div>
   );
 };
-
-export default Layout;

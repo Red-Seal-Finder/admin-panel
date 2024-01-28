@@ -24,13 +24,13 @@ const SingleCustomer = () => {
         <Wrapper>
           <div className="flex gap-x-6 items-center">
             <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
-              <p className="text-[30px] font-[600] text-white">
+              <p className="text-[30px] font-[600] text-white capitalize">
                 {extractInitials(customerDetails?.customer?.fullName)}
               </p>
             </div>
 
             <div className="-mt-2">
-              <p className="text-[28px] font-[600]">
+              <p className="text-[28px] font-[600] capitalize">
                 {customerDetails?.customer?.fullName}
               </p>
               <div className="flex gap-x-1">
@@ -51,13 +51,23 @@ const SingleCustomer = () => {
           <BorderRectangle>
             <table className="w-full">
               <tbody>
-                <SingleLineColumn name="Email" value={customerDetails?.customer?.email} />
+                <SingleLineColumn
+                  name="Email"
+                  value={customerDetails?.customer?.email}
+                />
                 <SingleLineColumn
                   name="Contact"
                   value={customerDetails?.customer?.phoneNumber}
                 />
                 <SingleLineColumn name="Amount Spent" value="$" />
-                <SingleLineColumn name="NO. of jobs" value={customerDetails?.jobHistory?.length > 0 ? customerDetails?.jobHistory?.length?.toString() : "No jobs yet"} />
+                <SingleLineColumn
+                  name="NO. of jobs"
+                  value={
+                    customerDetails?.jobHistory?.length > 0
+                      ? customerDetails?.jobHistory?.length?.toString()
+                      : "No jobs yet"
+                  }
+                />
                 <SingleLineColumn name="Payment account" value="" />
                 <SingleLineColumn name="Address" value="" />
               </tbody>
