@@ -100,9 +100,14 @@ export interface ISkills {
 
 export interface IQuestion {
   question: string;
-  optionA: string;
-  optionB: string;
-  optionC: string;
+  options: string[];
   answer: string[];
   _id?: string;
+}
+
+export interface IEditQuestion {
+  question: string;
+  options: string[];
+  answer: string[];
+  questionId?: string;
 }
