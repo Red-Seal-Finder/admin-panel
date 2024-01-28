@@ -26,7 +26,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
 
   useEffect(() => {
     setQuestion(oldQuestion.question);
-    setOptions([oldQuestion.optionA, oldQuestion.optionB, oldQuestion.optionC]);
+    setOptions(oldQuestion.options);
   }, []);
 
   const handleOptionChange = (index: number, value: string) => {

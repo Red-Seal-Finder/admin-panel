@@ -45,7 +45,7 @@ const EditQuiz: React.FC<IProps> = ({
   useEffect(() => {
     setPreview({
       question: question.question,
-      options: [question.optionA, question.optionB, question.optionC],
+      options: question.options,
     });
   }, []);
 

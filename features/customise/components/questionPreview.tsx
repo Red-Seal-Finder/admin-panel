@@ -1,31 +1,33 @@
 "use client";
 import { addQuestions, getAllQuestions } from "@/lib/api/api";
-// components/QuestionPreview.js
 import React, { useEffect, useState } from "react";
-
+import { PreviewData } from "./quiz";
 interface QuestionPreviewProps {
   question: string;
   options: string[];
   isUpdating: boolean;
+  setPreview: React.Dispatch<React.SetStateAction<PreviewData>>;
+  setShowPreview: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const QuestionPreview: React.FC<QuestionPreviewProps> = ({
   question,
   options,
+  setPreview,
+  setShowPreview,
   isUpdating,
 }) => {
   const handleFormSubmit = () => {
     setIsLoading(true);
     addQuestions({
       question: question,
-      optionA: options[0],
-      optionB: options[1],
-      optionC: options[2],
+      options: options,
       answer: [correctOption],
     }).then((res) => {
       if (res?.success) {
         setIsLoading(false);
-        getAllQuestions();
+        setPreview({ question: "", options: ["", "", ""] });
+        setShowPreview(false);
       }
     });
   };
@@ -36,10 +38,10 @@ const QuestionPreview: React.FC<QuestionPreviewProps> = ({
       setCorrectOption("");
     }
   }, [isUpdating]);
-  console.log(correctOption);
+
   return (
     <div className="max-w-md mx-auto mt-2 bg-white px-8 py-4 min-w-[500px] rounded-md">
-      <h2 className="text-2xl font-[500] mb-4">Preview</h2>
+      <h2 className="text-2xl font-[500] mb-4">Preiew</h2>
       <div className="">
         <p className="text-sm text-[#999] font-[600] pb-2">Question</p>
         <p className="mb-2">{question}</p>

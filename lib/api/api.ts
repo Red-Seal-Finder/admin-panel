@@ -6,6 +6,7 @@ import {
   IForgotPasswordData,
   ILoginData,
   IQuestion,
+  IEditQuestion,
   IResetPasswordData,
   ISignupData,
   IVerifyEmailData,
@@ -54,9 +55,8 @@ export const login = async (data: ILoginData) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message }; // Return both success status and message
+    return { success: true, message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -90,7 +90,6 @@ export const signup = async (data: ISignupData) => {
     });
     return { success: true, message: responseData.message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -129,7 +128,6 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
     });
     return { success: true };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -169,7 +167,6 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
     });
     return { success: true, message: responseData.message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -209,7 +206,6 @@ export const resetPassword = async (data: IResetPasswordData) => {
     });
     return { success: true, message: responseData.message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -242,7 +238,6 @@ export const getCustomerDetail = async () => {
 
     return response.data;
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server (if available)
@@ -272,7 +267,6 @@ export const getContactorDetail = async (data: IContractorPostData) => {
     );
     return response.data;
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server (if available)
@@ -301,7 +295,6 @@ export const getSubAdmins = async () => {
     );
     return response.data;
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server (if available)
@@ -336,7 +329,6 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
     });
     return { success: true };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -377,7 +369,6 @@ export const validateAContractorDocument = async (data: {
     });
     return { success: true };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -409,7 +400,6 @@ export const getSkills = async () => {
     const response: AxiosResponse = await api.get("/admin_get_skill");
     return response.data;
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server (if available)
@@ -436,7 +426,6 @@ export const getAllQuestions = async () => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server (if available)
@@ -465,9 +454,8 @@ export const addNewSkill = async (data: { name: string }) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message }; // Return both success status and message
+    return { success: true, message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -498,9 +486,8 @@ export const addQuestions = async (data: IQuestion) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message }; // Return both success status and message
+    return { success: true, message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -524,7 +511,7 @@ export const addQuestions = async (data: IQuestion) => {
   }
 };
 
-export const editQuestions = async (data: IQuestion) => {
+export const editQuestions = async (data: IEditQuestion) => {
   try {
     const response: AxiosResponse = await api.post(
       "/admin_edit_question",
@@ -534,9 +521,8 @@ export const editQuestions = async (data: IQuestion) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message }; // Return both success status and message
+    return { success: true, message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server
@@ -570,9 +556,8 @@ export const deleteQuestions = async (data: { questionId: string }) => {
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message }; // Return both success status and message
+    return { success: true, message };
   } catch (error) {
-    // Handle error response
     if (axios.isAxiosError(error)) {
       if (error.response) {
         // Handle error with response from the server

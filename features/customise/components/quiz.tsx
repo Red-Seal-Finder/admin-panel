@@ -3,18 +3,18 @@ import { useState } from "react";
 import QuestionForm from "./questionForm";
 import QuestionPreview from "./questionPreview";
 
-interface PreviewData {
+export interface PreviewData {
   question: string;
   options: string[];
 }
 
 const Quiz: React.FC = () => {
-  const [preview, setPreview] = useState<PreviewData | null>(null);
+  const [preview, setPreview] = useState<PreviewData>({
+    question: "",
+    options: ["", "", ""],
+  });
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
-
-  const handleFormPreview = (data: PreviewData) => {
-    setPreview(data);
-  };
+  const [showPreview, setShowPreview] = useState<boolean>(false);
 
   return (
     <div className="mx-auto mt-8 w-full overflow-x-auto">
@@ -24,16 +24,20 @@ const Quiz: React.FC = () => {
             Create Questions
           </h1>
           <QuestionForm
-            onSubmit={handleFormPreview}
+            onSubmit={() => setShowPreview(true)}
             setIsUpdating={setIsUpdating}
+            preview={preview}
+            setPreview={setPreview}
           />
         </div>
         <div>
-          {preview && (
+          {showPreview && (
             <QuestionPreview
               question={preview.question}
               options={preview.options}
+              setPreview={setPreview}
               isUpdating={isUpdating}
+              setShowPreview={setShowPreview}
             />
           )}
         </div>

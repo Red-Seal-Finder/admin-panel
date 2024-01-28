@@ -30,13 +30,13 @@ const QuestionPreview: React.FC<QuestionPreviewProps> = ({
     setIsLoading(true);
     editQuestions({
       question: question,
-      optionA: options[0],
-      optionB: options[1],
-      optionC: options[2],
+      options: options,
       answer: [correctOption],
+      questionId: questionId,
     }).then((res) => {
       if (res?.success) {
         setIsLoading(false);
+        setIsDropdown(false);
       }
     });
   };
@@ -46,7 +46,7 @@ const QuestionPreview: React.FC<QuestionPreviewProps> = ({
     deleteQuestions({ questionId: questionId }).then((res) => {
       if (res) {
         if (res.success) {
-          setIsDropdown(true);
+          setIsDropdown(false);
           setIsQuestionDeleted(true);
         }
       }

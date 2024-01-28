@@ -69,8 +69,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
   };
 
   const handleQuery = (value: string) => {
-    value === "" ? setIsQuerying(false) : setIsQuerying(true);
-    console.log("");
+    value === "" ? setIsQuerying(false) : setIsQuerying(true);    
     if (customers) {
       const filterArray = customers.customers.filter(
         (item) =>
@@ -95,15 +94,13 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
     }
   }, [currentCustomers]);
 
-  const handleRatingFiltering = (value: number) => {
-    console.log(value);
+  const handleRatingFiltering = (value: number) => {    
   };
 
   const [filterYear, setFilterYear] = useState(0);
   const [filterMonth, setFilterMonth] = useState(0);
 
-  const handleYearFiltering = (value: number) => {
-    console.log(value);
+  const handleYearFiltering = (value: number) => {    
     setFilterYear(value);
     value === 0 ? setIsQuerying(false) : setIsQuerying(true);
     if (filterMonth !== 0) {
@@ -129,7 +126,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
   };
 
   const handleMonthFiltering = (value: number) => {
-    console.log(value);
+    
     setFilterMonth(value);
     value === 0 ? setIsQuerying(false) : setIsQuerying(true);
     if (filterYear !== 0) {
@@ -138,8 +135,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
           (customer) => {
             const createdAtDate = new Date(customer.createdAt);
             const createdAtYear = createdAtDate.getFullYear();
-            const createdAtMonth = createdAtDate.getMonth() + 1;
-            console.log(createdAtMonth);
+            const createdAtMonth = createdAtDate.getMonth() + 1;            
             return createdAtMonth === value && createdAtYear === filterYear;
           }
         );
@@ -150,8 +146,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
         const customersMatchingMonth = customers.customers.filter(
           (customer) => {
             const createdAtDate = new Date(customer.createdAt);
-            const createdAtMonth = createdAtDate.getMonth() + 1;
-            console.log(createdAtMonth);
+            const createdAtMonth = createdAtDate.getMonth() + 1;            
             return createdAtMonth === value;
           }
         );
