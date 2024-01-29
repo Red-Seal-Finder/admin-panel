@@ -3,13 +3,10 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import { redirect } from "next/navigation";
 import LoadingTemplate from "./loading";
-import { getContactorDetail, getCustomerDetail } from "@/lib/api/api";
+import { getOverviewDetail } from "@/lib/api/api";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import {
-  setTotalContractors,
-  setTotalCustomers,
-} from "@/lib/redux/slices/overview-data";
+import { setOverviewDetails } from "@/lib/redux/slices/overview-data";
 import { RootState } from "@/lib/redux/store";
 
 interface IProps {
@@ -18,8 +15,8 @@ interface IProps {
 
 const Layout: React.FC<IProps> = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
-  const totalCustomers = useAppSelector(
-    (state: RootState) => state.overviewTotal.totalCustomers
+  const details = useAppSelector(
+    (state: RootState) => state.overviewTotal.details
   );
 
   const dispatch = useAppDispatch();
@@ -27,13 +24,13 @@ const Layout: React.FC<IProps> = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token !== null && token !== undefined) {
-      getCustomerDetail().then((response) => {
+      getOverviewDetail().then((response) => {
         if (!response) {
           setAuthenticated(false);
           localStorage.removeItem("token");
         } else {
-          dispatch(setTotalCustomers(response.customers.length));
-          getTotalContractors();
+          console.log(response);
+          dispatch(setOverviewDetails(response));
           setAuthenticated(true);
         }
       });
@@ -42,13 +39,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
     }
   }, []);
 
-  const getTotalContractors = () => {
-    getContactorDetail({ page: 1, limit: 50 }).then((response) => {
-      dispatch(setTotalContractors(response.artisans.length));
-    });
-  };
-
-  if (!authenticated && totalCustomers === "") {
+  if (!authenticated) {
     return <LoadingTemplate />;
   }
 

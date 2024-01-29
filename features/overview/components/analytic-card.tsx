@@ -7,7 +7,7 @@ interface IProps {
   svgColor: string;
   svg: React.ReactNode;
   name: string;
-  numbers: string;
+  numbers: number;
   percent: number;
   route: string;
 }

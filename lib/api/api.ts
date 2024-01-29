@@ -50,7 +50,7 @@ api.interceptors.response.use(
 export const login = async (data: ILoginData) => {
   try {
     const response: AxiosResponse = await api.post("/admin_signin", data);
-    // Handle successful response
+    console.log(response);
     localStorage.setItem("token", response?.data.Token);
     const message = response.data.message;
     toast.success(message, {
@@ -82,7 +82,7 @@ export const login = async (data: ILoginData) => {
 export const signup = async (data: ISignupData) => {
   try {
     const response: AxiosResponse = await api.post("/admin_signup", data);
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message + ", OTP has been sent", {
       position: toast.POSITION.TOP_LEFT,
@@ -118,7 +118,7 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
       "/admin_email_verification",
       data
     );
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -155,7 +155,7 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
       "/admin_forgot_password",
       data
     );
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -192,7 +192,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
       "/admin_reset_password",
       data
     );
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -226,6 +226,31 @@ export const resetPassword = async (data: IResetPasswordData) => {
 export const getCustomerDetail = async () => {
   try {
     const response: AxiosResponse = await api.get("/admin_get_customer_detail");
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
+
+export const getOverviewDetail = async () => {
+  try {
+    const response: AxiosResponse = await api.get("/app_detail");
 
     return response.data;
   } catch (error) {
@@ -307,7 +332,7 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
       "/super_admin_validate_other_admin",
       data
     );
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -345,7 +370,7 @@ export const validateAContractorDocument = async (data: {
       "admin_validate_contractor_document",
       data
     );
-    // Handle successful response
+    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,

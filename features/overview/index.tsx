@@ -17,25 +17,11 @@ import {
 } from "@/public/svg";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
-import { getTotalJobs } from "@/lib/api/api";
-import { setTotalJobs } from "@/lib/redux/slices/overview-data";
 import LoadingTemplate from "../layout/loading";
 
 const Overview = () => {
   const [loading, setLoading] = useState(true);
-  const overviewTotal = useAppSelector(
-    (state: RootState) => state.overviewTotal
-  );
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    getTotalJobs().then((res) => {
-      if (res) {
-        dispatch(setTotalJobs(res?.response?.totalJob));
-      }
-    });
-  }, []);
+  const { details } = useAppSelector((state: RootState) => state.overviewTotal);
 
   return (
     <>
@@ -55,7 +41,7 @@ const Overview = () => {
               svg={<TotalCustomers />}
               svgColor="bg-[#C398C7]"
               name="Total Customers"
-              numbers={overviewTotal.totalCustomers}
+              numbers={details.totalCustomer}
               percent={3.6}
               route="/customers"
             />
@@ -63,7 +49,7 @@ const Overview = () => {
               svg={<TotalContractors />}
               svgColor="bg-[#AAB2D4]"
               name="Total Contractors"
-              numbers={overviewTotal.totalContractors}
+              numbers={details.totalContractor}
               percent={3.6}
               route="/contractors"
             />
@@ -71,7 +57,7 @@ const Overview = () => {
               svg={<TotalRevenue />}
               svgColor="bg-[#E3C87C]"
               name="Total Revenue"
-              numbers="20"
+              numbers={details.totalRevenue}
               percent={3.6}
               route="/transactions"
             />
@@ -79,7 +65,7 @@ const Overview = () => {
               svg={<TotalJobs />}
               svgColor="bg-[#BBBBBB]"
               name="Total Jobs"
-              numbers={overviewTotal.totalJobs}
+              numbers={details.totalJob}
               percent={-3.6}
               route="/jobs"
             />
