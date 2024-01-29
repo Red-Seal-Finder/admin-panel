@@ -39,7 +39,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
     }
   }, []);
 
-  if (!authenticated) {
+  if (!authenticated && details.totalContractor === 0) {
     return <LoadingTemplate />;
   }
 
