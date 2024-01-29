@@ -1,20 +1,23 @@
-import { ICustomer } from "@/lib/types";
+import { ICustomerData } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IState {
-  value: ICustomer;
+  value: ICustomerData;
 }
 
 const initialState: IState = {
   value: {
-    _id: "",
-    email: "",
-    fullName: "",
-    phoneNumber: "",
-    createdAt: "",
-    updatedAt: "",
-    __v: 0,
+    customer: {
+      _id: "",
+      email: "",
+      fullName: "",
+      phoneNumber: "",
+      createdAt: "",
+      updatedAt: "",
+      __v: 0,
+    },
+    jobHistory: [],
   },
 };
 
@@ -22,7 +25,7 @@ export const singleCustomerSlice = createSlice({
   name: "singleCustomer",
   initialState,
   reducers: {
-    setSingleCustomersDetail: (state, action: PayloadAction<ICustomer>) => {
+    setSingleCustomersDetail: (state, action: PayloadAction<ICustomerData>) => {
       console.log(action.payload);
       state.value = action.payload;
     },
