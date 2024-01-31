@@ -1,7 +1,7 @@
 "use client";
 import { NotificationBell } from "@/public/svg";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 interface IProps {
@@ -9,11 +9,22 @@ interface IProps {
 }
 
 const Header: React.FC<IProps> = ({ children }) => {
-  // const { adminData } = useAppSelector((state: RootState) => state.auth);
-  const firstName = localStorage.getItem("firstName");
-  const lastName = localStorage.getItem("lastName");
-  const image = localStorage.getItem("image");
-  const isSuperAdmin = localStorage.getItem("isSuperAdmin");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [image, setImage] = React.useState("");
+  const [isSuperAdmin, setIsSuperAdmin] = React.useState("");
+
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem("firstName");
+    const storedLastName = localStorage.getItem("lastName");
+    const storedImage = localStorage.getItem("image");
+    const storedIsSuperAdmin = localStorage.getItem("isSuperAdmin");
+
+    setFirstName(storedFirstName || "");
+    setLastName(storedLastName || "");
+    setImage(storedImage || "");
+    setIsSuperAdmin(storedIsSuperAdmin || "");
+  }, []);
   return (
     <div
       className="flex px-[3vw] pt-8 pb-6 justify-between border-b-[#ddd] border-b 
@@ -55,7 +66,7 @@ const Header: React.FC<IProps> = ({ children }) => {
           <div className="">
             <p className="font-[500]">{`${firstName} ${lastName}`}</p>
             <p className="font-[400] ml-1">
-              {isSuperAdmin ? "Super Admin" : "Admin"}
+              {isSuperAdmin === "true" ? "Super Admin" : "Admin"}
             </p>
           </div>
         </div>

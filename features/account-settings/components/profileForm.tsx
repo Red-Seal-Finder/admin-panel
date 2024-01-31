@@ -1,16 +1,18 @@
 "use client";
 import { updateProfile } from "@/lib/api/api";
 import { IProfileData } from "@/lib/types";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 
 const ProfileForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const prevFirstName = localStorage.getItem("firstName") || "";
   const prevLastName = localStorage.getItem("lastName") || "";
   const prevImage = localStorage.getItem("image") || "";
   const email = localStorage.getItem("email") || "";
-
+  const router = useRouter();
   const [formData, setFormData] = useState<IProfileData>({
     email,
     firstName: prevFirstName,
@@ -22,7 +24,6 @@ const ProfileForm = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const formDataObj = new FormData();
-  console.log(formData.profileImg);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -54,6 +55,7 @@ const ProfileForm = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    setIsLoading(true);
     formDataObj.append("email", formData.email);
     formDataObj.append("firstName", formData.firstName);
     formDataObj.append("lastName", formData.lastName);
@@ -62,7 +64,11 @@ const ProfileForm = () => {
     formDataObj.append("profileImg", formData.profileImg || "");
 
     updateProfile(formDataObj).then((res) => {
-      console.log("here");
+      setIsLoading(false);
+      if (res?.success) {
+        localStorage.removeItem("token");
+        router.push("/auth/login");
+      }
     });
   };
 
@@ -172,10 +178,13 @@ const ProfileForm = () => {
             Cancel
           </button>
           <button
+            disabled={isLoading}
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-600 px-8 py-2 text-sm font-semibold 
+            text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
+            focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </div>
       </form>

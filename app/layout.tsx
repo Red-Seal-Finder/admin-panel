@@ -12,7 +12,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en">
         <body className="text-[#333]">
-          <ToastContainer />
+          <ToastContainer limit={1} />
           {children}
         </body>
       </html>

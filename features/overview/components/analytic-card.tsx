@@ -34,6 +34,7 @@ const AnalyticCard: React.FC<IProps> = ({
       <p className="py-4 text-sm">{name}</p>
       <div className="flex justify-between">
         <div className="font-[600]">
+          {name === "Total Revenue" && "$ "}
           <CountUp start={0} end={+numbers} duration={5} />
         </div>
 
