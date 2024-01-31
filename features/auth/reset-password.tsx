@@ -25,12 +25,12 @@ export default function ResetPassword() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
-    console.log(formField);
+    // console.log(formField);
     if (confirmPassword === formField.password) {
       setPasswordMismatch(false);
       resetPassword(formField).then((response) => {
         if (response?.success) {
-          console.log(response.success);
+          // console.log(response.success);
           router.push("/auth/login");
         }
       });

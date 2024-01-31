@@ -39,7 +39,7 @@ const ProfileForm = () => {
     setProfileImage(file ? URL.createObjectURL(file) : null);
 
     // const files = event.target.files;
-    console.log(file);
+    // console.log(file);
     setFormData((prevData) => ({
       ...prevData,
       profileImg: file,
@@ -62,7 +62,7 @@ const ProfileForm = () => {
     formDataObj.append("profileImg", formData.profileImg || "");
 
     updateProfile(formDataObj).then((res) => {
-      console.log("here");
+      // console.log("here");
     });
   };
 

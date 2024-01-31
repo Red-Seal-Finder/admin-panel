@@ -55,7 +55,7 @@ const Header: React.FC<IProps> = ({ children }) => {
           <div className="">
             <p className="font-[500]">{`${firstName} ${lastName}`}</p>
             <p className="font-[400] ml-1">
-              {isSuperAdmin ? "Super Admin" : "Admin"}
+              {isSuperAdmin ? "Super Admin" : "Sub Admin"}
             </p>
           </div>
         </div>
