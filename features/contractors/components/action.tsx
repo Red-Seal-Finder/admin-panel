@@ -11,6 +11,7 @@ interface IProps {
 
 const Action: React.FC<IProps> = ({ setLoading, id }) => {
   const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [showOptionsSvg, setShowOptionsSvg] = useState<string>("isNotShowing");
 
   const handleOptions = (option: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -25,21 +26,18 @@ const Action: React.FC<IProps> = ({ setLoading, id }) => {
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowOptions(!showOptions);
+    if (showOptionsSvg === "isNotShowing") {
+      setShowOptions(true);
+      setShowOptionsSvg("isShowing");
+    } else {
+      setShowOptions(false);
+      setShowOptionsSvg("isNotShowing");
+    }
   };
 
   return (
     <>
       <div className="relative">
-        <AnimatePresence>
-          {showOptions && (
-            <Options
-              setShowOptions={setShowOptions}
-              options={["Validate Document"]}
-              handleClick={handleOptions}
-            />
-          )}
-        </AnimatePresence>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -54,6 +52,21 @@ const Action: React.FC<IProps> = ({ setLoading, id }) => {
             fill="#555555"
           />
         </svg>
+        <AnimatePresence>
+          {showOptions && (
+            <Options
+              setShowOptions={setShowOptions}
+              options={[
+                "Validate Document",
+                "Activate",
+                "Review",
+                "Suspend",
+                "Closed",
+              ]}
+              handleClick={handleOptions}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

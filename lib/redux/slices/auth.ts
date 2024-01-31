@@ -1,14 +1,22 @@
+import { IAdminData } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IState {
   isLoggedIn: boolean;
   signUpMail: string;
+  adminData: IAdminData;
 }
 
 const initialState: IState = {
   isLoggedIn: true,
   signUpMail: "",
+  adminData: {
+    firstName: "",
+    lastName: "",
+    image: "",
+    isSuperAdmin: false,
+  },
 };
 
 export const authSlice = createSlice({
@@ -21,10 +29,14 @@ export const authSlice = createSlice({
     setSignUpMail: (state, action: PayloadAction<string>) => {
       state.signUpMail = action.payload;
     },
+
+    setAdminData: (state, action: PayloadAction<IAdminData>) => {
+      state.adminData = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setIsLoggedIn, setSignUpMail } = authSlice.actions;
+export const { setIsLoggedIn, setSignUpMail, setAdminData } = authSlice.actions;
 
 export default authSlice.reducer;

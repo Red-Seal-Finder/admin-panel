@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Header from "../shared/inner-pages/header";
 import Wrapper from "../shared/inner-pages/wrapper";
 import { filledArrayFromNumber } from "@/lib/utils/array-from-number";
@@ -12,20 +12,48 @@ import JobsHistory from "./components/job-history";
 import DownloadButton from "../shared/page-body/download-button";
 import { RootState } from "@/lib/redux/store";
 import { useAppSelector } from "@/lib/redux/hooks";
-import {
-  extractFirstLetter,
-  extractInitials,
-} from "@/lib/utils/extract-initials";
+import { extractFirstLetter } from "@/lib/utils/extract-initials";
 import ActionColumn from "../shared/inner-pages/action-column";
 import ActionButton from "../shared/inner-pages/action-button";
+import {
+  changeContractorStatus,
+  validateAContractorDocument,
+} from "@/lib/api/api";
+import LoadingTemplate from "../layout/loading";
+import { redirect } from "next/navigation";
 
 const SingleContractor = () => {
   const { value: contractorDetails } = useAppSelector(
     (state: RootState) => state.singleContractorDetail
   );
+  useLayoutEffect(() => {
+    if (contractorDetails.contractorProfile._id === "") {
+      redirect("/contractors");
+    }
+  }, []);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleDelete = () => {
-    console.log("ben");
+  const validateDocuments = () => {
+    setIsLoading(true);
+    validateAContractorDocument({
+      contractorDocsId: contractorDetails.contractorProfile._id,
+    }).then((response) => {
+      if (response) {
+        setIsLoading(false);
+      }
+    });
+  };
+
+  const handleChangeStatus = (status: string) => {
+    setIsLoading(true);
+    changeContractorStatus({
+      contractorId: contractorDetails.contractorProfile._id,
+      status: status,
+    }).then((response) => {
+      if (response) {
+        setIsLoading(false);
+      }
+    });
   };
 
   return (
@@ -91,11 +119,12 @@ const SingleContractor = () => {
         <div className="my-8">
           <GoBack />
         </div>
+
+        {isLoading && <LoadingTemplate />}
         <div className="">
           <BorderRectangle>
             <table className="w-full">
               <tbody>
-                {/* <SingleLineColumn name="RF ID" value="5647" /> */}
                 <SingleLineColumn
                   name="Email"
                   value={contractorDetails.contractorProfile.email}
@@ -111,28 +140,28 @@ const SingleContractor = () => {
                 <ActionColumn>
                   <div className="flex gap-x-4">
                     <ActionButton
-                      actionName="Verify"
-                      onClick={handleDelete}
+                      actionName="Validate Document"
+                      onClick={validateDocuments}
                       color="border-green-600 text-green-600"
                     />
                     <ActionButton
                       actionName="Activate"
-                      onClick={handleDelete}
+                      onClick={() => handleChangeStatus("active")}
                       color="border-green-600 text-green-600"
                     />
                     <ActionButton
                       actionName="Review"
-                      onClick={handleDelete}
+                      onClick={() => handleChangeStatus("in-review")}
                       color="border-yellow-500 text-yellow-500"
                     />
                     <ActionButton
                       actionName="Close"
-                      onClick={handleDelete}
+                      onClick={() => handleChangeStatus("closed")}
                       color="border-red-600 text-red-600"
                     />
                     <ActionButton
                       actionName="Suspend"
-                      onClick={handleDelete}
+                      onClick={() => handleChangeStatus("suspend")}
                       color="border-red-600 text-red-600"
                     />
                   </div>

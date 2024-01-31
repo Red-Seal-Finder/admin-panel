@@ -11,6 +11,8 @@ import {
   ISignupData,
   IVerifyEmailData,
   IGetJobsData,
+  IChangeContractorStatusData,
+  IProfileData,
 } from "../types";
 import { toast } from "react-toastify";
 
@@ -50,13 +52,12 @@ api.interceptors.response.use(
 export const login = async (data: ILoginData) => {
   try {
     const response: AxiosResponse = await api.post("/admin_signin", data);
-    console.log(response);
     localStorage.setItem("token", response?.data.Token);
     const message = response.data.message;
     toast.success(message, {
       position: toast.POSITION.TOP_LEFT,
     });
-    return { success: true, message };
+    return { success: true, profileData: response.data.profile };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -401,6 +402,45 @@ export const validateAContractorDocument = async (data: {
   }
 };
 
+export const changeContractorStatus = async (
+  data: IChangeContractorStatusData
+) => {
+  try {
+    const response: AxiosResponse = await api.post(
+      "admin_change_contractor_status",
+      data
+    );
+    console.log(response);
+    const responseData = response.data;
+    toast.success(responseData.message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      }
+    } else {
+      console.error("Non-Axios error:", error);
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return { success: false };
+    }
+  }
+};
+
 export const getSkills = async () => {
   try {
     const response: AxiosResponse = await api.get("/admin_get_skill");
@@ -538,6 +578,36 @@ export const editQuestions = async (data: IEditQuestion) => {
     } else {
       console.error("Non-Axios error:", error);
       return { success: false, message: "error" };
+    }
+  }
+};
+
+export const updateProfile = async (data: FormData) => {
+  try {
+    const response: AxiosResponse = await api.post("/update_profile", data);
+    const message = response.data.message;
+    toast.success(message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true, message };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server
+        const message = error.response.data.message;
+        toast.error(message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+        return { success: false };
+      }
+    } else {
+      console.error("Non-Axios error:", error);
+      return { success: false };
     }
   }
 };

@@ -1,7 +1,7 @@
+"use client";
 import { NotificationBell } from "@/public/svg";
 import Image from "next/image";
 import React from "react";
-import pic from "@/public/admin-pic.png";
 import Link from "next/link";
 
 interface IProps {
@@ -9,6 +9,11 @@ interface IProps {
 }
 
 const Header: React.FC<IProps> = ({ children }) => {
+  // const { adminData } = useAppSelector((state: RootState) => state.auth);
+  const firstName = localStorage.getItem("firstName");
+  const lastName = localStorage.getItem("lastName");
+  const image = localStorage.getItem("image");
+  const isSuperAdmin = localStorage.getItem("isSuperAdmin");
   return (
     <div
       className="flex px-[3vw] pt-8 pb-6 justify-between border-b-[#ddd] border-b 
@@ -16,29 +21,42 @@ const Header: React.FC<IProps> = ({ children }) => {
     >
       {/* Name */}
       <p className="text-xl font-[500] whitespace-nowrap">
-        Welcome, <span className="font-[600]">Raphael</span>
+        Welcome, <span className="font-[600]">{firstName || ""}</span>
       </p>
 
-      <div className="flex gap-7">
+      <div className="flex items-center gap-7">
         {children}
         {/* Notification Bell */}
-        <Link href={'/notifications'} className="bg-white flex justify-center items-center w-14 rounded">
+        <Link
+          href={"/notifications"}
+          className="bg-white flex justify-center items-center w-14 h-12 rounded"
+        >
           <NotificationBell />
         </Link>
         {/* Admin Profile */}
         <div className="flex gap-3">
-          <Image
-            src={pic}
-            alt="Admin Pic"
-            width={40}
-            height={40}
-            className="w-10 h-10 "
-          />
+          {image && image !== "" && (
+            <Image
+              src={image}
+              width={32}
+              height={32}
+              alt="admin picture"
+              className="rounded-[50%] object-cover w-10 h-10"
+            />
+          )}
+          {(!image || image === "") && (
+            <div className="w-10 h-10 rounded-[50%] bg-[#444]/40 flex items-center justify-center">
+              <p className="text font-[600] text-white">
+                <span className="capitalize">{firstName?.slice(0, 1)}</span>
+                <span className="capitalize">{lastName?.slice(0, 1)}</span>
+              </p>
+            </div>
+          )}
           <div className="">
-            <select className="bg-transparent outline-none font-[500]">
-              <option value="">Raphael Okoye</option>
-            </select>
-            <p className="font-[400] ml-1">Admin</p>
+            <p className="font-[500]">{`${firstName} ${lastName}`}</p>
+            <p className="font-[400] ml-1">
+              {isSuperAdmin ? "Super Admin" : "Admin"}
+            </p>
           </div>
         </div>
       </div>

@@ -171,3 +171,23 @@ export interface IJobs {
 export interface IJobsList {
   jobs: IJobs[];
 }
+
+export interface IAdminData {
+  firstName: string;
+  lastName: string;
+  image: string;
+  isSuperAdmin: boolean;
+}
+
+export interface IChangeContractorStatusData {
+  contractorId: string;
+  status: string;
+}
+
+export interface IProfileData {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  profileImg: null | string | File;
+}

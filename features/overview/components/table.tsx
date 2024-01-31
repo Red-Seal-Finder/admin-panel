@@ -41,7 +41,6 @@ interface IProps {
 }
 
 const OverviewTable: React.FC<IProps> = ({ setLoading }) => {
-  // const router = useRouter();
   const [jobsList, SetJobsList] = useState<IJobsList>();
   const [currentJobsList, setCurrentJobsList] = useState<IJobsList>();
   const [queryedJobsList, setQueryedJobsList] = useState<IJobsList>();
@@ -51,6 +50,7 @@ const OverviewTable: React.FC<IProps> = ({ setLoading }) => {
   useEffect(() => {
     getJobs({ page: 1, limit: 50 }).then((response) => {
       SetJobsList(response?.response);
+      console.log(response?.response);
       setLoading(false);
     });
   }, []);

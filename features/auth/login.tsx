@@ -6,9 +6,12 @@ import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingTemplate from "../layout/loading";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setAdminData } from "@/lib/redux/slices/auth";
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [authenticated, setAuthenticated] = useState(true);
 
   useEffect(() => {
@@ -22,12 +25,19 @@ export default function Login() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
-    login(formField).then((response) => {
-      if (response?.success) {
-        console.log(response.success);
-        router.push("/");
-      }
-    });
+    login(formField)
+      .then((response) => {
+        if (response?.success) {
+          console.log(response);
+          const profileData = response.profileData;
+          localStorage.setItem("firstName", profileData.firstName);
+          localStorage.setItem("lastName", profileData.lastName);
+          localStorage.setItem("image", profileData.image);
+          localStorage.setItem("isSuperAdmin", profileData.superAdmin.toString);
+          localStorage.setItem("email", profileData.email);
+        }
+      })
+      .finally(() => router.push("/"));
   };
 
   const [formField, setFormField] = useState<ILoginData>({

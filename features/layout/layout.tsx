@@ -28,8 +28,8 @@ const Layout: React.FC<IProps> = ({ children }) => {
         if (!response) {
           setAuthenticated(false);
           localStorage.removeItem("token");
+          redirect("/auth/login");
         } else {
-          console.log(response);
           dispatch(setOverviewDetails(response));
           setAuthenticated(true);
         }

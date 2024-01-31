@@ -30,7 +30,7 @@ const Options: React.FC<IProps> = ({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
       className="px-5 py-3 bg-white flex flex-col gap-4 absolute 
-    top-[30px] right-0 z-50 rounded-[8px] options-shadow"
+      -top-[10px] right-20 z-50 rounded-[8px] options-shadow"
     >
       {options?.map((option, index) => (
         <button
