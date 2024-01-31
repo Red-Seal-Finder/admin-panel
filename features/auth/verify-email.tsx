@@ -24,10 +24,10 @@ export default function VerifyEmail() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
-    console.log(formField);
+    // console.log(formField);
     verifyEmail(formField).then((response) => {
       if (response?.success) {
-        console.log(response.success);
+        // console.log(response.success);
         router.push("/auth/login");
       }
     });

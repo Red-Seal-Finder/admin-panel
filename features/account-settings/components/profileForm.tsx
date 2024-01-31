@@ -40,7 +40,7 @@ const ProfileForm = () => {
     setProfileImage(file ? URL.createObjectURL(file) : null);
 
     // const files = event.target.files;
-    console.log(file);
+    // console.log(file);
     setFormData((prevData) => ({
       ...prevData,
       profileImg: file,

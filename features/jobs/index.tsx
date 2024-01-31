@@ -31,27 +31,27 @@ const Jobs = () => {
               iconColor="bg-[#C398C7]"
               borderColor="border-l-[#721279]"
               name="Most requested job"
-              info="Furniture assembly"
+              info="None yet"
             />
             <AnalyticCard
               icon={<CancelIconBlue />}
               iconColor="bg-[#AAB2D4]"
               borderColor="border-l-[#00235B]"
               name="No. of cancellations"
-              info="200"
+              info="0"
             />
             <AnalyticCard
               icon={<CancelIconRed />}
               iconColor="bg-[#F6B7B7]"
               borderColor="border-l-[#9A0101]"
               name="Top reason for cancellation"
-              info="Emergency"
+              info="None yet"
             />
             <AnalyticCard
               icon="/admin-pic.png"
               borderColor="border-l-[#615D09]"
               name="Top-rated contractor"
-              info="Raphael Okoye"
+              info="None yet"
             />
           </div>
         </div>
