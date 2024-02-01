@@ -99,6 +99,7 @@ export interface IContractorsDetails {
     updatedAt: string;
     __v: number;
     location: string;
+    status: string;
     profileImage: string;
     documentVerification: boolean;
     [key: string]: unknown;

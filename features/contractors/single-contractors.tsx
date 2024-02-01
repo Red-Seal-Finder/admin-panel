@@ -140,10 +140,10 @@ const SingleContractor = () => {
                 <SingleLineColumn name="Amount Spent" value="$" />
                 <SingleLineColumn name="NO. of jobs" value="No jobs yet" />
                 <SingleLineColumn name="Payment account" value="" />
-                {/* <SingleLineColumn
-                  name="Location"
-                  value={contractorDetails.contractorProfile.location}
-                /> */}
+                <SingleLineColumn
+                  name="Account status"
+                  value={contractorDetails.contractorProfile.status}
+                />
                 <ActionColumn>
                   <div className="flex gap-x-4">
                     <ActionButton
