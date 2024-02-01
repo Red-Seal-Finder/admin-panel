@@ -105,6 +105,13 @@ export interface IContractorsDetails {
   };
   document: {
     skill: string;
+    phoneNumber: string;
+    businessName: string;
+    tradeTicket: string;
+    postalCode: string;
+    city: string;
+    website: string;
+    yearExpirence: string;
     [key: string]: unknown;
   };
 }

@@ -138,7 +138,7 @@ const JobsTable: React.FC<IProps> = ({ setLoading }) => {
         const jobsListMatchingMonth = jobsList.jobs.filter((job) => {
           const createdAtDate = new Date(job.job.createdAt);
           const createdAtMonth = createdAtDate.getMonth() + 1;
-          console.log(createdAtMonth);
+          // console.log(createdAtMonth);
           return createdAtMonth === value;
         });
         setQueryedJobsList({ jobs: jobsListMatchingMonth });

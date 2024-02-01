@@ -129,14 +129,21 @@ const SingleContractor = () => {
                   name="Email"
                   value={contractorDetails.contractorProfile.email}
                 />
-                <SingleLineColumn name="Contact" value="" />
+                <SingleLineColumn name="Phone" value={contractorDetails?.document?.phoneNumber} />
+                <SingleLineColumn name="Skill" value={contractorDetails?.document?.skill === undefined
+                  ? "Not Submitted"
+                  : contractorDetails?.document?.skill} />
+                <SingleLineColumn name="Postal code" value={contractorDetails?.document?.postalCode} />
+                <SingleLineColumn name="City" value={contractorDetails?.document?.city} />
+                <SingleLineColumn name="Website" value={contractorDetails?.document?.website} />
+                <SingleLineColumn name="Years of Exp." value={contractorDetails?.document?.yearExpirence} />
                 <SingleLineColumn name="Amount Spent" value="$" />
                 <SingleLineColumn name="NO. of jobs" value="No jobs yet" />
                 <SingleLineColumn name="Payment account" value="" />
-                <SingleLineColumn
+                {/* <SingleLineColumn
                   name="Location"
                   value={contractorDetails.contractorProfile.location}
-                />
+                /> */}
                 <ActionColumn>
                   <div className="flex gap-x-4">
                     <ActionButton
