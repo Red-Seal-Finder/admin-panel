@@ -21,9 +21,17 @@ const initialState: IState = {
       location: "",
       profileImage: "",
       documentVerification: false,
+      status: "",
     },
     document: {
       skill: "",
+      phoneNumber: "",
+      businessName: "",
+      tradeTicket: "",
+      postalCode: "",
+      city: "",
+      website: "",
+      yearExpirence: "",
     },
   },
 };

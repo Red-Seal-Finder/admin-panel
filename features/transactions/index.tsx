@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../layout/header/header";
 import Searchbar from "../layout/header/components/searchbar";
 import PageBody from "../shared/page-body/page-body";
-import CustomersTable from "./components/table";
+// import CustomersTable from "./components/table";
 import PageHeading from "../shared/page-body/page-heading";
 import DownloadButton from "../shared/page-body/download-button";
 
@@ -16,7 +16,7 @@ const Transactions = () => {
           <PageHeading page_title="Transactions" />
           <DownloadButton text="Download Transaction’s LIST" />
         </div>
-        <CustomersTable />
+        {/* <CustomersTable /> */}
       </PageBody>
     </>
   );

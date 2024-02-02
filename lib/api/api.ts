@@ -301,6 +301,33 @@ export const getContactorDetail = async (data: IContractorPostData) => {
   }
 };
 
+export const getTransactionDetail = async (data: IContractorPostData) => {
+  try {
+    const response: AxiosResponse = await api.get(
+      "/admin_get_contractor_detail",
+      { params: data }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
+
 export const getSubAdmins = async () => {
   try {
     const response: AxiosResponse = await api.get(

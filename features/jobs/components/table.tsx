@@ -9,9 +9,9 @@ import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getJobs } from "@/lib/api/api";
-import { IJobsList } from "@/lib/types";
+import { IJobs, IJobsList } from "@/lib/types";
 import { trimString } from "@/lib/utils/trim-string";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import {
@@ -20,6 +20,8 @@ import {
 } from "@/lib/utils/get-min-or-max-date";
 import { generateRange } from "@/lib/utils/generate-range";
 import FilterBox from "@/features/customers/components/filter-box";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setsingleJobDetail } from "@/lib/redux/slices/single-job-detail";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -146,6 +148,14 @@ const JobsTable: React.FC<IProps> = ({ setLoading }) => {
     }
   };
 
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
+  const handleViewInvoice = (item: IJobs) => {
+    dispatch(setsingleJobDetail(item));
+    router.push(`${pathname}/${item.job._id}`);
+  };
+
   return (
     <TableCard>
       <div className="flex items-center justify-between w-full">
@@ -180,16 +190,20 @@ const JobsTable: React.FC<IProps> = ({ setLoading }) => {
 
           <tbody>
             {currentJobsList?.jobs.map((item, index) => (
-              <tr key={index}>
+              <tr
+                className="cursor-pointer"
+                key={index}
+                onClick={() => handleViewInvoice(item)}
+              >
                 <Td>{item?.customer.fullName}</Td>
                 <Td>{trimString(item?.job._id, 8)}</Td>
                 <Td>
                   {item.contractor.firstName} {item.contractor.lastName}
                 </Td>
-                <Td>{trimString(item.job.address, 25)}</Td>
+                <Td>{trimString(item.job.address, 22)}</Td>
                 <Td>{formatDateToDDMMYY(item.job.createdAt)}</Td>
                 <Td>{item.job.inspection.status ? "True" : "False"}</Td>
-                <Td>{item.job.status}</Td>
+                <Td>{trimString(item.job.status, 22)}</Td>
               </tr>
             ))}
           </tbody>

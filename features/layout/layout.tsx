@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import LoadingTemplate from "./loading";
 import { getOverviewDetail } from "@/lib/api/api";
 import { toast } from "react-toastify";
@@ -20,6 +20,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   );
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,7 +29,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
         if (!response) {
           setAuthenticated(false);
           localStorage.removeItem("token");
-          redirect("/auth/login");
+          router.push("/auth/login");
         } else {
           dispatch(setOverviewDetails(response));
           setAuthenticated(true);

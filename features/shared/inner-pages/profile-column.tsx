@@ -22,20 +22,22 @@ const ProfileColumn: React.FC<IProps> = ({
 }) => {
   return (
     <tr className="border-b border-b-[#ddd]">
-      <td className="text-sm font-[500] text-[#777] py-4">{position}</td>
+      <td className="text-sm font-[500] text-[#777] py-4 capitalize">
+        {position}
+      </td>
 
       <td className="py-4">
         <div className="flex gap-x-6 items-center ">
           <Image
             src={imageSrc}
             alt={name}
-            width={40}
-            height={40}
-            className="max-w-[40px] max-h-[40px] rounded-[50%]"
+            width={60}
+            height={60}
+            className="w-[40px] h-[40px] object-cover rounded-[50%]"
           />
 
           <div className="flex flex-col gap-y-2">
-            <p className="font-[600] ">{name}</p>
+            <p className="font-[600] capitalize">{name}</p>
             <p className="font-[500] text-[15px]">{phoneNumber}</p>
             <div className="flex gap-x-1">
               {filledArrayFromNumber(stars)?.map((star, index) => (

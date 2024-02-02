@@ -158,6 +158,7 @@ export interface IJob {
   _id: string;
   address: string;
   status: string;
+  description: string;
   createdAt: string;
   [key: string]: unknown;
 }
@@ -167,6 +168,7 @@ export interface IJobs {
     _id: string;
     firstName: string;
     lastName: string;
+    profileImage: string;
     [key: string]: unknown;
   };
   customer: {
@@ -198,4 +200,32 @@ export interface IProfileData {
   lastName: string;
   password: string;
   profileImg: null | string | File;
+}
+
+export interface ITransactionsDetail {
+  transaction: {
+    _id: string;
+    type: string;
+    amount: number;
+    initiator: string;
+    from: string;
+    to: string;
+    fromId: string;
+    toId: string;
+    description: string;
+    status: string;
+    createdAt: string;
+  };
+  to: string;
+  _id: string;
+  email: string;
+  fullName: string;
+  phoneNumber: string;
+  createdAt: string;
+  location: string;
+  profileImg: string;
+}
+
+export interface ITransactionsDetails {
+  transactionDetails: ITransactionsDetail[];
 }

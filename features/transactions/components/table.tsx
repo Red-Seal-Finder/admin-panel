@@ -1,207 +1,155 @@
-"use client";
-import React from "react";
-import TableCard from "@/features/shared/table/components/table-card";
-import Heading from "@/features/shared/table/components/table-heading";
-import Searchbar from "@/features/shared/table/components/searchbar";
-import Filter from "@/features/shared/table/components/filter";
-import Paginator from "@/features/shared/table/components/paginator";
-import TableOverflow from "@/features/shared/table/components/table-overflow";
-import Table from "@/features/shared/table/components/table";
-import Thead from "@/features/shared/table/components/thead";
-import Th from "@/features/shared/table/components/th";
-import Td from "@/features/shared/table/components/td";
-import {
-  ComplaintsState,
-  CompletedState,
-  PendingState,
-  YellowStar,
-} from "@/public/svg";
-import { usePathname, useRouter } from "next/navigation";
+// "use client";
+// import React, { useEffect, useState } from "react";
+// import TableCard from "@/features/shared/table/components/table-card";
+// import Heading from "@/features/shared/table/components/table-heading";
+// import Searchbar from "@/features/shared/table/components/searchbar";
+// import Filter from "@/features/shared/table/components/filter";
+// import Paginator from "@/features/shared/table/components/paginator";
+// import TableOverflow from "@/features/shared/table/components/table-overflow";
+// import Table from "@/features/shared/table/components/table";
+// import Thead from "@/features/shared/table/components/thead";
+// import Th from "@/features/shared/table/components/th";
+// import Td from "@/features/shared/table/components/td";
+// import {
+//   ComplaintsState,
+//   CompletedState,
+//   PendingState,
+//   YellowStar,
+// } from "@/public/svg";
+// import { usePathname, useRouter } from "next/navigation";
+// import { ITransactionsDetails } from "@/lib/types";
+// import { getTransactionDetail } from "@/lib/api/api";
+// import { useAppDispatch } from "@/lib/redux/hooks";
+// import { findTransactionDetailsLargestYear, findTransactionDetailsSmallestYear } from "@/lib/utils/get-min-or-max-date";
+// import { generateRange } from "@/lib/utils/generate-range";
 
-// Since the table data is dynamic a table component will replace by this template
-// This Template defines how you can implement any table on your page
+// // Since the table data is dynamic a table component will replace by this template
+// // This Template defines how you can implement any table on your page
 
-const table_headings = [
-  "Contractor’s Name",
-  "Invoice ID",
-  "Customer name",
-  "Job address",
-  "Payment date",
-  "Amount",
-  "Status",
-  "Action",
-];
+// const table_headings = [
+//   "Contractor’s Name",
+//   "Invoice ID",
+//   "Customer name",
+//   "Job address",
+//   "Payment date",
+//   "Amount",
+//   "Status",
+//   "Action",
+// ];
 
-const table_data = [
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 2300,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 1200,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 700,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 1000,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 2000,
-    status: "Pending",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 500,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 35000,
-    status: "Failed",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 2500,
-    status: "Successful",
-    // rating: 5,
-  },
-  {
-    contractor_name: "Raphael Okoye",
-    invoice_id: "12345",
-    customer_name: "Iysah",
-    job_address: "Vancouver, Canada",
-    payment_date: "20/10/23",
-    amount: 5000,
-    status: "Successful",
-    // rating: 5,
-  },
-];
+// interface IProps {
+//   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const CustomersTable = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  return (
-    <TableCard>
-      <div className="flex items-center justify-between w-full">
-        <Heading name="Contractors’ list" />
-        <div className="flex gap-8">
-          <Searchbar
-            placeholder="Search"
-            notFound={true}
-            handleQuery={(value) => console.log("Functionality In Progress")}
-          />
-          <Filter />
-        </div>
-      </div>
+// const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
+//   const router = useRouter();
+//   const pathname = usePathname();
 
-      <TableOverflow>
-        <Table>
-          <Thead>
-            <tr>
-              {table_headings?.map((heading, index) => (
-                <Th key={index}>{heading}</Th>
-              ))}
-            </tr>
-          </Thead>
+//   const [transactionsDetails, setTransactionsDetails] = useState<ITransactionsDetails>();
+//   const [currentTransactionsDetails, setCurrentTransactionsDetails] = useState<ITransactionsDetails>();
+//   const [queryedTransactionsDetails, setQueryedTransactionsDetails] = useState<ITransactionsDetails>();
+//   const [isQuerying, setIsQuerying] = useState(false);
+//   const [notFound, setNotFound] = useState(false);
 
-          <tbody>
-            {table_data?.map((data, index) => (
-              <tr
-                key={index}
-                onClick={() => router.push(`${pathname}/${index}`)}
-                className="cursor-pointer"
-              >
-                {Object.keys(data).map((item, idx) => (
-                  <Td key={idx}>
-                    {item === "status" ? (
-                      <div className="flex gap-[6px] items-center">
-                        <span>
-                          {data[item] === "Successful" ? (
-                            <CompletedState />
-                          ) : data[item] === "Failed" ? (
-                            <ComplaintsState />
-                          ) : (
-                            <PendingState />
-                          )}
-                        </span>
-                        {data[item as keyof typeof data]}
-                      </div>
-                    ) : (
-                      <>{data[item as keyof typeof data]}</>
-                    )}
-                  </Td>
-                ))}
-                <Td>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="cursor-pointer"
-                  >
-                    <path
-                      d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
-                      fill="#555555"
-                    />
-                  </svg>
-                </Td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </TableOverflow>
-      <Paginator />
-    </TableCard>
-  );
-};
+//   useEffect(() => {
+//     const data = {
+//       page: 1,
+//       limit: 50,
+//     };
 
-export default CustomersTable;
+//     getTransactionDetail(data).then((response: ITransactionsDetails) => {
+//       setLoading(false);
+//       setTransactionsDetails(response);
+//     });
+//   }, []);
+
+//   useEffect(() => {
+//     if (!isQuerying) {
+//       setCurrentTransactionsDetails(transactionsDetails);
+//     } else {
+//       setCurrentTransactionsDetails(queryedTransactionsDetails);
+//     }
+//   }, [isQuerying, transactionsDetails, queryedTransactionsDetails]);
+
+//   const dispatch = useAppDispatch();
+//   // const handleViewATransactionsDetails = (item: ITransactionsDetailsDetails) => {
+//   //   dispatch(setsingleTransactionsDetailsDetail(item));
+//   //   router.push(`${pathname}/${item.contractorProfile._id}`);
+//   // };
+
+//   const handleQuery = (value: string) => {
+//     value === "" ? setIsQuerying(false) : setIsQuerying(true);
+
+//     if (transactionsDetails) {
+//       const filterArray = transactionsDetails.transactionDetails.filter(
+//         (item) =>
+//           item.contractorProfile.email
+//             .toLowerCase()
+//             .includes(value.toLowerCase()) ||
+//           item.contractorProfile.firstName
+//             .toLowerCase()
+//             .includes(value.toLowerCase()) ||
+//           item.contractorProfile.lastName
+//             .toLowerCase()
+//             .includes(value.toLowerCase())
+//       );
+
+//       setQueryedTransactionsDetails({ transactionDetails: filterArray });
+
+//       filterArray.length === 0 ? setNotFound(true) : setNotFound(false);
+//     }
+//   };
+
+//   const [showFilters, setShowFilters] = useState(false);
+//   const [availableYears, setAvailableYears] = useState<number[]>([0]);
+
+//   useEffect(() => {
+//     if (transactionsDetails) {
+//       const smallestDate = findTransactionDetailsSmallestYear(transactionsDetails.transactionDetails);
+//       const largestDate = findTransactionDetailsLargestYear(transactionsDetails.transactionDetails);
+//       setAvailableYears(generateRange(smallestDate, largestDate));
+//     }
+//   }, [currentTransactionsDetails]);
+
+//   const handleRatingFiltering = (value: number) => {
+//     console.log(value);
+//   };
+
+//   const handleStatusFiltering = (value: number) => {
+//     console.log(value);
+//   };
+//   return (
+//     <TableCard>
+//       <div className="flex items-center justify-between w-full">
+//         <Heading name="TransactionsDetails’ list" />
+//         <div className="flex gap-8">
+//           <Searchbar
+//             placeholder="Search"
+//             notFound={true}
+//             handleQuery={(value) => console.log("Functionality In Progress")}
+//           />
+//           <Filter />
+//         </div>
+//       </div>
+
+//       <TableOverflow>
+//         <Table>
+//           <Thead>
+//             <tr>
+//               {table_headings?.map((heading, index) => (
+//                 <Th key={index}>{heading}</Th>
+//               ))}
+//             </tr>
+//           </Thead>
+
+//           <tbody>
+
+//           </tbody>
+//         </Table>
+//       </TableOverflow>
+//       <Paginator />
+//     </TableCard>
+//   );
+// };
+
+// export default CustomersTable;

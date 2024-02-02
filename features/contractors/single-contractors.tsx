@@ -20,20 +20,28 @@ import {
   validateAContractorDocument,
 } from "@/lib/api/api";
 import LoadingTemplate from "../layout/loading";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const SingleContractor = () => {
   const { value: contractorDetails } = useAppSelector(
     (state: RootState) => state.singleContractorDetail
   );
+  const router = useRouter();
   useLayoutEffect(() => {
     if (contractorDetails.contractorProfile._id === "") {
-      redirect("/contractors");
+      router.push("/contractors");
     }
   }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const validateDocuments = () => {
+    if (contractorDetails.contractorProfile.documentVerification) {
+      toast.error("You have already performed this action", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return;
+    }
     setIsLoading(true);
     validateAContractorDocument({
       contractorDocsId: contractorDetails.contractorProfile._id,
@@ -45,6 +53,12 @@ const SingleContractor = () => {
   };
 
   const handleChangeStatus = (status: string) => {
+    if (contractorDetails.contractorProfile.status === status) {
+      toast.error("You have already performed this action", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+      return;
+    }
     setIsLoading(true);
     changeContractorStatus({
       contractorId: contractorDetails.contractorProfile._id,
@@ -129,14 +143,34 @@ const SingleContractor = () => {
                   name="Email"
                   value={contractorDetails.contractorProfile.email}
                 />
-                <SingleLineColumn name="Phone" value={contractorDetails?.document?.phoneNumber} />
-                <SingleLineColumn name="Skill" value={contractorDetails?.document?.skill === undefined
-                  ? "Not Submitted"
-                  : contractorDetails?.document?.skill} />
-                <SingleLineColumn name="Postal code" value={contractorDetails?.document?.postalCode} />
-                <SingleLineColumn name="City" value={contractorDetails?.document?.city} />
-                <SingleLineColumn name="Website" value={contractorDetails?.document?.website} />
-                <SingleLineColumn name="Years of Exp." value={contractorDetails?.document?.yearExpirence} />
+                <SingleLineColumn
+                  name="Phone"
+                  value={contractorDetails?.document?.phoneNumber}
+                />
+                <SingleLineColumn
+                  name="Skill"
+                  value={
+                    contractorDetails?.document?.skill === undefined
+                      ? "Not Submitted"
+                      : contractorDetails?.document?.skill
+                  }
+                />
+                <SingleLineColumn
+                  name="Postal code"
+                  value={contractorDetails?.document?.postalCode}
+                />
+                <SingleLineColumn
+                  name="City"
+                  value={contractorDetails?.document?.city}
+                />
+                <SingleLineColumn
+                  name="Website"
+                  value={contractorDetails?.document?.website}
+                />
+                <SingleLineColumn
+                  name="Years of Exp."
+                  value={contractorDetails?.document?.yearExpirence}
+                />
                 <SingleLineColumn name="Amount Spent" value="$" />
                 <SingleLineColumn name="NO. of jobs" value="No jobs yet" />
                 <SingleLineColumn name="Payment account" value="" />
@@ -148,7 +182,7 @@ const SingleContractor = () => {
                   <div className="flex gap-x-4">
                     <ActionButton
                       actionName="Validate Document"
-                      onClick={validateDocuments}
+                      onClick={() => validateDocuments}
                       color="border-green-600 text-green-600"
                     />
                     <ActionButton
