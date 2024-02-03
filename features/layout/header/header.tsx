@@ -1,18 +1,20 @@
 "use client";
 import { NotificationBell } from "@/public/svg";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { getTotalUnseenNotification } from "@/lib/api/api";
 
 interface IProps {
   children?: React.ReactNode;
 }
 
 const Header: React.FC<IProps> = ({ children }) => {
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [image, setImage] = React.useState("");
-  const [isSuperAdmin, setIsSuperAdmin] = React.useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [image, setImage] = useState("");
+  const [isSuperAdmin, setIsSuperAdmin] = useState("");
+  const [totalUnseenNotification, setTotalUnseenNotification] = useState(0);
 
   useEffect(() => {
     const storedFirstName = localStorage.getItem("firstName");
@@ -24,6 +26,14 @@ const Header: React.FC<IProps> = ({ children }) => {
     setLastName(storedLastName || "");
     setImage(storedImage || "");
     setIsSuperAdmin(storedIsSuperAdmin || "");
+  }, []);
+
+  useEffect(() => {
+    getTotalUnseenNotification().then((res) => {
+      if (res?.success) {
+        setTotalUnseenNotification(res.data.totalUnseenNotification);
+      }
+    });
   }, []);
   return (
     <div
@@ -40,9 +50,17 @@ const Header: React.FC<IProps> = ({ children }) => {
         {/* Notification Bell */}
         <Link
           href={"/notifications"}
-          className="bg-white flex justify-center items-center w-14 h-12 rounded"
+          className="bg-white flex justify-center items-center w-14 h-12 rounded relative"
         >
           <NotificationBell />
+          {totalUnseenNotification >= 0 && (
+            <div
+              className="bg-[#ccc] w-5 h-5 rounded-full absolute top-1.5
+          right-1.5 text-sm text-white flex items-center justify-center"
+            >
+              {totalUnseenNotification}
+            </div>
+          )}
         </Link>
         {/* Admin Profile */}
         <div className="flex gap-3">

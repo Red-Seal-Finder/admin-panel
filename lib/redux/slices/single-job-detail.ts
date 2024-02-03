@@ -16,12 +16,14 @@ const initialState: IState = {
       _id: "",
       address: "",
       status: "",
+      description: "",
       createdAt: "",
     },
     contractor: {
       _id: "",
       firstName: "",
       lastName: "",
+      profileImage: "",
     },
     customer: {
       fullName: "",
