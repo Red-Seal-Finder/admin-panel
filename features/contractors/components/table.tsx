@@ -225,7 +225,7 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </TableCard>
   );
 };

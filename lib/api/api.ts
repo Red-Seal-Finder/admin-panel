@@ -249,6 +249,64 @@ export const getCustomerDetail = async () => {
   }
 };
 
+export const getSingleCustomerDetail = async (data: { customerId: string }) => {
+  try {
+    const response: AxiosResponse = await api.get(
+      "/admin_get_single_customer_detail",
+      { params: data }
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
+
+export const getSingleContractorsDetail = async (data: {
+  contractorId: string;
+}) => {
+  try {
+    const response: AxiosResponse = await api.get(
+      "/admin_get_single_contractor_detail",
+      { params: data }
+    );
+
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // Handle error with response from the server (if available)
+        toast.warning(error.response.data.message, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      }
+    } else {
+      toast.error("An error occurred. Please try again.", {
+        position: toast.POSITION.TOP_LEFT,
+      });
+    }
+  }
+};
+
 export const getOverviewDetail = async () => {
   try {
     const response: AxiosResponse = await api.get("/app_detail");

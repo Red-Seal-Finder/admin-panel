@@ -169,7 +169,7 @@ const RepsTable = () => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </TableCard>
   );
 };

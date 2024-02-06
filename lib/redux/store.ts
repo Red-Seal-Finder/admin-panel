@@ -4,12 +4,14 @@ import auth from "./slices/auth";
 import singleContractor from "./slices/single-contractor";
 import totalSlice from "./slices/overview-data";
 import singleJobDetail from "./slices/single-job-detail";
+import singleTransaction from "./slices/single-transaction";
 
 export const store = configureStore({
   reducer: {
     auth: auth,
     singleCustomerDetail: singleCustomer,
     singleContractorDetail: singleContractor,
+    singleTransaction: singleTransaction,
     jobDetail: singleJobDetail,
     overviewTotal: totalSlice,
   },

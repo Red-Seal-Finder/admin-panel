@@ -22,6 +22,7 @@ import { generateRange } from "@/lib/utils/generate-range";
 import { trimString } from "@/lib/utils/trim-string";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import FilterBox from "@/features/customers/components/filter-box";
+import { setSingleTranactionsDetail } from "@/lib/redux/slices/single-transaction";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -75,10 +76,6 @@ const TransactionsDetailsTable: React.FC<IProps> = ({ setLoading }) => {
   }, [isQuerying, transactionsDetails, queryedTransactionsDetails]);
 
   const dispatch = useAppDispatch();
-  // const handleViewATransactionsDetails = (item: ITransactionsDetailsDetails) => {
-  //   dispatch(setsingleTransactionsDetailsDetail(item));
-  //   router.push(`${pathname}/${item.contractorProfile._id}`);
-  // };
 
   const handleQuery = (value: string) => {
     value === "" ? setIsQuerying(false) : setIsQuerying(true);
@@ -181,7 +178,8 @@ const TransactionsDetailsTable: React.FC<IProps> = ({ setLoading }) => {
   };
 
   const handleViewATransaction = (item: ITransactionsDetail) => {
-    console.log("d");
+    dispatch(setSingleTranactionsDetail(item));
+    router.push(`${pathname}/${item.transaction._id}`);
   };
   return (
     <TableCard>
@@ -236,7 +234,7 @@ const TransactionsDetailsTable: React.FC<IProps> = ({ setLoading }) => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </TableCard>
   );
 };

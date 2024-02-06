@@ -214,7 +214,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </TableCard>
   );
 };

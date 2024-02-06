@@ -112,7 +112,7 @@ const TableTemplate = () => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </TableCard>
   );
 };

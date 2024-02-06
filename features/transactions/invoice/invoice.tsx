@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import Header from "../../shared/inner-pages/header";
 import Wrapper from "@/features/shared/inner-pages/wrapper";
 import BorderRectangle from "@/features/shared/inner-pages/bordered-rect";
@@ -15,15 +15,56 @@ import { useRouter } from "next/navigation";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
 import Reciept from "@/features/jobs/invoice/reciept";
 import GoBack from "@/features/shared/go-back-button/go-back";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
+import LoadingTemplate from "@/features/layout/loading";
+import {
+  getSingleContractorsDetail,
+  getSingleCustomerDetail,
+} from "@/lib/api/api";
+import { IContractorsDetails, ICustomerData } from "@/lib/types";
 
 const Invoice = () => {
   const text = `Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus.`;
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [customer, setCustomer] = useState<ICustomerData>();
+  const [contractor, setContractor] = useState<IContractorsDetails>();
   const ref = useRef<HTMLDivElement>(null);
   const closeModal = () => {
     setShowModal(false);
   };
   useOnClickOutside(ref, closeModal);
+
+  const router = useRouter();
+  const { value: transaction } = useAppSelector(
+    (state: RootState) => state.singleTransaction
+  );
+  useLayoutEffect(() => {
+    if (transaction.transaction._id === "") {
+      router.push("/transactions");
+      return;
+    }
+
+    getSingleCustomerDetail({ customerId: transaction.job.customerId }).then(
+      (res) => {
+        console.log(res);
+        if (res) {
+          setCustomer(res.customer);
+          getSingleContractorsDetail({
+            contractorId: transaction.job.contractorId,
+          }).then((res) => {
+            console.log(res);
+            if (res) {
+              setContractor(res.artisan);
+              setIsLoading(false);
+            }
+          });
+        }
+      }
+    );
+  }, []);
+
   return (
     <>
       {/* Modal */}
@@ -70,14 +111,15 @@ const Invoice = () => {
           <div className="my-8">
             <GoBack />
           </div>
+          {isLoading && <LoadingTemplate />}
           <div className="mt-10">
             <BorderRectangle>
               <table className="w-full">
                 <tbody>
                   <ProfileColumn
                     position="Customer’s profile"
-                    name="Elizabeth Howard"
-                    phoneNumber="+49 17687934521"
+                    name={transaction.from.fullName}
+                    phoneNumber={customer?.customer.phoneNumber || ""}
                     stars={1}
                     imageSrc={userOne.src}
                   />
@@ -89,14 +131,30 @@ const Invoice = () => {
                     imageSrc={userTwo.src}
                     job="Furniture assembler"
                   />
-                  <SingleLineColumn name="Invoice ID" value="#342" />
+                  <SingleLineColumn
+                    name="Invoice ID"
+                    value={transaction.transaction.invoiceId}
+                  />
                   <SingleLineColumn
                     name="Job Address"
-                    value="2464 Royal Ln. Mesa, New Jersey 45463"
+                    value={transaction.job.address}
                   />
-                  <SingleLineColumn name="Quote" value="$4,000" />
-                  <DescriptionColumn name="Job Description" text={text} />
-                  <StatusColumn name="Job Status" status="Paid" />
+                  <SingleLineColumn
+                    name="Job Status"
+                    value={transaction.job.status}
+                  />
+                  <SingleLineColumn
+                    name="Job Inspection"
+                    value={transaction.job.inspection.status ? "True" : "False"}
+                  />
+                  {/* <SingleLineColumn
+                    name=""
+                    value={}
+                  />
+                  <SingleLineColumn
+                    name=""
+                    value={}
+                  /> */}
                 </tbody>
               </table>
             </BorderRectangle>

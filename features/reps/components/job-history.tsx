@@ -140,7 +140,7 @@ const JobsHistory = () => {
           </tbody>
         </Table>
       </TableOverflow>
-      <Paginator />
+      {/* <Paginator /> */}
     </BorderedTableCard>
   );
 };
