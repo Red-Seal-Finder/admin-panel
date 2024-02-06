@@ -211,21 +211,36 @@ export interface ITransactionsDetail {
     from: string;
     to: string;
     fromId: string;
+    invoiceId: string;
     toId: string;
     description: string;
     status: string;
     createdAt: string;
   };
   to: string;
-  _id: string;
-  email: string;
-  fullName: string;
-  phoneNumber: string;
-  createdAt: string;
-  location: string;
-  profileImg: string;
+  from: {
+    _id: string;
+    email: string;
+    fullName: string;
+    phoneNumber: string;
+    createdAt: string;
+    location: string;
+    profileImg: string;
+  };
+  job: {
+    address: string;
+    contractorId: string;
+    customerId: string;
+    totalAmountContractorWithdraw: string;
+    totalAmountCustomerToPaid: string;
+    inspection: {
+      status: boolean;
+      confirmPayment: boolean;
+    };
+    status: string;
+  };
 }
 
 export interface ITransactionsDetails {
-  transactionDetails: ITransactionsDetail[];
+  transactionDetail: ITransactionsDetail[];
 }

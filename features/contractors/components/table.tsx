@@ -61,12 +61,13 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
   useEffect(() => {
     const data = {
       page: 1,
-      limit: 50,
+      limit: 5,
     };
 
     getContactorDetail(data).then((response: IContractors) => {
       setLoading(false);
       setContractors(response);
+      console.log(response);
     });
   }, []);
 

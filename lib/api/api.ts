@@ -304,12 +304,13 @@ export const getContactorDetail = async (data: IContractorPostData) => {
 export const getTransactionDetail = async (data: IContractorPostData) => {
   try {
     const response: AxiosResponse = await api.get(
-      "/admin_get_contractor_detail",
+      "/admin_get_transaction_detail",
       { params: data }
     );
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      console.log(error.response);
       if (error.response) {
         // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
