@@ -8,76 +8,56 @@ import NotificationBox from "./components/box";
 import warning from "@/public/warning.svg";
 import money from "@/public/money.svg";
 import verified from "@/public/round-verified.svg";
-import { getAllNotifications } from "@/lib/api/api";
+import { getAllNotifications, viewNotification } from "@/lib/api/api";
+import { INotifications } from "@/lib/types";
+import Paginator from "../shared/table/components/paginator";
+import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 
 function Notification() {
+  const [totalNotifications, setTotalNotifications] = useState(0);
+  const [notifications, setNotifications] = useState<INotifications[]>();
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getAllNotifications({ page: 1, limit: 50 }).then((res) => {
-      console.log(res);
+    setLoading(true);
+    getAllNotifications({ page: currentPage, limit: 10 }).then((res) => {
+      if (res) {
+        setLoading(false);
+        setTotalNotifications(res.totalNotification);
+        setNotifications(res.notifications);
+        viewNotification();
+      }
     });
-  }, []);
+  }, [currentPage]);
 
   return (
-    <div>
+    <div className="mb-8">
       <Header />
+      {loading && <LoadingTemplate />}
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
           <PageHeading page_title="Notifications" />
-          <p className="text-center text-sm font-semibold underline">
+          {/* <p className="text-center text-sm font-semibold underline">
             Mark all as read
-          </p>
+          </p> */}
         </div>
-        <div>
-          <NotificationBox
-            imgSrc={money}
-            title="Payment Received!"
-            date="28th July, 2023"
-            info="Customer just paid for a job."
-          />
-          <NotificationBox
-            imgSrc={warning}
-            title="Attention!"
-            date="28th July, 2023"
-            info="There is a dispute between a contractor and customer. please send an RF representative."
-          />
-          <NotificationBox
-            imgSrc={warning}
-            title="Attention!"
-            date="28th July, 2023"
-            info="There is a dispute between a contractor and customer. please send an RF representative."
-          />
-          <NotificationBox
-            imgSrc={money}
-            title="Payment Received!"
-            date="28th July, 2023"
-            info="Customer just paid for a job."
-          />
-          <NotificationBox
-            imgSrc={money}
-            title="Payment Received!"
-            date="28th July, 2023"
-            info="Customer just paid for a job."
-          />
-          <NotificationBox
-            imgSrc={verified}
-            title="Well done!"
-            date="28th July, 2023"
-            info="You just successfully published a skill."
-          />
-          <NotificationBox
-            imgSrc={warning}
-            title="Attention!"
-            date="28th July, 2023"
-            info="There is a dispute between a contractor and customer. please send an RF representative."
-          />
-          <NotificationBox
-            imgSrc={verified}
-            title="Well done!"
-            date="28th July, 2023"
-            info="You just successfully published a skill."
-          />
+        <div className="mb-8">
+          {notifications?.map((item) => (
+            <NotificationBox
+              key={item._id}
+              imgSrc={money}
+              title="Payment Received!"
+              date={formatDateToDDMMYY(item.createdAt)}
+              info={item.message}
+            />
+          ))}
         </div>
+
+        <Paginator
+          max={totalNotifications}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </PageBody>
     </div>
   );

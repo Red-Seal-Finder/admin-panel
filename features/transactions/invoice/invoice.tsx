@@ -28,8 +28,6 @@ const Invoice = () => {
   const text = `Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus.`;
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [customer, setCustomer] = useState<ICustomerData>();
-  const [contractor, setContractor] = useState<IContractorsDetails>();
   const ref = useRef<HTMLDivElement>(null);
   const closeModal = () => {
     setShowModal(false);
@@ -45,24 +43,6 @@ const Invoice = () => {
       router.push("/transactions");
       return;
     }
-
-    getSingleCustomerDetail({ customerId: transaction.job.customerId }).then(
-      (res) => {
-        console.log(res);
-        if (res) {
-          setCustomer(res.customer);
-          getSingleContractorsDetail({
-            contractorId: transaction.job.contractorId,
-          }).then((res) => {
-            console.log(res);
-            if (res) {
-              setContractor(res.artisan);
-              setIsLoading(false);
-            }
-          });
-        }
-      }
-    );
   }, []);
 
   return (
@@ -118,18 +98,18 @@ const Invoice = () => {
                 <tbody>
                   <ProfileColumn
                     position="Customer’s profile"
-                    name={transaction.from.fullName}
-                    phoneNumber={customer?.customer.phoneNumber || ""}
+                    name={transaction.customer.fullName}
+                    phoneNumber={transaction.customer.phoneNumber}
                     stars={1}
                     imageSrc={userOne.src}
                   />
                   <ProfileColumn
                     position="Contractor’s profile"
-                    name="Abdulahi Balla"
-                    phoneNumber="+49 17687934521"
+                    name={`${transaction.contractor.firstName} ${transaction.contractor.lastName}`}
+                    phoneNumber={transaction.contractorDocument.phoneNumber}
                     stars={4}
-                    imageSrc={userTwo.src}
-                    job="Furniture assembler"
+                    imageSrc={transaction.contractor.profileImage}
+                    job={transaction.contractorDocument.skill}
                   />
                   <SingleLineColumn
                     name="Invoice ID"

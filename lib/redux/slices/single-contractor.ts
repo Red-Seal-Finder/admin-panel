@@ -33,6 +33,7 @@ const initialState: IState = {
       website: "",
       yearExpirence: "",
     },
+    jobHistory: [],
   },
 };
 

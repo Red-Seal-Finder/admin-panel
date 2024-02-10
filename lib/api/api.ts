@@ -1,8 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { setCookie } from "cookies-next";
 import {
   IContractorPostData,
-  ICustomers,
   IForgotPasswordData,
   ILoginData,
   IQuestion,
@@ -12,7 +10,6 @@ import {
   IVerifyEmailData,
   IGetJobsData,
   IChangeContractorStatusData,
-  IProfileData,
 } from "../types";
 import { toast } from "react-toastify";
 
@@ -32,7 +29,6 @@ api.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    // Handle request errors here
     return Promise.reject(error);
   }
 );
@@ -40,11 +36,9 @@ api.interceptors.request.use(
 // Interceptor to handle response errors
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    // You can modify the response data here before it's returned
     return response;
   },
   (error: AxiosError) => {
-    // Handle response errors here
     return Promise.reject(error);
   }
 );
@@ -61,15 +55,16 @@ export const login = async (data: ILoginData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-login-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -92,21 +87,23 @@ export const signup = async (data: ISignupData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-signup-error",
         });
         return { success: false, message: message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "signup-error",
       });
       return { success: false };
     }
@@ -128,15 +125,16 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-verfiy-email-error",
         });
         return { success: false };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -144,6 +142,7 @@ export const verifyEmail = async (data: IVerifyEmailData) => {
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "verfiy-email-error",
       });
       return { success: false };
     }
@@ -165,15 +164,16 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-forgotpassword-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -181,6 +181,7 @@ export const forgotPassword = async (data: IForgotPasswordData) => {
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "forgotpassword-error",
       });
       return { success: false };
     }
@@ -202,15 +203,16 @@ export const resetPassword = async (data: IResetPasswordData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-resetpassword-error",
         });
         return { success: false, message: message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -218,6 +220,7 @@ export const resetPassword = async (data: IResetPasswordData) => {
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "resetpassword-error",
       });
       return { success: false };
     }
@@ -232,18 +235,20 @@ export const getCustomerDetail = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-customer-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-customer-detail-error",
       });
     }
   }
@@ -260,18 +265,20 @@ export const getSingleCustomerDetail = async (data: { customerId: string }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-single-customer-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-single-customer-detail-error",
       });
     }
   }
@@ -290,18 +297,20 @@ export const getSingleContractorsDetail = async (data: {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-single-contractor-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-single-contractor-detail-error",
       });
     }
   }
@@ -315,18 +324,20 @@ export const getOverviewDetail = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-overview-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-overview-detail-error",
       });
     }
   }
@@ -342,18 +353,20 @@ export const getContactorDetail = async (data: IContractorPostData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-contractor-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-contractor-detail-error",
       });
     }
   }
@@ -370,18 +383,20 @@ export const getTransactionDetail = async (data: IContractorPostData) => {
     if (axios.isAxiosError(error)) {
       console.log(error.response);
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-transaction-detail-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-transaction-detail-error",
       });
     }
   }
@@ -396,18 +411,20 @@ export const getSubAdmins = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-sub-admins-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-sub-admins-error",
       });
     }
   }
@@ -422,18 +439,20 @@ export const getAllNotifications = async (data: IContractorPostData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-all-notifications-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "error-get-all-notifications-error",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-all-notifications-error",
       });
     }
   }
@@ -446,42 +465,46 @@ export const getTotalUnseenNotification = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-total-notifications-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-total-notifications-error",
       });
     }
   }
 };
 
-export const viewANotification = async () => {
+export const viewNotification = async () => {
   try {
     const response: AxiosResponse = await api.post("/view_unseen_notification");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-view-notifications-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "view-notifications-error",
       });
     }
   }
@@ -502,15 +525,16 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-validate-sub-admin-error",
         });
         return { success: false };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -518,6 +542,7 @@ export const validateSubAdmin = async (data: { subAdminId: string }) => {
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "validate-sub-admin-error",
       });
       return { success: false };
     }
@@ -531,7 +556,6 @@ export const validateAContractorDocument = async (data: {
       "admin_validate_contractor_document",
       data
     );
-    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -540,15 +564,16 @@ export const validateAContractorDocument = async (data: {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-validate-contractor-error",
         });
         return { success: false };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -556,6 +581,7 @@ export const validateAContractorDocument = async (data: {
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "validate-contractor-error",
       });
       return { success: false };
     }
@@ -570,7 +596,6 @@ export const changeContractorStatus = async (
       "admin_change_contractor_status",
       data
     );
-    console.log(response);
     const responseData = response.data;
     toast.success(responseData.message, {
       position: toast.POSITION.TOP_LEFT,
@@ -579,15 +604,16 @@ export const changeContractorStatus = async (
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-change-contractor-error",
         });
         return { success: false };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false };
       }
@@ -595,6 +621,7 @@ export const changeContractorStatus = async (
       console.error("Non-Axios error:", error);
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "change-contractor-error",
       });
       return { success: false };
     }
@@ -608,18 +635,20 @@ export const getSkills = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-skills-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-skills-error",
       });
     }
   }
@@ -627,23 +656,24 @@ export const getSkills = async () => {
 export const getAllQuestions = async () => {
   try {
     const response: AxiosResponse = await api.get("/admin_get_all_question");
-    console.log(response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server (if available)
         toast.warning(error.response.data.message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-all-questions-error",
         });
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
       }
     } else {
       toast.error("An error occurred. Please try again.", {
         position: toast.POSITION.TOP_LEFT,
+        toastId: "get-all-questions-error",
       });
     }
   }
@@ -660,15 +690,16 @@ export const addNewSkill = async (data: { name: string }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-add-new-skill-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -690,15 +721,16 @@ export const addQuestions = async (data: IQuestion) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-add-questions-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -723,15 +755,16 @@ export const editQuestions = async (data: IEditQuestion) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-edit-questions-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -753,15 +786,16 @@ export const updateProfile = async (data: FormData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-update-profile-error",
         });
         return { success: false };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-update-profile-error",
         });
         return { success: false };
       }
@@ -786,16 +820,17 @@ export const deleteQuestions = async (data: { questionId: string }) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         console.log(error.response);
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-delete-question-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -817,16 +852,17 @@ export const getTotalJobs = async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         console.log(error.response);
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-total-jobs-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }
@@ -850,16 +886,17 @@ export const getJobs = async (data: IGetJobsData) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        // Handle error with response from the server
         console.log(error.response);
         const message = error.response.data.message;
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-jobs-error",
         });
         return { success: false, message };
       } else if (error.request) {
         toast.error("Network error. Please check your connection.", {
           position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
         });
         return { success: false, message: "network_error" };
       }

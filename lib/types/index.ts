@@ -38,10 +38,14 @@ export interface IJobHistory {
     [key: string]: unknown;
   };
 
-  contractor: {
+  contractor?: {
     firstName: string;
     lastName: string;
     [key: string]: unknown;
+  };
+  customer?: {
+    fullName: string;
+    phoneNumber: string;
   };
 }
 
@@ -115,6 +119,7 @@ export interface IContractorsDetails {
     yearExpirence: string;
     [key: string]: unknown;
   };
+  jobHistory: IJobHistory[];
 }
 
 export interface IContractors {
@@ -203,6 +208,20 @@ export interface IProfileData {
 }
 
 export interface ITransactionsDetail {
+  contractor: {
+    firstName: string;
+    lastName: string;
+    profileImage: string;
+  };
+
+  contractorDocument: {
+    phoneNumber: string;
+    skill: string;
+  };
+  customer: {
+    fullName: string;
+    phoneNumber: string;
+  };
   transaction: {
     _id: string;
     type: string;
@@ -243,4 +262,10 @@ export interface ITransactionsDetail {
 
 export interface ITransactionsDetails {
   transactionDetail: ITransactionsDetail[];
+}
+
+export interface INotifications {
+  _id: string;
+  message: string;
+  createdAt: string;
 }

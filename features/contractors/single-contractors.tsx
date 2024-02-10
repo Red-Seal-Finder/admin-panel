@@ -27,8 +27,10 @@ const SingleContractor = () => {
   const { value: contractorDetails } = useAppSelector(
     (state: RootState) => state.singleContractorDetail
   );
+
   const router = useRouter();
   useLayoutEffect(() => {
+    console.log(contractorDetails.contractorProfile._id);
     if (contractorDetails.contractorProfile._id === "") {
       router.push("/contractors");
     }
@@ -216,7 +218,7 @@ const SingleContractor = () => {
           <div className="self-end mb-7">
             <DownloadButton text="Download JOB HISTORY" />
           </div>
-          <JobsHistory />
+          <JobsHistory jobHistory={contractorDetails.jobHistory} />
         </div>
       </Wrapper>
     </>

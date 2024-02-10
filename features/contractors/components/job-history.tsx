@@ -15,43 +15,58 @@ import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
 import { ComplaintsState, CompletedState, PendingState } from "@/public/svg";
 import { usePathname, useRouter } from "next/navigation";
+import { useContractorHistoryTable } from "../hooks/jobhistory";
+import FilterBox from "@/features/shared/job-history-filter/filter-box";
+import { trimString } from "@/lib/utils/trim-string";
+import { formatDateToDDMMYY } from "@/lib/utils/format-date";
+import { IJobHistory } from "@/lib/types";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
 
 const table_headings = [
-  "Customer’s Name",
-  "Invoice ID",
-  "Contractors’s Name",
-  "Job Address",
+  "Customers’s Name",
+  "Phone Number",
+  "Job ID",
   "Date",
-  "Quote",
+  "Job Address",
+  "Inspection",
   "Status",
-  "Action",
 ];
 
-const table_data = [
-  {
-    customers_name: "",
-    id: "",
-    contractors_name: "",
-    job_address: "",
-    date: "",
-    quote: "",
-    status: "",
-  },
-];
+interface IProps {
+  jobHistory: IJobHistory[];
+}
 
-export const JobsHistory = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
+  const {
+    handleQuery,
+    notFound,
+    showFilters,
+    setShowFilters,
+    handleMonthFiltering,
+    handleYearFiltering,
+    availableYears,
+    currentContractorHistory,
+  } = useContractorHistoryTable({ jobHistory });
   return (
     <BorderedTableCard>
       <div className="flex items-center justify-between w-full">
         <Heading name="Job History" />
         <div className="flex gap-8">
-          <Searchbar />
-          <Filter />
+          <Searchbar
+            placeholder="Search for a name"
+            handleQuery={handleQuery}
+            notFound={notFound}
+          />
+          <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
+            <FilterBox
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
+              availableYears={availableYears}
+              setShowFilters={setShowFilters}
+            />
+          </Filter>
         </div>
       </div>
 
@@ -66,49 +81,16 @@ export const JobsHistory = () => {
           </Thead>
 
           <tbody>
-            {table_data?.map((data, index) => (
-              <tr
-                key={index}
-                onClick={() => router.push(`${pathname}/${index}`)}
-                className="cursor-pointer"
-              >
-                {Object.keys(data).map((item, idx) => (
-                  <Td key={idx}>
-                    {/* Typescript assertion of key from object dot keys method */}
-                    {item === "status" ? (
-                      <div className="flex gap-[6px] items-center">
-                        <span>
-                          {/* {data[item] === "Completed" ? (
-                            <CompletedState />
-                          ) : data[item] === "Complaints" ? (
-                            <ComplaintsState />
-                          ) : (
-                            <PendingState />
-                          )} */}
-                        </span>
-                        {data[item as keyof typeof data]}
-                      </div>
-                    ) : (
-                      <>{data[item as keyof typeof data]}</>
-                    )}
-                  </Td>
-                ))}
+            {currentContractorHistory?.map((item, index) => (
+              <tr key={index}>
+                <Td>{item?.customer?.fullName}</Td>
+                <Td>{item?.customer?.phoneNumber} </Td>
 
-                <Td>
-                  <></>
-                  {/* <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z"
-                      fill="#555555"
-                    />
-                  </svg> */}
-                </Td>
+                <Td>{trimString(item.job._id, 8)}</Td>
+                <Td>{formatDateToDDMMYY(item.job.createdAt)}</Td>
+                <Td>{trimString(item.job.address, 25)}</Td>
+                <Td>{item.job.inspection.status ? "True" : "False"}</Td>
+                <Td>{trimString(item.job.status, 12)}</Td>
               </tr>
             ))}
           </tbody>

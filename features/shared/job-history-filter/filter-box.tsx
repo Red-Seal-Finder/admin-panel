@@ -11,17 +11,12 @@ interface IProps {
 
 const FilterBox: React.FC<IProps> = ({
   setShowFilters,
-  handleRatingFiltering,
   handleYearFiltering,
   handleMonthFiltering,
   availableYears,
 }) => {
   const [dropDateSelect, setDropDateSelect] = useState(false);
   const [dropRatingSelect, setDropRatingSelect] = useState(false);
-
-  const handleRatingChange = (value: number) => {
-    if (handleRatingFiltering) handleRatingFiltering(value);
-  };
 
   const handleYearChange = (value: number) => {
     handleYearFiltering(value);
@@ -102,40 +97,6 @@ const FilterBox: React.FC<IProps> = ({
           </div>
         )}
       </div>
-
-      {handleRatingFiltering && (
-        <div className="">
-          <button
-            type="button"
-            className="font-[500] text-[#555] border border-[#555]
-           py-1 w-full rounded-md text-center outline-none mt-4 mb-1"
-            onClick={() => setDropRatingSelect(!dropRatingSelect)}
-          >
-            Rating
-          </button>
-
-          {dropRatingSelect && (
-            <div className={`flex flex-col gap-4 mt-3`}>
-              <div className="">
-                <label className="mb-1 block">Select Rating:</label>
-                <div className="bg-[#f0f0f0] pl-2 pr-2 py-1 rounded-md">
-                  <select
-                    onChange={(e) => handleRatingChange(+e.target.value)}
-                    className="bg-transparent pr-2 outline-none w-full"
-                  >
-                    <option value="none">All Stars</option>
-                    <option value={5}>5 Stars</option>
-                    <option value={4}>4 Stars</option>
-                    <option value={3}>3 Stars</option>
-                    <option value={2}>2 Stars</option>
-                    <option value={1}>1 Star</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
 
       <button
         type="button"

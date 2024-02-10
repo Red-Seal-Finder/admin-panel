@@ -21,7 +21,6 @@ const Jobs = () => {
       <PageBody>
         <div className="flex justify-between mb-6 items-center">
           <PageHeading page_title="Jobs" />
-          {/* <Calender /> */}
         </div>
         {/* Analytic Cards */}
         <div className="overflow-x-auto mb-6">

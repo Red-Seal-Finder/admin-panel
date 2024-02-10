@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import Header from "../shared/inner-pages/header";
 import Wrapper from "../shared/inner-pages/wrapper";
 import { filledArrayFromNumber } from "@/lib/utils/array-from-number";
@@ -12,11 +12,19 @@ import DownloadButton from "../shared/page-body/download-button";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
 import { extractInitials } from "@/lib/utils/extract-initials";
+import { useRouter } from "next/navigation";
 
 const SingleCustomer = () => {
   const { value: customerDetails } = useAppSelector(
     (state: RootState) => state.singleCustomerDetail
   );
+
+  const router = useRouter();
+  useLayoutEffect(() => {
+    if (customerDetails.customer._id === "") {
+      router.push("/customers");
+    }
+  }, []);
 
   return (
     <>
@@ -79,7 +87,7 @@ const SingleCustomer = () => {
           <div className="self-end mb-7">
             <DownloadButton text="Download JOB HISTORY" />
           </div>
-          <JobsHistory jobHisory={customerDetails?.jobHistory} />
+          <JobsHistory jobHistory={customerDetails?.jobHistory} />
         </div>
       </Wrapper>
     </>

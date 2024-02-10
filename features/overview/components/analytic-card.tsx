@@ -38,7 +38,7 @@ const AnalyticCard: React.FC<IProps> = ({
           <CountUp start={0} end={+numbers} duration={5} />
         </div>
 
-        <div className="flex gap-2">
+        <div className="hidden gap-2">
           {percent > 0 ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +67,7 @@ const AnalyticCard: React.FC<IProps> = ({
             </svg>
           )}
           <p
-            className={`font-[500] ${
+            className={`font-[500]  ${
               percent > 0 ? "text-[#0D8012]" : "text-[#9A0101]"
             }`}
           >

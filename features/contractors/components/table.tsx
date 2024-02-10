@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TableCard from "@/features/shared/table/components/table-card";
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
@@ -16,20 +16,11 @@ import {
   RatingStar,
   YellowStar,
 } from "@/public/svg";
-import { usePathname, useRouter } from "next/navigation";
-import { getContactorDetail } from "@/lib/api/api";
-import { IContractors, IContractorsDetails } from "@/lib/types";
 import Action from "./action";
 import { filledArrayFromNumber } from "@/lib/utils/array-from-number";
 import { trimString } from "@/lib/utils/trim-string";
-import { setsingleContractorsDetail } from "../../../lib/redux/slices/single-contractor";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import {
-  findContractorsLargestYear,
-  findContractorsSmallestYear,
-} from "@/lib/utils/get-min-or-max-date";
-import { generateRange } from "@/lib/utils/generate-range";
-import FilterBox from "./filter-box";
+import { useContractorTable } from "../hooks/table";
+import FilterBox from "@/features/customers/components/filter-box";
 
 // Since the table data is dynamic a table component will replace by this template
 // This Template defines how you can implement any table on your page
@@ -49,83 +40,18 @@ interface IProps {
 }
 
 const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const [contractors, setContractors] = useState<IContractors>();
-  const [currentContractors, setCurrentContractors] = useState<IContractors>();
-  const [queryedContractors, setQueryedContractors] = useState<IContractors>();
-  const [isQuerying, setIsQuerying] = useState(false);
-  const [notFound, setNotFound] = useState(false);
-
-  useEffect(() => {
-    const data = {
-      page: 1,
-      limit: 5,
-    };
-
-    getContactorDetail(data).then((response: IContractors) => {
-      setLoading(false);
-      setContractors(response);
-      console.log(response);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!isQuerying) {
-      setCurrentContractors(contractors);
-    } else {
-      setCurrentContractors(queryedContractors);
-    }
-  }, [isQuerying, contractors, queryedContractors]);
-
-  const dispatch = useAppDispatch();
-  const handleViewAContractors = (item: IContractorsDetails) => {
-    dispatch(setsingleContractorsDetail(item));
-    router.push(`${pathname}/${item.contractorProfile._id}`);
-  };
-
-  const handleQuery = (value: string) => {
-    value === "" ? setIsQuerying(false) : setIsQuerying(true);
-
-    if (contractors) {
-      const filterArray = contractors.artisans.filter(
-        (item) =>
-          item.contractorProfile.email
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          item.contractorProfile.firstName
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          item.contractorProfile.lastName
-            .toLowerCase()
-            .includes(value.toLowerCase())
-      );
-
-      setQueryedContractors({ artisans: filterArray });
-
-      filterArray.length === 0 ? setNotFound(true) : setNotFound(false);
-    }
-  };
-
-  const [showFilters, setShowFilters] = useState(false);
-  const [availableYears, setAvailableYears] = useState<number[]>([0]);
-
-  useEffect(() => {
-    if (contractors) {
-      const smallestDate = findContractorsSmallestYear(contractors.artisans);
-      const largestDate = findContractorsLargestYear(contractors.artisans);
-      setAvailableYears(generateRange(smallestDate, largestDate));
-    }
-  }, [currentContractors]);
-
-  const handleRatingFiltering = (value: number) => {
-    console.log(value);
-  };
-
-  const handleStatusFiltering = (value: number) => {
-    console.log(value);
-  };
+  const {
+    handleQuery,
+    notFound,
+    showFilters,
+    setShowFilters,
+    handleRatingFiltering,
+    handleMonthFiltering,
+    handleYearFiltering,
+    availableYears,
+    currentContractors,
+    handleViewAContractors,
+  } = useContractorTable({ setLoading });
 
   return (
     <TableCard>
@@ -140,9 +66,10 @@ const ContractorsTable: React.FC<IProps> = ({ setLoading }) => {
           <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
             <FilterBox
               handleRatingFiltering={handleRatingFiltering}
-              handleStatusFiltering={handleStatusFiltering}
               availableYears={availableYears}
               setShowFilters={setShowFilters}
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
             />
           </Filter>
         </div>

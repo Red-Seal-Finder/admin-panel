@@ -4,7 +4,6 @@ import Sidebar from "./sidebar";
 import { redirect, useRouter } from "next/navigation";
 import LoadingTemplate from "./loading";
 import { getOverviewDetail } from "@/lib/api/api";
-import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setOverviewDetails } from "@/lib/redux/slices/overview-data";
 import { RootState } from "@/lib/redux/store";
@@ -27,8 +26,8 @@ const Layout: React.FC<IProps> = ({ children }) => {
     if (token !== null && token !== undefined) {
       getOverviewDetail().then((response) => {
         if (!response) {
-          setAuthenticated(false);
           localStorage.removeItem("token");
+          setAuthenticated(false);
           router.push("/auth/login");
         } else {
           dispatch(setOverviewDetails(response));

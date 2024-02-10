@@ -18,9 +18,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { IJobHistory } from "@/lib/types";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import { trimString } from "@/lib/utils/trim-string";
-
-// Since the table data is dynamic a table component will replace by this template
-// This Template defines how you can implement any table on your page
+import { useCustomerHistoryTable } from "../hooks/jobhistory";
+import FilterBox from "@/features/shared/job-history-filter/filter-box";
 
 const table_headings = [
   "Contractor’s Name",
@@ -32,20 +31,39 @@ const table_headings = [
 ];
 
 interface IProps {
-  jobHisory: IJobHistory[];
+  jobHistory: IJobHistory[];
 }
 
-export const JobsHistory: React.FC<IProps> = ({ jobHisory }) => {
-  const router = useRouter();
-  const pathname = usePathname();
+export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
+  const {
+    handleQuery,
+    notFound,
+    showFilters,
+    setShowFilters,
+    handleMonthFiltering,
+    handleYearFiltering,
+    availableYears,
+    currentCustomerHistory,
+  } = useCustomerHistoryTable({ jobHistory });
 
   return (
     <BorderedTableCard>
       <div className="flex items-center justify-between w-full">
         <Heading name="Job History" />
         <div className="flex gap-8">
-          <Searchbar />
-          <Filter />
+          <Searchbar
+            placeholder="Search by name, address,"
+            handleQuery={handleQuery}
+            notFound={notFound}
+          />
+          <Filter showFilters={showFilters} setShowFilters={setShowFilters}>
+            <FilterBox
+              handleMonthFiltering={handleMonthFiltering}
+              handleYearFiltering={handleYearFiltering}
+              availableYears={availableYears}
+              setShowFilters={setShowFilters}
+            />
+          </Filter>
         </div>
       </div>
 
@@ -60,16 +78,16 @@ export const JobsHistory: React.FC<IProps> = ({ jobHisory }) => {
           </Thead>
 
           <tbody>
-            {jobHisory?.map((item, index) => (
+            {currentCustomerHistory?.map((item, index) => (
               <tr key={index}>
                 <Td>
-                  {item.contractor.firstName} {item.contractor.lastName}
+                  {item.contractor?.firstName} {item.contractor?.lastName}
                 </Td>
                 <Td>{trimString(item.job._id, 8)}</Td>
                 <Td>{formatDateToDDMMYY(item.job.createdAt)}</Td>
                 <Td>{trimString(item.job.address, 25)}</Td>
                 <Td>{item.job.inspection.status ? "True" : "False"}</Td>
-                <Td>{item.job.status}</Td>
+                <Td>{trimString(item.job.status, 12)}</Td>
               </tr>
             ))}
           </tbody>
