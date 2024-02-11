@@ -160,6 +160,8 @@ export interface IJob {
     status: boolean;
     confirmPayment: boolean;
   };
+  jobTitle: string;
+  postalCode: string;
   _id: string;
   address: string;
   status: string;
@@ -180,6 +182,7 @@ export interface IJobs {
   };
   customer: {
     fullName: string;
+    email: string;
     phoneNumber: string;
     profileImg: string;
     [key: string]: unknown;

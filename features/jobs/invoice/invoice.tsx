@@ -33,7 +33,7 @@ const Invoice = () => {
   );
   useLayoutEffect(() => {
     if (jobDetail.job._id === "") {
-      router.push("/contractors");
+      router.push("/jobs");
     }
   }, []);
   // const [isLoading, setIsLoading] = useState(false);

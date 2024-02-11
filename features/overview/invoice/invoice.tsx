@@ -4,11 +4,7 @@ import Header from "../../shared/inner-pages/header";
 import Wrapper from "@/features/shared/inner-pages/wrapper";
 import BorderRectangle from "@/features/shared/inner-pages/bordered-rect";
 import ProfileColumn from "@/features/shared/inner-pages/profile-column";
-
-import userOne from "@/public/user-one.png";
-import userTwo from "@/public/user-two.png";
 import SingleLineColumn from "@/features/shared/inner-pages/single-line-column";
-import StatusColumn from "@/features/shared/inner-pages/status-column";
 import DescriptionColumn from "@/features/shared/inner-pages/description-column";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

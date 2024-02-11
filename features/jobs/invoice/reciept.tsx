@@ -1,4 +1,8 @@
-import { CompletedState } from "@/public/svg";
+"use client";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
+import { trimString } from "@/lib/utils/trim-string";
+import { CompletedState, PendingState } from "@/public/svg";
 import Image from "next/image";
 import React from "react";
 
@@ -7,6 +11,10 @@ interface IProps {
 }
 
 const Reciept: React.FC<IProps> = ({ closeModal }) => {
+  const { value: jobDetail } = useAppSelector(
+    (state: RootState) => state.jobDetail
+  );
+
   const tableBody = [
     { material: "Material", rate: "2%", tax: "0.15%", amount: "5000" },
     { material: "Material", rate: "5%", tax: "0.05%", amount: "2500" },
@@ -43,17 +51,27 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between items-center mt-8">
         {/* Invoice Image */}
         <div className="flex gap-5">
-          <Image src="/wood-table.png" alt="" width={79} height={76} />
+          {/* <Image src="/wood-table.png" alt="" width={79} height={76} /> */}
 
           <div className="flex flex-col gap-y-1">
             <p className="font-[600] text-xl uppercase">
               Invoice
-              <span className="text-[#417AA1] pl-2">#008</span>
+              <span className="text-[#417AA1] pl-2">
+                {trimString(jobDetail.job._id, 5)}
+              </span>
             </p>
 
-            <p className="text-xs font-[500]">Capentary</p>
+            <p className="text-xs font-[500]">{jobDetail.job.jobTitle}</p>
             <p className="text-suscess flex gap-1 items-center">
-              <CompletedState /> Paid
+              {jobDetail.job.inspection.confirmPayment ? (
+                <>
+                  <CompletedState /> <span>Paid</span>
+                </>
+              ) : (
+                <>
+                  <PendingState /> <span>Pending</span>{" "}
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -92,20 +110,18 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between mt-10">
         <div className="">
           <p className="text-xs font-[600] text-[#A7A7A7]">From</p>
-          <p className="font-[600]">Customer’s Name</p>
-          <p className="text-sm text-[#555]">Customer’s gmail</p>
+          <p className="font-[600]">{jobDetail.customer.fullName}</p>
+          <p className="text-sm text-[#555]">
+            {trimString(jobDetail.customer.email, 10)}
+          </p>
         </div>
 
         <div className="">
           <p className="text-xs font-[600] text-[#A7A7A7]">to</p>
-          <p className="font-[600]">Professional’s Name</p>
-          <p className="text-sm text-[#555]">Customer’s gmail</p>
-        </div>
-
-        <div>
-          <p className="text-xs font-[600] text-[#A7A7A7]">to</p>
-          <Image src="/mastercard.svg" alt="" height={21} width={28} />
-          <p className="text-sm font-[500]">***1234</p>
+          <p className="font-[600]">{`${jobDetail.contractor.firstName} ${jobDetail.contractor.lastName}`}</p>
+          <p className="text-sm text-[#555]">
+            {trimString(jobDetail.contractor.email, 10)}
+          </p>
         </div>
       </div>
 
