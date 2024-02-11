@@ -35,7 +35,7 @@ const Invoice = () => {
     if (jobDetail.job._id === "") {
       router.push("/jobs");
     }
-  }, []);
+  }, [jobDetail.job._id]);
   // const [isLoading, setIsLoading] = useState(false);
   return (
     <>

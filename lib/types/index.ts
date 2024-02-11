@@ -31,6 +31,7 @@ export interface IJobHistory {
     status: string;
     createdAt: string;
     address: string;
+    totalAmountContractorWithdraw: string;
     inspection: {
       confirmPayment: boolean;
       status: boolean;
@@ -155,6 +156,24 @@ export interface IGetJobsData {
   limit: number;
 }
 
+export interface IQuate {
+  amount
+: 
+number
+material
+: 
+string;
+qty
+: 
+number;
+rate
+: 
+number
+_id
+: 
+string;
+}
+
 export interface IJob {
   inspection: {
     status: boolean;
@@ -165,8 +184,11 @@ export interface IJob {
   _id: string;
   address: string;
   status: string;
+  quate: IQuate[]
   description: string;
   createdAt: string;
+  totalAmountContractorWithdraw: string;
+  time:string;
   [key: string]: unknown;
 }
 export interface IJobs {

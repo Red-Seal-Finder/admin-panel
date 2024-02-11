@@ -17,6 +17,11 @@ const initialState: IState = {
       address: "",
       status: "",
       description: "",
+      jobTitle: '',
+      postalCode: '',
+      totalAmountContractorWithdraw: '',
+      time:'',
+      quate:[],
       createdAt: "",
     },
     contractor: {
@@ -24,9 +29,13 @@ const initialState: IState = {
       firstName: "",
       lastName: "",
       profileImage: "",
+      status:'',
+    email: ''
     },
     customer: {
       fullName: "",
+      email: '',
+      profileImg:'',
       phoneNumber: "",
     },
   },

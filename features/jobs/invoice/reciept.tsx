@@ -1,6 +1,7 @@
 "use client";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
+import { formatTimeDDMMYY } from "@/lib/utils/format-date";
 import { trimString } from "@/lib/utils/trim-string";
 import { CompletedState, PendingState } from "@/public/svg";
 import Image from "next/image";
@@ -117,7 +118,7 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
         </div>
 
         <div className="">
-          <p className="text-xs font-[600] text-[#A7A7A7]">to</p>
+          <p className="text-xs font-[600] text-[#A7A7A7]">To</p>
           <p className="font-[600]">{`${jobDetail.contractor.firstName} ${jobDetail.contractor.lastName}`}</p>
           <p className="text-sm text-[#555]">
             {trimString(jobDetail.contractor.email, 10)}
@@ -128,11 +129,11 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between mt-8">
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Estimate</p>
-          <p>$400.00</p>
+          <p>${jobDetail.job.totalAmountContractorWithdraw}</p>
         </div>
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Due Date</p>
-          <p>19/09/2023</p>
+          <p>{formatTimeDDMMYY(jobDetail.job.time)}</p>
         </div>
       </div>
 
@@ -152,13 +153,13 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
           </thead>
 
           <tbody>
-            {tableBody?.map((item, index) => (
-              <tr key={index}>
-                {Object.keys(item).map((data, idx) => (
-                  <td className="text-sm py-3 px-4" key={idx}>
-                    {item[data as keyof typeof item]}
-                  </td>
-                ))}
+            {jobDetail.job.quate.map((item, index) => (
+              <tr key={item._id}>
+                
+                <td className="text-sm py-3 px-4 capitalize">{item.material}</td>
+                <td className="text-sm py-3 px-4">{item.rate}</td>
+                <td className="text-sm py-3 px-4">{item.qty}</td>
+                <td className="text-sm py-3 px-4">{item.amount}</td>
               </tr>
             ))}
 
