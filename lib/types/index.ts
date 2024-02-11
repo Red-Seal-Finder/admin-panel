@@ -174,11 +174,14 @@ export interface IJobs {
     firstName: string;
     lastName: string;
     profileImage: string;
+    email: string;
+    status: string;
     [key: string]: unknown;
   };
   customer: {
     fullName: string;
     phoneNumber: string;
+    profileImg: string;
     [key: string]: unknown;
   };
 }

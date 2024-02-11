@@ -93,15 +93,14 @@ const Invoice = () => {
                     name={jobDetail.customer.fullName}
                     phoneNumber={jobDetail.customer.phoneNumber}
                     stars={1}
-                    imageSrc={userOne.src}
+                    imageSrc={jobDetail.customer.profileImg}
                   />
                   <ProfileColumn
                     position="Contractor’s profile"
                     name={`${jobDetail.contractor.firstName} ${jobDetail.contractor.lastName}`}
-                    phoneNumber="+49 17687934521"
+                    phoneNumber={jobDetail.contractor.email}
                     stars={4}
                     imageSrc={jobDetail.contractor.profileImage}
-                    job="Furniture assembler"
                   />
                   <SingleLineColumn name="Job ID" value={jobDetail.job._id} />
                   <SingleLineColumn

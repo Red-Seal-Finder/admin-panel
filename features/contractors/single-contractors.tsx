@@ -49,6 +49,7 @@ const SingleContractor = () => {
       contractorDocsId: contractorDetails.contractorProfile._id,
     }).then((response) => {
       if (response) {
+        router.push("/contractors");
         setIsLoading(false);
       }
     });
@@ -68,6 +69,7 @@ const SingleContractor = () => {
     }).then((response) => {
       if (response) {
         setIsLoading(false);
+        router.push("/contractors");
       }
     });
   };

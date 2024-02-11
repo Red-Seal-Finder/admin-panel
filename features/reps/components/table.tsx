@@ -125,7 +125,7 @@ const RepsTable = () => {
         <Heading name="Representative’s list" />
         <div className="flex gap-8">
           <Searchbar />
-          <Filter />
+          {/* <Filter /> */}
         </div>
       </div>
 
