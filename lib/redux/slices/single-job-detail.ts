@@ -20,7 +20,11 @@ const initialState: IState = {
       jobTitle: '',
       postalCode: '',
       totalAmountContractorWithdraw: '',
+      totalAmountCustomerToPaid:'',
+      totalQuatation:'',
       time:'',
+      gst:'',
+
       quate:[],
       createdAt: "",
     },

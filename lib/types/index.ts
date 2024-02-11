@@ -179,6 +179,9 @@ export interface IJob {
     status: boolean;
     confirmPayment: boolean;
   };
+  totalAmountCustomerToPaid:string;
+  totalQuatation:string;
+  gst:string;
   jobTitle: string;
   postalCode: string;
   _id: string;

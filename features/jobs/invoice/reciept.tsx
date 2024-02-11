@@ -147,7 +147,7 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
             <tr className="bg-[#F1F1F1]">
               <th className="font-[500] py-3 px-4">Materials</th>
               <th className="font-[500] py-3 px-4">Rate</th>
-              <th className="font-[500] py-3 px-4">Tax</th>
+              <th className="font-[500] py-3 px-4">Quantity</th>
               <th className="font-[500] py-3 px-4">Amount</th>
             </tr>
           </thead>
@@ -167,25 +167,25 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Subtotal</td>
-              <td className="text-sm py-3 px-4">10000</td>
+              <td className="text-sm py-3 px-4">{jobDetail.job.totalQuatation}</td>
             </tr>
             <tr>
+              {/* <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
-              <td className="text-sm py-3 px-4"></td>
-              <td className="text-sm py-3 px-4">Tax</td>
-              <td className="text-sm py-3 px-4">2440</td>
+              <td className="text-sm py-3 px-4">Quantity</td>
+              <td className="text-sm py-3 px-4"></td> */}
             </tr>
             <tr>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">GST</td>
-              <td className="text-sm py-3 px-4">100</td>
+              <td className="text-sm py-3 px-4">{jobDetail.job.gst}</td>
             </tr>
             <tr>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Total</td>
-              <td className="text-sm py-3 px-4">15000</td>
+              <td className="text-sm py-3 px-4">{jobDetail.job.totalAmountCustomerToPaid}</td>
             </tr>
           </tbody>
         </table>
