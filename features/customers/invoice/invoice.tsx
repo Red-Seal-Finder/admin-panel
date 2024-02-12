@@ -25,8 +25,6 @@ import Image from "next/image";
 import Reciept from "@/features/shared/reciept";
 
 const Invoice = () => {
-  const status = "Completed";
-  const text = `Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus.`;
   const [showModal, setShowModal] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
   const closeModal = () => {

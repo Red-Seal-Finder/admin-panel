@@ -78,7 +78,7 @@ const JobsHistory = () => {
         <Heading name="Jobs attended to" />
         <div className="flex gap-8">
           <Searchbar />
-          <Filter />
+          {/* <Filter /> */}
         </div>
       </div>
 
