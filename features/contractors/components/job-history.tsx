@@ -48,7 +48,9 @@ export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
     handleYearFiltering,
     availableYears,
     currentContractorHistory,
+    handleViewJob,
   } = useContractorHistoryTable({ jobHistory });
+
   return (
     <BorderedTableCard>
       <div className="flex items-center justify-between w-full">
@@ -82,7 +84,11 @@ export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
 
           <tbody>
             {currentContractorHistory?.map((item, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => handleViewJob(item)}
+                className="cursor-pointer"
+              >
                 <Td>{item?.customer?.fullName}</Td>
                 <Td>{item?.customer?.phoneNumber} </Td>
 

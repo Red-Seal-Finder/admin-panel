@@ -26,27 +26,19 @@ export interface IResetPasswordData {
 }
 
 export interface IJobHistory {
-  job: {
-    _id: string;
-    status: string;
-    createdAt: string;
-    address: string;
-    totalAmountContractorWithdraw: string;
-    inspection: {
-      confirmPayment: boolean;
-      status: boolean;
-    };
-    [key: string]: unknown;
-  };
-
+  job: IJob;
   contractor?: {
     firstName: string;
     lastName: string;
+    profileImage: string;
+    email: string;
     [key: string]: unknown;
   };
   customer?: {
     fullName: string;
     phoneNumber: string;
+    profileImg: string;
+    email: string;
   };
 }
 
@@ -57,6 +49,7 @@ export interface ICustomer {
   phoneNumber: string;
   createdAt: string;
   updatedAt: string;
+  profileImg: string;
   __v: number;
   [key: string]: unknown;
 }
@@ -157,21 +150,11 @@ export interface IGetJobsData {
 }
 
 export interface IQuate {
-  amount
-: 
-number
-material
-: 
-string;
-qty
-: 
-number;
-rate
-: 
-number
-_id
-: 
-string;
+  amount: number;
+  material: string;
+  qty: number;
+  rate: number;
+  _id: string;
 }
 
 export interface IJob {
@@ -179,19 +162,19 @@ export interface IJob {
     status: boolean;
     confirmPayment: boolean;
   };
-  totalAmountCustomerToPaid:string;
-  totalQuatation:string;
-  gst:string;
+  totalAmountCustomerToPaid: string;
+  totalQuatation: string;
+  gst: string;
   jobTitle: string;
   postalCode: string;
   _id: string;
   address: string;
   status: string;
-  quate: IQuate[]
+  quate: IQuate[];
   description: string;
   createdAt: string;
   totalAmountContractorWithdraw: string;
-  time:string;
+  time: string;
   [key: string]: unknown;
 }
 export interface IJobs {
@@ -240,9 +223,13 @@ export interface IProfileData {
 
 export interface ITransactionsDetail {
   contractor: {
+    _id: string;
     firstName: string;
     lastName: string;
     profileImage: string;
+    email: string;
+    status: string;
+    [key: string]: unknown;
   };
 
   contractorDocument: {
@@ -252,6 +239,7 @@ export interface ITransactionsDetail {
   customer: {
     fullName: string;
     phoneNumber: string;
+    email: string;
   };
   transaction: {
     _id: string;
@@ -277,18 +265,7 @@ export interface ITransactionsDetail {
     location: string;
     profileImg: string;
   };
-  job: {
-    address: string;
-    contractorId: string;
-    customerId: string;
-    totalAmountContractorWithdraw: string;
-    totalAmountCustomerToPaid: string;
-    inspection: {
-      status: boolean;
-      confirmPayment: boolean;
-    };
-    status: string;
-  };
+  job: IJob;
 }
 
 export interface ITransactionsDetails {

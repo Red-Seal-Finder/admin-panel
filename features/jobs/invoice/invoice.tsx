@@ -13,10 +13,10 @@ import DescriptionColumn from "@/features/shared/inner-pages/description-column"
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useOnClickOutside } from "@/lib/hooks/use-on-click-outside";
-import Reciept from "./reciept";
 import GoBack from "@/features/shared/go-back-button/go-back";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
+import Reciept from "@/features/shared/reciept";
 
 const Invoice = () => {
   const text = `Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus. Lorem ipsum dolor sit amet consectetur. At leo felis etiam massa maecenas eget fermentum lacus.`;
@@ -50,7 +50,7 @@ const Invoice = () => {
             className="w-[600px] bg-white max-w-auto relative p-7 overflow-y-auto h-screen"
             ref={ref}
           >
-            <Reciept closeModal={setShowModal} />
+            <Reciept jobDetail={jobDetail} closeModal={setShowModal} />
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@ const Invoice = () => {
                     name="Job Address"
                     value={jobDetail.job.address}
                   />
-                  <SingleLineColumn name="Quote" value="$4,000" />
+
                   <DescriptionColumn
                     name="Job Description"
                     text={jobDetail.job.description}

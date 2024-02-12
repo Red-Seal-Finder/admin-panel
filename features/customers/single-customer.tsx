@@ -13,6 +13,7 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { RootState } from "@/lib/redux/store";
 import { extractInitials } from "@/lib/utils/extract-initials";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const SingleCustomer = () => {
   const { value: customerDetails } = useAppSelector(
@@ -21,6 +22,7 @@ const SingleCustomer = () => {
 
   const router = useRouter();
   useLayoutEffect(() => {
+    console.log(customerDetails.customer._id);
     if (customerDetails.customer._id === "") {
       router.push("/customers");
     }
@@ -31,11 +33,25 @@ const SingleCustomer = () => {
       <Header>
         <Wrapper>
           <div className="flex gap-x-6 items-center">
-            <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
-              <p className="text-[30px] font-[600] text-white capitalize">
-                {extractInitials(customerDetails?.customer?.fullName)}
-              </p>
-            </div>
+            {(customerDetails.customer.profileImg === "" ||
+              !customerDetails.customer.profileImg) && (
+              <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
+                <p className="text-[30px] font-[600] text-white capitalize">
+                  {extractInitials(customerDetails?.customer?.fullName)}
+                </p>
+              </div>
+            )}
+
+            {(customerDetails.customer.profileImg !== "" ||
+              customerDetails.customer.profileImg) && (
+              <Image
+                alt=""
+                width={60}
+                height={60}
+                src={customerDetails.customer.profileImg}
+                className="w-[80px] h-[80px] object-cover rounded-[50%]"
+              />
+            )}
 
             <div className="-mt-2">
               <p className="text-[28px] font-[600] capitalize">

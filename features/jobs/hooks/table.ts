@@ -128,6 +128,7 @@ export const useJobTable = ({ setLoading }: UseJobsTableProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const handleViewInvoice = (item: IJobs) => {
+    setLoading(true);
     dispatch(setsingleJobDetail(item));
     router.push(`${pathname}/${item.job._id}`);
   };

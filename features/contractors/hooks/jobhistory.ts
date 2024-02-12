@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { IJobHistory } from "@/lib/types";
 import { generateRange } from "@/lib/utils/generate-range";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setSingleContractorsJob } from "@/lib/redux/slices/single-contractor";
 
 interface IProps {
   jobHistory: IJobHistory[];
@@ -149,6 +151,13 @@ export const useContractorHistoryTable = ({ jobHistory }: IProps) => {
       }
     }
   };
+  const router = useRouter();
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const handleViewJob = (item: IJobHistory) => {
+    dispatch(setSingleContractorsJob(item));
+    router.push(`${pathname}/${item.job._id}`);
+  };
 
   return {
     handleQuery,
@@ -159,5 +168,6 @@ export const useContractorHistoryTable = ({ jobHistory }: IProps) => {
     handleYearFiltering,
     availableYears,
     currentContractorHistory,
+    handleViewJob,
   };
 };

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { IJobHistory } from "@/lib/types";
+import { IJob, IJobHistory } from "@/lib/types";
 import { generateRange } from "@/lib/utils/generate-range";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setsingleContractorsDetail } from "@/lib/redux/slices/single-contractor";
+import { setsingleJobDetail } from "@/lib/redux/slices/single-job-detail";
+import { setSingleCustomersJob } from "@/lib/redux/slices/single-customer";
 
 interface IProps {
   jobHistory: IJobHistory[];
@@ -154,6 +158,13 @@ export const useCustomerHistoryTable = ({ jobHistory }: IProps) => {
       }
     }
   };
+  const router = useRouter();
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const handleViewJob = (item: IJobHistory) => {
+    dispatch(setSingleCustomersJob(item));
+    router.push(`${pathname}/${item.job._id}`);
+  };
 
   return {
     handleQuery,
@@ -164,5 +175,6 @@ export const useCustomerHistoryTable = ({ jobHistory }: IProps) => {
     handleYearFiltering,
     availableYears,
     currentCustomerHistory,
+    handleViewJob,
   };
 };

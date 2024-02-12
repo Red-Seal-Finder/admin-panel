@@ -75,7 +75,7 @@ const CustomersTable: React.FC<IProps> = ({ setLoading }) => {
           <tbody>
             {currentCustomers?.customers?.map((item, index) => (
               <tr
-                key={index}
+                key={item.customer._id}
                 onClick={() => handleViewACustomer(item)}
                 className="cursor-pointer"
               >

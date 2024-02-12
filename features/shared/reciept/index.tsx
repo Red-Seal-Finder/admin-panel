@@ -1,18 +1,17 @@
-import { CompletedState } from "@/public/svg";
+"use client";
+import { formatTimeDDMMYY } from "@/lib/utils/format-date";
+import { trimString } from "@/lib/utils/trim-string";
+import { CompletedState, PendingState } from "@/public/svg";
 import Image from "next/image";
 import React from "react";
+import { IJobHistory, IJobs } from "@/lib/types";
 
 interface IProps {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  jobDetail: IJobs | IJobHistory;
 }
 
-const Reciept: React.FC<IProps> = ({ closeModal }) => {
-  const tableBody = [
-    { material: "Material", rate: "2%", tax: "0.15%", amount: "5000" },
-    { material: "Material", rate: "5%", tax: "0.05%", amount: "2500" },
-    { material: "Material", rate: "9%", tax: "0.45%", amount: "5000" },
-    { material: "Material", rate: "6%", tax: "0.23%", amount: "2500" },
-  ];
+const Reciept: React.FC<IProps> = ({ closeModal, jobDetail }) => {
   return (
     <>
       {/* Logo */}
@@ -30,7 +29,7 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          className="absolute top-5 right-5 z-30"
+          className="absolute top-5 right-5 z-30 cursor-pointer"
           onClick={() => closeModal(false)}
         >
           <path
@@ -41,19 +40,28 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       </>
 
       <div className="flex justify-between items-center mt-8">
-        {/* Invoice Image */}
         <div className="flex gap-5">
-          <Image src="/wood-table.png" alt="" width={79} height={76} />
-
+          {/* Invoice Image */}
+          {/* <Image src="/wood-table.png" alt="" width={79} height={76} /> */}
           <div className="flex flex-col gap-y-1">
             <p className="font-[600] text-xl uppercase">
               Invoice
-              <span className="text-[#417AA1] pl-2">#008</span>
+              <span className="text-[#417AA1] pl-2">
+                {trimString(jobDetail?.job._id, 5)}
+              </span>
             </p>
 
-            <p className="text-xs font-[500]">Capentary</p>
+            <p className="text-xs font-[500]">{jobDetail.job.jobTitle}</p>
             <p className="text-suscess flex gap-1 items-center">
-              <CompletedState /> Paid
+              {jobDetail.job.inspection.confirmPayment ? (
+                <>
+                  <CompletedState /> <span>Paid</span>
+                </>
+              ) : (
+                <>
+                  <PendingState /> <span>Pending</span>{" "}
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -92,31 +100,31 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between mt-10">
         <div className="">
           <p className="text-xs font-[600] text-[#A7A7A7]">From</p>
-          <p className="font-[600]">Customer’s Name</p>
-          <p className="text-sm text-[#555]">Customer’s gmail</p>
+          <p className="font-[600]">{jobDetail.customer?.fullName}</p>
+          <p className="text-sm text-[#555]">
+            {trimString(jobDetail.customer?.email || "", 20)}
+          </p>
         </div>
 
         <div className="">
-          <p className="text-xs font-[600] text-[#A7A7A7]">to</p>
-          <p className="font-[600]">Professional’s Name</p>
-          <p className="text-sm text-[#555]">Customer’s gmail</p>
-        </div>
-
-        <div>
-          <p className="text-xs font-[600] text-[#A7A7A7]">to</p>
-          <Image src="/mastercard.svg" alt="" height={21} width={28} />
-          <p className="text-sm font-[500]">***1234</p>
+          <p className="text-xs font-[600] text-[#A7A7A7]">To</p>
+          <p className="font-[600]">{`${
+            jobDetail.contractor?.firstName || ""
+          } ${jobDetail.contractor?.lastName || ""}`}</p>
+          <p className="text-sm text-[#555]">
+            {trimString(jobDetail.contractor?.email || "", 20)}
+          </p>
         </div>
       </div>
 
       <div className="flex justify-between mt-8">
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Estimate</p>
-          <p>$400.00</p>
+          <p>${jobDetail.job.totalAmountContractorWithdraw}</p>
         </div>
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Due Date</p>
-          <p>19/09/2023</p>
+          <p>{formatTimeDDMMYY(jobDetail.job.time)}</p>
         </div>
       </div>
 
@@ -130,19 +138,20 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
             <tr className="bg-[#F1F1F1]">
               <th className="font-[500] py-3 px-4">Materials</th>
               <th className="font-[500] py-3 px-4">Rate</th>
-              <th className="font-[500] py-3 px-4">Tax</th>
+              <th className="font-[500] py-3 px-4">Quantity</th>
               <th className="font-[500] py-3 px-4">Amount</th>
             </tr>
           </thead>
 
           <tbody>
-            {tableBody?.map((item, index) => (
-              <tr key={index}>
-                {Object.keys(item).map((data, idx) => (
-                  <td className="text-sm py-3 px-4" key={idx}>
-                    {item[data as keyof typeof item]}
-                  </td>
-                ))}
+            {jobDetail.job.quate.map((item, index) => (
+              <tr key={item._id}>
+                <td className="text-sm py-3 px-4 capitalize">
+                  {item.material}
+                </td>
+                <td className="text-sm py-3 px-4">{item.rate}</td>
+                <td className="text-sm py-3 px-4">{item.qty}</td>
+                <td className="text-sm py-3 px-4">{item.amount}</td>
               </tr>
             ))}
 
@@ -150,25 +159,29 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Subtotal</td>
-              <td className="text-sm py-3 px-4">10000</td>
+              <td className="text-sm py-3 px-4">
+                {jobDetail.job.totalQuatation}
+              </td>
             </tr>
             <tr>
+              {/* <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
-              <td className="text-sm py-3 px-4"></td>
-              <td className="text-sm py-3 px-4">Tax</td>
-              <td className="text-sm py-3 px-4">2440</td>
+              <td className="text-sm py-3 px-4">Quantity</td>
+              <td className="text-sm py-3 px-4"></td> */}
             </tr>
             <tr>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">GST</td>
-              <td className="text-sm py-3 px-4">100</td>
+              <td className="text-sm py-3 px-4">{jobDetail.job.gst}</td>
             </tr>
             <tr>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Total</td>
-              <td className="text-sm py-3 px-4">15000</td>
+              <td className="text-sm py-3 px-4">
+                {jobDetail.job.totalAmountCustomerToPaid}
+              </td>
             </tr>
           </tbody>
         </table>

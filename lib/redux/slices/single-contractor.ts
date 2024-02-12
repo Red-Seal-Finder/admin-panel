@@ -1,9 +1,10 @@
-import { IContractorsDetails } from "@/lib/types";
+import { IContractorsDetails, IJobHistory } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IState {
   value: IContractorsDetails;
+  history: IJobHistory;
 }
 
 const initialState: IState = {
@@ -35,6 +36,29 @@ const initialState: IState = {
     },
     jobHistory: [],
   },
+
+  history: {
+    job: {
+      inspection: {
+        status: false,
+        confirmPayment: false,
+      },
+      _id: "",
+      address: "",
+      status: "",
+      description: "",
+      jobTitle: "",
+      postalCode: "",
+      totalAmountContractorWithdraw: "",
+      totalAmountCustomerToPaid: "",
+      totalQuatation: "",
+      time: "",
+      gst: "",
+
+      quate: [],
+      createdAt: "",
+    },
+  },
 };
 
 export const singleContractorSlice = createSlice({
@@ -48,10 +72,15 @@ export const singleContractorSlice = createSlice({
       console.log(action.payload);
       state.value = action.payload;
     },
+    setSingleContractorsJob: (state, action: PayloadAction<IJobHistory>) => {
+      console.log(action.payload);
+      state.history = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setsingleContractorsDetail } = singleContractorSlice.actions;
+export const { setsingleContractorsDetail, setSingleContractorsJob } =
+  singleContractorSlice.actions;
 
 export default singleContractorSlice.reducer;

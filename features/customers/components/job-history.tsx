@@ -7,14 +7,11 @@ import TableCard, {
 import Heading from "@/features/shared/table/components/table-heading";
 import Searchbar from "@/features/shared/table/components/searchbar";
 import Filter from "@/features/shared/table/components/filter";
-import Paginator from "@/features/shared/table/components/paginator";
 import TableOverflow from "@/features/shared/table/components/table-overflow";
 import Table from "@/features/shared/table/components/table";
 import Thead from "@/features/shared/table/components/thead";
 import Th from "@/features/shared/table/components/th";
 import Td from "@/features/shared/table/components/td";
-import { ComplaintsState, CompletedState, PendingState } from "@/public/svg";
-import { usePathname, useRouter } from "next/navigation";
 import { IJobHistory } from "@/lib/types";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 import { trimString } from "@/lib/utils/trim-string";
@@ -43,6 +40,7 @@ export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
     handleMonthFiltering,
     handleYearFiltering,
     availableYears,
+    handleViewJob,
     currentCustomerHistory,
   } = useCustomerHistoryTable({ jobHistory });
 
@@ -79,7 +77,11 @@ export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
 
           <tbody>
             {currentCustomerHistory?.map((item, index) => (
-              <tr key={index}>
+              <tr
+                key={item.job._id}
+                onClick={() => handleViewJob(item)}
+                className="cursor-pointer"
+              >
                 <Td>
                   {item.contractor?.firstName} {item.contractor?.lastName}
                 </Td>

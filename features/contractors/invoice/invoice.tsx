@@ -13,13 +13,17 @@ import {
   RatingStar,
   YellowStar,
 } from "@/public/svg";
-import React, { useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import userOne from "@/public/user-one.png";
 import SingleLineColumn from "@/features/shared/inner-pages/single-line-column";
 import DescriptionColumn from "@/features/shared/inner-pages/description-column";
 import StatusColumn from "@/features/shared/inner-pages/status-column";
-import Reciept from "@/features/jobs/invoice/reciept";
 import Image from "next/image";
+import Reciept from "@/features/shared/reciept";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
+import { useRouter } from "next/navigation";
+import { extractInitials } from "@/lib/utils/extract-initials";
 
 const Invoice = () => {
   const status = "Completed";
@@ -30,6 +34,21 @@ const Invoice = () => {
     setShowModal(false);
   };
   useOnClickOutside(ref, closeModal);
+
+  const { value: contractorDetails, history } = useAppSelector(
+    (state: RootState) => state.singleContractorDetail
+  );
+
+  const router = useRouter();
+  useLayoutEffect(() => {
+    if (
+      contractorDetails.contractorProfile._id === "" ||
+      !contractorDetails.contractorProfile._id
+    ) {
+      router.push("/contractors");
+    }
+  }, [contractorDetails.contractorProfile._id]);
+
   return (
     <>
       {/* Modal */}
@@ -43,7 +62,7 @@ const Invoice = () => {
             className="w-[600px] bg-white max-w-auto relative p-7 overflow-y-auto h-screen"
             ref={ref}
           >
-            <Reciept closeModal={setShowModal} />
+            <Reciept jobDetail={history} closeModal={setShowModal} />
           </div>
         </div>
       </div>
@@ -51,30 +70,57 @@ const Invoice = () => {
         <Header>
           <Wrapper>
             <div className="flex items-center justify-between">
-              <div className="flex gap-x-6">
-                <div className="w-[86px] h-[86px] flex items-center justify-center">
-                  <Image
-                    src="/contractor-logo.svg"
-                    alt=""
-                    width={87}
-                    height={87}
-                    className="rounded-[50%]"
-                  />
+              <div className="flex gap-x-6 items-center">
+                <div className="w-[86px] h-[86px] flex item-center justify-center">
+                  {contractorDetails?.contractorProfile.profileImage && (
+                    <Image
+                      src={contractorDetails?.contractorProfile.profileImage}
+                      alt=""
+                      width={87}
+                      height={87}
+                      className="rounded-[50%]"
+                    />
+                  )}
+                  {!contractorDetails?.contractorProfile.profileImage && (
+                    <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
+                      <p className="text-[30px] font-[600] text-white">
+                        <span className="capitalize">
+                          {extractInitials(
+                            contractorDetails.contractorProfile.firstName
+                          )}
+                        </span>
+                        <span className="capitalize">
+                          {extractInitials(
+                            contractorDetails.contractorProfile.lastName
+                          )}
+                        </span>
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="-mt-2">
                   <p className="text-[28px] font-[600]">
-                    Allen’s coaster services
+                    <span className="capitalize">
+                      {contractorDetails.contractorProfile.firstName}
+                    </span>{" "}
+                    <span className="capitalize">
+                      {contractorDetails.contractorProfile.lastName}
+                    </span>
                   </p>
 
-                  <p className="mt-[2px] mb-[6px] text-sm">
-                    Furniture Assembler
+                  <p className="mt-[2px] mb-[6px] text-sm capitalize">
+                    {contractorDetails?.document?.skill === undefined
+                      ? "Not Submitted"
+                      : contractorDetails?.document?.skill}
                   </p>
 
                   <div className="flex gap-x-1">
-                    {filledArrayFromNumber(5).map((item, index) => (
-                      <YellowStar key={index} />
-                    ))}
+                    {filledArrayFromNumber(5).map(
+                      (contractorDetails, index) => (
+                        <RatingStar key={index} />
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -98,26 +144,30 @@ const Invoice = () => {
               <table className="w-full">
                 <tbody>
                   <ProfileColumn
-                    position="Customer’s profile"
-                    name="Elizabeth Howard"
-                    phoneNumber="+49 17687934521"
-                    stars={1}
-                    imageSrc={userOne.src}
+                    position="Contractor’s profile"
+                    name={history.customer?.fullName || ""}
+                    phoneNumber={history.customer?.email || ""}
+                    stars={4}
+                    imageSrc={history.customer?.profileImg || ""}
                   />
-                  <SingleLineColumn name="RF ID" value="5647" />
-                  <SingleLineColumn name="Invoice ID" value="342" />
-                  <SingleLineColumn name="Contact" value="+49 17687934521" />
+
+                  <SingleLineColumn name="Job ID" value={history.job._id} />
                   <SingleLineColumn
                     name="Job Address"
-                    value="2464 Royal Ln. Mesa, New Jersey 45463"
+                    value={history.job.address}
                   />
-                  <SingleLineColumn name="Quote" value="$4,000" />
-                  <DescriptionColumn name="Job Description" text={text} />
+                  <DescriptionColumn
+                    name="Job Description"
+                    text={history.job.description}
+                  />
                   <SingleLineColumn
-                    name="Payment method"
-                    value="1256437890876"
+                    name="Job Status"
+                    value={history.job.status}
                   />
-                  <StatusColumn name="Job Status" status="Completed" />
+                  <SingleLineColumn
+                    name="Job Inspection"
+                    value={history.job.inspection.status ? "True" : "False"}
+                  />
                 </tbody>
               </table>
             </BorderRectangle>

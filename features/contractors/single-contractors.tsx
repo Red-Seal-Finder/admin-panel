@@ -31,10 +31,13 @@ const SingleContractor = () => {
   const router = useRouter();
   useLayoutEffect(() => {
     console.log(contractorDetails.contractorProfile._id);
-    if (contractorDetails.contractorProfile._id === "") {
+    if (
+      contractorDetails.contractorProfile._id === "" ||
+      !contractorDetails.contractorProfile._id
+    ) {
       router.push("/contractors");
     }
-  }, []);
+  }, [contractorDetails.contractorProfile._id]);
   const [isLoading, setIsLoading] = useState(false);
 
   const validateDocuments = () => {

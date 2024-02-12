@@ -8,6 +8,24 @@ export interface IState {
 
 const initialState: IState = {
   value: {
+    contractor: {
+      _id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      status: "",
+      profileImage: "",
+    },
+
+    contractorDocument: {
+      phoneNumber: "",
+      skill: "",
+    },
+    customer: {
+      fullName: "",
+      phoneNumber: "",
+      email: "",
+    },
     transaction: {
       _id: "",
       type: "",
@@ -33,16 +51,24 @@ const initialState: IState = {
       profileImg: "",
     },
     job: {
-      address: "",
-      contractorId: "",
-      customerId: "",
-      totalAmountContractorWithdraw: "",
-      totalAmountCustomerToPaid: "",
       inspection: {
         status: false,
         confirmPayment: false,
       },
+      _id: "",
+      address: "",
       status: "",
+      description: "",
+      jobTitle: "",
+      postalCode: "",
+      totalAmountContractorWithdraw: "",
+      totalAmountCustomerToPaid: "",
+      totalQuatation: "",
+      time: "",
+      gst: "",
+
+      quate: [],
+      createdAt: "",
     },
   },
 };

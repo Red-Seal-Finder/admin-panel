@@ -227,9 +227,12 @@ export const resetPassword = async (data: IResetPasswordData) => {
   }
 };
 
-export const getCustomerDetail = async () => {
+export const getCustomerDetail = async (data: IContractorPostData) => {
   try {
-    const response: AxiosResponse = await api.get("/admin_get_customer_detail");
+    const response: AxiosResponse = await api.get(
+      "/admin_get_customer_detail",
+      { params: data }
+    );
 
     return response.data;
   } catch (error) {

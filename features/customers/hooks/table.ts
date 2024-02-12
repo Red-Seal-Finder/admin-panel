@@ -24,7 +24,7 @@ export const useCustomersTable = ({ setLoading }: UseJobsTableProps) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    getCustomerDetail().then((response) => {
+    getCustomerDetail({ page: 1, limit: 4 }).then((response) => {
       console.log(response);
       setLoading(false);
       setCustomers(response);
@@ -42,6 +42,7 @@ export const useCustomersTable = ({ setLoading }: UseJobsTableProps) => {
   const dispatch = useAppDispatch();
 
   const handleViewACustomer = (item: ICustomerData) => {
+    setLoading(true);
     dispatch(setSingleCustomersDetail(item));
     router.push(`${pathname}/${item.customer._id}`);
   };

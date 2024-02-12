@@ -1,27 +1,17 @@
 "use client";
-import { useAppSelector } from "@/lib/redux/hooks";
-import { RootState } from "@/lib/redux/store";
 import { formatTimeDDMMYY } from "@/lib/utils/format-date";
 import { trimString } from "@/lib/utils/trim-string";
 import { CompletedState, PendingState } from "@/public/svg";
 import Image from "next/image";
 import React from "react";
+import { ITransactionsDetail } from "@/lib/types";
 
 interface IProps {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  transactionDetail: ITransactionsDetail;
 }
 
-const Reciept: React.FC<IProps> = ({ closeModal }) => {
-  const { value: jobDetail } = useAppSelector(
-    (state: RootState) => state.jobDetail
-  );
-
-  const tableBody = [
-    { material: "Material", rate: "2%", tax: "0.15%", amount: "5000" },
-    { material: "Material", rate: "5%", tax: "0.05%", amount: "2500" },
-    { material: "Material", rate: "9%", tax: "0.45%", amount: "5000" },
-    { material: "Material", rate: "6%", tax: "0.23%", amount: "2500" },
-  ];
+const Reciept: React.FC<IProps> = ({ closeModal, transactionDetail }) => {
   return (
     <>
       {/* Logo */}
@@ -39,7 +29,7 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          className="absolute top-5 right-5 z-30"
+          className="absolute top-5 right-5 z-30 cursor-pointer"
           onClick={() => closeModal(false)}
         >
           <path
@@ -50,21 +40,22 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       </>
 
       <div className="flex justify-between items-center mt-8">
-        {/* Invoice Image */}
         <div className="flex gap-5">
+          {/* Invoice Image */}
           {/* <Image src="/wood-table.png" alt="" width={79} height={76} /> */}
-
           <div className="flex flex-col gap-y-1">
             <p className="font-[600] text-xl uppercase">
               Invoice
               <span className="text-[#417AA1] pl-2">
-                {trimString(jobDetail.job._id, 5)}
+                {trimString(transactionDetail?.transaction._id, 5)}
               </span>
             </p>
 
-            <p className="text-xs font-[500]">{jobDetail.job.jobTitle}</p>
+            <p className="text-xs font-[500]">
+              {transactionDetail.job.jobTitle}
+            </p>
             <p className="text-suscess flex gap-1 items-center">
-              {jobDetail.job.inspection.confirmPayment ? (
+              {transactionDetail.job.inspection.confirmPayment ? (
                 <>
                   <CompletedState /> <span>Paid</span>
                 </>
@@ -111,17 +102,19 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between mt-10">
         <div className="">
           <p className="text-xs font-[600] text-[#A7A7A7]">From</p>
-          <p className="font-[600]">{jobDetail.customer.fullName}</p>
+          <p className="font-[600]">{transactionDetail.customer?.fullName}</p>
           <p className="text-sm text-[#555]">
-            {trimString(jobDetail.customer.email, 10)}
+            {trimString(transactionDetail.customer?.email || "", 20)}
           </p>
         </div>
 
         <div className="">
           <p className="text-xs font-[600] text-[#A7A7A7]">To</p>
-          <p className="font-[600]">{`${jobDetail.contractor.firstName} ${jobDetail.contractor.lastName}`}</p>
+          <p className="font-[600]">{`${
+            transactionDetail.contractor?.firstName || ""
+          } ${transactionDetail.contractor?.lastName || ""}`}</p>
           <p className="text-sm text-[#555]">
-            {trimString(jobDetail.contractor.email, 10)}
+            {trimString(transactionDetail.contractor?.email || "", 20)}
           </p>
         </div>
       </div>
@@ -129,11 +122,11 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
       <div className="flex justify-between mt-8">
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Estimate</p>
-          <p>${jobDetail.job.totalAmountContractorWithdraw}</p>
+          <p>${transactionDetail.job.totalAmountContractorWithdraw}</p>
         </div>
         <div>
           <p className="text-sm font-[500] text-[#7B7B7B]">Due Date</p>
-          <p>{formatTimeDDMMYY(jobDetail.job.time)}</p>
+          <p>{formatTimeDDMMYY(transactionDetail.job.time)}</p>
         </div>
       </div>
 
@@ -153,10 +146,11 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
           </thead>
 
           <tbody>
-            {jobDetail.job.quate.map((item, index) => (
+            {transactionDetail.job.quate.map((item, index) => (
               <tr key={item._id}>
-                
-                <td className="text-sm py-3 px-4 capitalize">{item.material}</td>
+                <td className="text-sm py-3 px-4 capitalize">
+                  {item.material}
+                </td>
                 <td className="text-sm py-3 px-4">{item.rate}</td>
                 <td className="text-sm py-3 px-4">{item.qty}</td>
                 <td className="text-sm py-3 px-4">{item.amount}</td>
@@ -167,7 +161,9 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Subtotal</td>
-              <td className="text-sm py-3 px-4">{jobDetail.job.totalQuatation}</td>
+              <td className="text-sm py-3 px-4">
+                {transactionDetail.job.totalQuatation}
+              </td>
             </tr>
             <tr>
               {/* <td className="text-sm py-3 px-4"></td>
@@ -179,13 +175,15 @@ const Reciept: React.FC<IProps> = ({ closeModal }) => {
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">GST</td>
-              <td className="text-sm py-3 px-4">{jobDetail.job.gst}</td>
+              <td className="text-sm py-3 px-4">{transactionDetail.job.gst}</td>
             </tr>
             <tr>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4"></td>
               <td className="text-sm py-3 px-4">Total</td>
-              <td className="text-sm py-3 px-4">{jobDetail.job.totalAmountCustomerToPaid}</td>
+              <td className="text-sm py-3 px-4">
+                {transactionDetail.job.totalAmountCustomerToPaid}
+              </td>
             </tr>
           </tbody>
         </table>

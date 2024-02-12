@@ -154,6 +154,7 @@ const OverviewTable: React.FC<IProps> = ({ setLoading }) => {
   const pathname = usePathname();
   const router = useRouter();
   const handleViewInvoice = (item: IJobs) => {
+    setLoading(true);
     dispatch(setsingleJobDetail(item));
     router.push(`${pathname}overview/${item.job._id}`);
   };

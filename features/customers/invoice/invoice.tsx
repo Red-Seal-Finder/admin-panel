@@ -12,12 +12,17 @@ import {
   PendingState,
   RatingStar,
 } from "@/public/svg";
-import React, { useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import userOne from "@/public/user-one.png";
 import SingleLineColumn from "@/features/shared/inner-pages/single-line-column";
 import DescriptionColumn from "@/features/shared/inner-pages/description-column";
 import StatusColumn from "@/features/shared/inner-pages/status-column";
-import Reciept from "@/features/jobs/invoice/reciept";
+import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/lib/redux/hooks";
+import { RootState } from "@/lib/redux/store";
+import { extractInitials } from "@/lib/utils/extract-initials";
+import Image from "next/image";
+import Reciept from "@/features/shared/reciept";
 
 const Invoice = () => {
   const status = "Completed";
@@ -28,6 +33,20 @@ const Invoice = () => {
     setShowModal(false);
   };
   useOnClickOutside(ref, closeModal);
+
+  const { value: customerDetails, history } = useAppSelector(
+    (state: RootState) => state.singleCustomerDetail
+  );
+
+  const router = useRouter();
+  useLayoutEffect(() => {
+    if (
+      customerDetails.customer._id === "" ||
+      customerDetails.customer._id === undefined
+    ) {
+      router.push("/customers");
+    }
+  }, [customerDetails.customer._id]);
   return (
     <>
       {/* Modal */}
@@ -41,7 +60,7 @@ const Invoice = () => {
             className="w-[600px] bg-white max-w-auto relative p-7 overflow-y-auto h-screen"
             ref={ref}
           >
-            <Reciept closeModal={setShowModal} />
+            <Reciept jobDetail={history} closeModal={setShowModal} />
           </div>
         </div>
       </div>
@@ -49,39 +68,35 @@ const Invoice = () => {
         <Header>
           <Wrapper>
             <div className="flex items-center justify-between">
-              <div className="flex gap-x-6">
-                <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
-                  <p className="text-[30px] font-[600] text-white">RO</p>
-                </div>
+              <div className="flex gap-x-6 items-center">
+                {(customerDetails.customer.profileImg === "" ||
+                  !customerDetails.customer.profileImg) && (
+                  <div className="w-[86px] h-[86px] rounded-[50%] bg-[#D9D9D9] flex items-center justify-center">
+                    <p className="text-[30px] font-[600] text-white capitalize">
+                      {extractInitials(customerDetails?.customer?.fullName)}
+                    </p>
+                  </div>
+                )}
+
+                {(customerDetails.customer.profileImg !== "" ||
+                  customerDetails.customer.profileImg) && (
+                  <Image
+                    alt=""
+                    width={60}
+                    height={60}
+                    src={customerDetails.customer.profileImg}
+                    className="w-[80px] h-[80px] object-cover rounded-[50%]"
+                  />
+                )}
 
                 <div className="-mt-2">
-                  <p className="text-[28px] font-[600]">Raphael Okoye</p>
+                  <p className="text-[28px] font-[600] capitalize">
+                    {customerDetails?.customer?.fullName}
+                  </p>
                   <div className="flex gap-x-1">
                     {filledArrayFromNumber(5).map((item, index) => (
                       <RatingStar key={index} />
                     ))}
-                  </div>
-                  <div className="flex gap-[6px] mt-2 items-center">
-                    <span>
-                      {status === "Completed" ? (
-                        <CompletedState />
-                      ) : status === "Complaints" ? (
-                        <ComplaintsState />
-                      ) : (
-                        <PendingState />
-                      )}
-                    </span>
-                    <p
-                      className={`${
-                        status === "Completed"
-                          ? "text-success"
-                          : status === "Complaints"
-                          ? "text-danger"
-                          : "text-inProcess"
-                      }`}
-                    >
-                      Paid
-                    </p>
                   </div>
                 </div>
               </div>
@@ -105,26 +120,30 @@ const Invoice = () => {
               <table className="w-full">
                 <tbody>
                   <ProfileColumn
-                    position="Customer’s profile"
-                    name="Elizabeth Howard"
-                    phoneNumber="+49 17687934521"
-                    stars={1}
-                    imageSrc={userOne.src}
+                    position="Contractor’s profile"
+                    name={`${history.contractor?.firstName} ${history.contractor?.lastName}`}
+                    phoneNumber={history.contractor?.email || ""}
+                    stars={4}
+                    imageSrc={history.contractor?.profileImage || ""}
                   />
-                  <SingleLineColumn name="RF ID" value="5647" />
-                  <SingleLineColumn name="Invoice ID" value="342" />
-                  <SingleLineColumn name="Contact" value="+49 17687934521" />
+
+                  <SingleLineColumn name="Job ID" value={history.job._id} />
                   <SingleLineColumn
                     name="Job Address"
-                    value="2464 Royal Ln. Mesa, New Jersey 45463"
+                    value={history.job.address}
                   />
-                  <SingleLineColumn name="Quote" value="$4,000" />
-                  <DescriptionColumn name="Job Description" text={text} />
+                  <DescriptionColumn
+                    name="Job Description"
+                    text={history.job.description}
+                  />
                   <SingleLineColumn
-                    name="Payment method"
-                    value="1256437890876"
+                    name="Job Status"
+                    value={history.job.status}
                   />
-                  <StatusColumn name="Job Status" status="Completed" />
+                  <SingleLineColumn
+                    name="Job Inspection"
+                    value={history.job.inspection.status ? "True" : "False"}
+                  />
                 </tbody>
               </table>
             </BorderRectangle>
