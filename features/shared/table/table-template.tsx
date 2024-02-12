@@ -70,7 +70,7 @@ const TableTemplate = () => {
         <Heading name="Job List" />
         <div className="flex gap-8">
           <Searchbar />
-          <Filter />
+          {/* <Filter /> */}
         </div>
       </div>
 
