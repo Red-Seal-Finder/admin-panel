@@ -3,7 +3,9 @@ import { formatTimeDDMMYY } from "@/lib/utils/format-date";
 import { trimString } from "@/lib/utils/trim-string";
 import { CompletedState, PendingState } from "@/public/svg";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import { ITransactionsDetail } from "@/lib/types";
 
 interface IProps {
@@ -12,10 +14,28 @@ interface IProps {
 }
 
 const Reciept: React.FC<IProps> = ({ closeModal, transactionDetail }) => {
+  const componentRef = useRef<HTMLDivElement>(null);
+  const handlePrint = async () => {
+    const pdf = new jsPDF("p", "px", "a4");
+    const canvas = await html2canvas(componentRef.current as HTMLElement);
+    const imgData = canvas.toDataURL("image/png");
+    const xPos = (pdf.internal.pageSize.getWidth() - canvas.width * 0.6) / 2;
+    const yPos = (pdf.internal.pageSize.getHeight() - canvas.height * 0.6) / 2;
+    pdf.addImage(
+      imgData,
+      "PNG",
+      xPos,
+      yPos,
+      canvas.width * 0.6,
+      canvas.height * 0.6
+    );
+    pdf.save("sample.pdf");
+  };
+
   return (
-    <>
+    <div ref={componentRef}>
       {/* Logo */}
-      <>
+      <div>
         <Image
           src="/reciept-logo.svg"
           alt=""
@@ -37,7 +57,7 @@ const Reciept: React.FC<IProps> = ({ closeModal, transactionDetail }) => {
             fill="#121212"
           />
         </svg>
-      </>
+      </div>
 
       <div className="flex justify-between items-center mt-8">
         <div className="flex gap-5">
@@ -68,7 +88,10 @@ const Reciept: React.FC<IProps> = ({ closeModal, transactionDetail }) => {
           </div>
         </div>
         {/* Download Button */}
-        <button className="border border-[#333333] outline-none bg-transparent flex gap-2 py-2 px-2">
+        <button
+          onClick={handlePrint}
+          className="border border-[#333333] outline-none bg-transparent flex gap-2 py-2 px-2"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="14"
@@ -188,7 +211,7 @@ const Reciept: React.FC<IProps> = ({ closeModal, transactionDetail }) => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

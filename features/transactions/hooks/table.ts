@@ -151,6 +151,7 @@ export const useTransaction = ({ setLoading }: IProps) => {
   };
 
   const handleViewATransaction = (item: ITransactionsDetail) => {
+    setLoading(true);
     dispatch(setSingleTranactionsDetail(item));
     router.push(`${pathname}/${item.transaction._id}`);
   };
