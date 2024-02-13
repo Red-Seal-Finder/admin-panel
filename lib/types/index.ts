@@ -277,3 +277,8 @@ export interface INotifications {
   message: string;
   createdAt: string;
 }
+
+export interface IGetRevenueAnalysisParams {
+  year: number;
+  month: number;
+}

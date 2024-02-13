@@ -10,6 +10,7 @@ import {
   IVerifyEmailData,
   IGetJobsData,
   IChangeContractorStatusData,
+  IGetRevenueAnalysisParams,
 } from "../types";
 import { toast } from "react-toastify";
 
@@ -894,6 +895,40 @@ export const getJobs = async (data: IGetJobsData) => {
         toast.error(message, {
           position: toast.POSITION.TOP_LEFT,
           toastId: "axios-get-jobs-error",
+        });
+        return { success: false, message };
+      } else if (error.request) {
+        toast.error("Network error. Please check your connection.", {
+          position: toast.POSITION.TOP_LEFT,
+          toastId: "network",
+        });
+        return { success: false, message: "network_error" };
+      }
+    } else {
+      console.error("Non-Axios error:", error);
+      return { success: false, message: "error" };
+    }
+  }
+};
+
+export const getRevenueAnalysis = async (data: IGetRevenueAnalysisParams) => {
+  try {
+    const response: AxiosResponse = await api.get("get_revenue_par_day", {
+      params: data,
+    });
+    const message = response.data.message;
+    toast.success(message, {
+      position: toast.POSITION.TOP_LEFT,
+    });
+    return { success: true, response: response.data };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.log(error.response);
+        const message = error.response.data.message;
+        toast.error("Analysis for date not found", {
+          position: toast.POSITION.TOP_LEFT,
+          toastId: "axios-get-revenue-error",
         });
         return { success: false, message };
       } else if (error.request) {
