@@ -48,7 +48,10 @@ export const useJobTable = ({ setLoading }: UseJobsTableProps) => {
           item.contractor.firstName
             .toLowerCase()
             .includes(value.toLowerCase()) ||
-          item.contractor.lastName.toLowerCase().includes(value.toLowerCase())
+          item.contractor.lastName
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.job._id.includes(value.toLowerCase())
       );
 
       setQueryedJobsList({ jobs: filterArray });

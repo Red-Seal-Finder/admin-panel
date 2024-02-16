@@ -104,15 +104,14 @@ const Invoice = () => {
                     name={transaction.customer.fullName}
                     phoneNumber={transaction.customer.phoneNumber}
                     stars={1}
-                    imageSrc={userOne.src}
+                    imageSrc={transaction.customer.profileImg}
                   />
                   <ProfileColumn
                     position="Contractor’s profile"
                     name={`${transaction.contractor.firstName} ${transaction.contractor.lastName}`}
-                    phoneNumber={transaction.contractorDocument.phoneNumber}
+                    phoneNumber={transaction.contractor.email}
                     stars={4}
                     imageSrc={transaction.contractor.profileImage}
-                    job={transaction.contractorDocument.skill}
                   />
                   <SingleLineColumn
                     name="Invoice ID"

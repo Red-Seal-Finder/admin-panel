@@ -9,6 +9,7 @@ export interface IState {
 
 const initialState: IState = {
   value: {
+    rating: null,
     availability: "",
     contractorProfile: {
       _id: "",

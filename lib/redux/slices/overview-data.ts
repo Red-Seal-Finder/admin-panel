@@ -9,6 +9,7 @@ export interface IDetails {
   totalPendingJob: number;
   totalCompletedJob: number;
   totalComplainedJob: number;
+  totalProgressJob: number;
 }
 export interface IState {
   details: IDetails;
@@ -23,6 +24,7 @@ const initialState: IState = {
     totalPendingJob: 0,
     totalCompletedJob: 0,
     totalComplainedJob: 0,
+    totalProgressJob: 0,
   },
 };
 

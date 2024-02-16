@@ -55,7 +55,7 @@ const JobsTable: React.FC<IProps> = ({ setLoading }) => {
         <Heading name="Job List" />
         <div className="flex gap-8">
           <Searchbar
-            placeholder="Search by name or email"
+            placeholder="Search by name or job id"
             handleQuery={handleQuery}
             notFound={notFound}
           />

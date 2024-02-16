@@ -123,7 +123,7 @@ const FilterBox: React.FC<IProps> = ({
                     onChange={(e) => handleRatingChange(+e.target.value)}
                     className="bg-transparent pr-2 outline-none w-full"
                   >
-                    <option value="none">All Stars</option>
+                    <option value={0}>No Stars</option>
                     <option value={5}>5 Stars</option>
                     <option value={4}>4 Stars</option>
                     <option value={3}>3 Stars</option>

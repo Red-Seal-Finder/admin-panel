@@ -13,6 +13,15 @@ import { INotifications } from "@/lib/types";
 import Paginator from "../shared/table/components/paginator";
 import { formatDateToDDMMYY } from "@/lib/utils/format-date";
 
+const choseSvg = (title: string) => {
+  return title.toLowerCase().includes("payment")
+    ? money
+    : title.toLowerCase().includes("booked") ||
+      title.toLowerCase().includes("completed")
+    ? verified
+    : verified;
+};
+
 function Notification() {
   const [totalNotifications, setTotalNotifications] = useState(0);
   const [notifications, setNotifications] = useState<INotifications[]>();
@@ -45,8 +54,8 @@ function Notification() {
           {notifications?.map((item) => (
             <NotificationBox
               key={item._id}
-              imgSrc={money}
-              title="Payment Received!"
+              imgSrc={choseSvg(item.title)}
+              title={item.title}
               date={formatDateToDDMMYY(item.createdAt)}
               info={item.message}
             />

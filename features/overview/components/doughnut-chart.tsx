@@ -9,9 +9,20 @@ interface IProps {
   color: string;
   name: string;
   percent: number;
+  detail: number;
+}
+interface HalfDoughnutProps {
+  color: string;
+  name: string;
+  percent: number;
 }
 
-export const DoughnutChart: React.FC<IProps> = ({ color, name, percent }) => {
+export const DoughnutChart: React.FC<IProps> = ({
+  color,
+  name,
+  percent,
+  detail,
+}) => {
   const data = {
     datasets: [
       {
@@ -39,7 +50,7 @@ export const DoughnutChart: React.FC<IProps> = ({ color, name, percent }) => {
   const doughnutLabel = {
     id: "doughnutLabel",
     beforeDatasetsDraw(chart: any) {
-      const { ctx, data } = chart;
+      const { ctx } = chart;
       const xCoor = chart.getDatasetMeta(0).data[0].x;
       const yCoor = chart.getDatasetMeta(0).data[0].y;
 
@@ -48,7 +59,7 @@ export const DoughnutChart: React.FC<IProps> = ({ color, name, percent }) => {
       ctx.font = "16px roboto";
       ctx.fillStyle = color;
       ctx.textAlign = "center";
-      ctx.fillText(`${data.datasets[0].data[0]}`, xCoor, yCoor);
+      ctx.fillText(`${detail}`, xCoor, yCoor);
     },
   };
 
@@ -67,7 +78,7 @@ export const DoughnutChart: React.FC<IProps> = ({ color, name, percent }) => {
   );
 };
 
-export const HalfDoughnutChart: React.FC<IProps> = ({
+export const HalfDoughnutChart: React.FC<HalfDoughnutProps> = ({
   color,
   name,
   percent,

@@ -157,7 +157,16 @@ export const useContractorTable = ({ setLoading }: IProps) => {
   };
 
   const handleRatingFiltering = (value: number) => {
-    console.log(value);
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (contractors) {
+      const filteredMatchingRating = contractors.artisans.filter(
+        (item) => item.rating?.avgRating === value
+      );
+
+      console.log(filteredMatchingRating);
+
+      setQueryedContractors({ artisans: filteredMatchingRating });
+    }
   };
 
   const handleStatusFiltering = (value: number) => {

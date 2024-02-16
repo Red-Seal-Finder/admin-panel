@@ -54,9 +54,14 @@ export interface ICustomer {
   [key: string]: unknown;
 }
 
+export interface IRating {
+  avgRating: number;
+}
+
 export interface ICustomerData {
   customer: ICustomer;
   jobHistory: IJobHistory[];
+  rating: IRating | null;
 }
 
 export interface ISubAdmin {
@@ -114,6 +119,7 @@ export interface IContractorsDetails {
     [key: string]: unknown;
   };
   jobHistory: IJobHistory[];
+  rating: IRating | null;
 }
 
 export interface IContractors {
@@ -239,6 +245,7 @@ export interface ITransactionsDetail {
   customer: {
     fullName: string;
     phoneNumber: string;
+    profileImg: string;
     email: string;
   };
   transaction: {
@@ -275,6 +282,7 @@ export interface ITransactionsDetails {
 export interface INotifications {
   _id: string;
   message: string;
+  title: string;
   createdAt: string;
 }
 

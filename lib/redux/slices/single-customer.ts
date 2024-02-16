@@ -20,6 +20,7 @@ const initialState: IState = {
       __v: 0,
     },
     jobHistory: [],
+    rating: null,
   },
   history: {
     job: {

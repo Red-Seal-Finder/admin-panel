@@ -50,7 +50,7 @@ export const JobsHistory: React.FC<IProps> = ({ jobHistory }) => {
         <Heading name="Job History" />
         <div className="flex gap-8">
           <Searchbar
-            placeholder="Search by name, address,"
+            placeholder="Search by name, address or job id"
             handleQuery={handleQuery}
             notFound={notFound}
           />

@@ -73,7 +73,20 @@ export const useCustomersTable = ({ setLoading }: UseJobsTableProps) => {
     }
   }, [currentCustomers]);
 
-  const handleRatingFiltering = (value: number) => {};
+  const handleRatingFiltering = (value: number) => {
+    value === 0 ? setIsQuerying(false) : setIsQuerying(true);
+    if (customers) {
+      const filteredMatchingRating = customers.customers.filter(
+        (item) => item.rating?.avgRating === value
+      );
+
+      console.log(filteredMatchingRating);
+
+      setQueryedCustomers({ customers: filteredMatchingRating });
+    }
+  };
+
+  console.log(queryedCustomers);
 
   const [filterYear, setFilterYear] = useState(0);
   const [filterMonth, setFilterMonth] = useState(0);

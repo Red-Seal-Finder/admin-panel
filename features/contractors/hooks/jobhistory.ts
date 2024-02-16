@@ -69,8 +69,12 @@ export const useContractorHistoryTable = ({ jobHistory }: IProps) => {
   const handleQuery = (value: string) => {
     value === "" ? setIsQuerying(false) : setIsQuerying(true);
     if (jobHistory) {
-      const filterArray = jobHistory.filter((item) =>
-        item?.customer?.fullName.toLowerCase().includes(value.toLowerCase())
+      const filterArray = jobHistory.filter(
+        (item) =>
+          item?.customer?.fullName
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          item.job._id.includes(value.toLowerCase())
       );
 
       setQueryedContractorHistory(filterArray);

@@ -27,10 +27,12 @@ const Layout: React.FC<IProps> = ({ children }) => {
       getOverviewDetail().then((response) => {
         if (!response) {
           localStorage.removeItem("token");
+
           setAuthenticated(false);
           router.push("/auth/login");
         } else {
           dispatch(setOverviewDetails(response));
+          console.log(response);
           setAuthenticated(true);
         }
       });

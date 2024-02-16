@@ -23,6 +23,7 @@ const initialState: IState = {
     },
     customer: {
       fullName: "",
+      profileImg: "",
       phoneNumber: "",
       email: "",
     },
