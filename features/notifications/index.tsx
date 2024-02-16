@@ -19,6 +19,8 @@ const choseSvg = (title: string) => {
     : title.toLowerCase().includes("booked") ||
       title.toLowerCase().includes("completed")
     ? verified
+    : title.toLowerCase().includes("complain")
+    ? warning
     : verified;
 };
 
